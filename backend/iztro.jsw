@@ -1,0 +1,7 @@
+import * as iztro from 'react-iztro';
+import * as react from 'react';
+import * as reactDom from 'react-dom/client';
+
+export function getIztro() {
+  return { iztro, react, reactDom };
+}
