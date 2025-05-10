@@ -1,0 +1,24 @@
+import React from 'react';
+import { ZiweiChart as IzChart } from 'react-iztro';
+
+/** 這個檔只負責畫命盤，不需要任何 Wix SDK */
+export default function ZiweiChart(props) {
+  const { birthDate, birthTime, gender, lang } = props;
+
+  if (!birthDate) {
+    return <div style={{ textAlign: 'center', padding: 20 }}>
+      請先輸入出生資料
+    </div>;
+  }
+
+  return (
+    <div style={{ maxWidth: 840, margin: '0 auto' }}>
+      <IzChart
+        date={birthDate}
+        timeIndex={Number(birthTime)}
+        gender={gender === 'F' ? 'female' : 'male'}
+        language={lang || 'zh-TW'}
+      />
+    </div>
+  );
+}
