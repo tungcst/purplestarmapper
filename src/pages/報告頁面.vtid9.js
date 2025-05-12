@@ -4,8 +4,22 @@ import wixData from 'wix-data';
 import wixLocation from 'wix-location';
 import { fetch } from 'wix-fetch';
 
-export function onReady() {
+$w.onReady(function () {
     console.log("報告頁面 Velo onReady 啟動");
+
+    // 動態添加 ziwei-chart 自訂元件
+    const chartContainer = $w('#chartContainer');
+    if (chartContainer) {
+        const ziweiChart = $w.createElement('ziwei-chart', {
+            id: 'ziweiChart',
+            src: 'https://tungcst.github.io/purplestarmapper/ziwei-chart.bundle.js'
+        });
+        chartContainer.append(ziweiChart);
+        console.log('ziwei-chart added to chartContainer');
+    } else {
+        console.error('chartContainer not found');
+        showError('無法載入命盤容器');
+    }
 
     // 檢查會員登錄
     if (!wixUsers.currentUser.loggedIn) {
@@ -16,7 +30,7 @@ export function onReady() {
 
     const userId = wixUsers.currentUser.id;
     const query = wixLocation.query;
-    const reportId = query.reportId;
+    const reportId = query.reportId || local.getItem('reportId');
 
     if (!reportId) {
         console.error("缺少 reportId");
@@ -38,14 +52,14 @@ export function onReady() {
                 birthTime: report.birthTime,
                 gender: report.gender,
                 service: report.service,
-                solar: report.solar,
+                solar: report.solar || true,
                 lang: report.lang || 'zh',
                 userId: report.userId
             };
 
             console.log("載入的報告數據:", birthData);
 
-            // 渲染命盤（始終完整顯示）
+            // 渲染命盤
             renderChart(birthData);
 
             // 生成報告（若尚未生成）
@@ -81,10 +95,10 @@ export function onReady() {
             console.error("載入報告失敗:", err);
             showError("無法載入報告");
         });
-}
+});
 
 function renderChart(birthData) {
-    const customElement = document.querySelector('#ziweiChart');
+    const customElement = $w('#ziweiChart');
     if (customElement) {
         console.log("找到自訂元素:", customElement.id);
         const message = {
@@ -118,7 +132,7 @@ async function generateReport(reportId, birthData) {
 
 function displayReport(reportText, isPreview) {
     const reportElement = $w("#reportTextElement");
-    if (reportElement.type) {
+    if (reportElement && reportElement.type) {
         if (isPreview) {
             // 試閱模式：顯示前 100 字
             reportElement.text = reportText.substring(0, 100) + "...";
@@ -136,8 +150,10 @@ function displayReport(reportText, isPreview) {
 
 function showError(message) {
     const errorElement = $w("#errorMessageTextElement");
-    if (errorElement.type) {
+    if (errorElement && errorElement.type) {
         errorElement.text = message;
         errorElement.show();
+    } else {
+        console.error("找不到錯誤訊息元素，顯示默認錯誤:", message);
     }
 }
