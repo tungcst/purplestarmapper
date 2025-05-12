@@ -1,26 +1,41 @@
+import { local } from 'wix-storage';
 import wixLocation from 'wix-location';
 import wixWindow from 'wix-window';
+import wixUsers from 'wix-users';
+import wixData from 'wix-data';
 
 $w.onReady(function () {
-    console.log("Velo 初始化，$w 是否可用:", typeof $w === 'function');
+    console.log("生日時辰輸入頁面 Velo 初始化");
 
+    // 檢查會員登錄
+    if (!wixUsers.currentUser.loggedIn) {
+        console.warn("用戶未登錄，導向登錄頁面");
+        wixLocation.to('/sign-in');
+        return;
+    }
+
+    // 檢查元素是否存在
     const elements = ['#birthDate', '#birthTime', '#gender', '#serviceSelect', '#submitButton'];
     elements.forEach(id => {
         console.log(`檢查元素 ${id}:`, $w(id).type ? '存在' : '不存在');
     });
 
+    // 設置語言和訊息
     let language = wixWindow.multilingual.currentLanguage || 'zh';
     let messages = {
-        zh: { required: "請填寫所有欄位", button: "生成命盤", error: "導向失敗，請稍後重試" },
-        en: { required: "Please fill all fields", button: "Generate Chart", error: "Redirect failed, please try again" }
+        zh: { required: "請填寫所有欄位", button: "生成命盤", error: "提交失敗，請稍後重試" },
+        en: { required: "Please fill all fields", button: "Generate Chart", error: "Submission failed, please try again" }
     };
 
-    if (!$w("#submitButton").type) {
+    // 設置提交按鈕
+    if ($w("#submitButton").type) {
+        $w("#submitButton").label = messages[language].button;
+    } else {
         console.error("錯誤：找不到 #submitButton");
         return;
     }
-    $w("#submitButton").label = messages[language].button;
 
+    // 設置性別選項
     if ($w("#gender").type) {
         $w("#gender").options = [
             { label: language === 'zh' ? "男" : "Male", value: "M" },
@@ -28,6 +43,7 @@ $w.onReady(function () {
         ];
     }
 
+    // 設置服務選項
     if ($w("#serviceSelect").type) {
         $w("#serviceSelect").options = [
             { label: language === 'zh' ? "紫微斗數" : "Purple Star", value: "ziwei" },
@@ -36,6 +52,7 @@ $w.onReady(function () {
         ];
     }
 
+    // 設置時辰選項（0-11）
     if ($w("#birthTime").type) {
         $w("#birthTime").options = [
             { label: language === 'zh' ? "子時 (23:00-01:00)" : "Zi (23:00-01:00)", value: "0" },
@@ -53,8 +70,10 @@ $w.onReady(function () {
         ];
     } else {
         console.error("錯誤：找不到 #birthTime");
+        return;
     }
 
+    // 提交按鈕事件
     let isSubmitting = false;
     $w("#submitButton").onClick(() => {
         if (isSubmitting) {
@@ -84,21 +103,59 @@ $w.onReady(function () {
             return;
         }
 
-        let queryParams = {
-            birthDate: birthDate.toISOString(),
-            birthTime: birthTime, // 整數值（0-11）
+        // 子時換日邏輯
+        let adjustedDate = new Date(birthDate);
+        if (birthTime === "0") { // 子時 (23:00-01:00)
+            adjustedDate.setDate(adjustedDate.getDate() + 1);
+        }
+
+        // 儲存數據到 wix-storage
+        const birthData = {
+            birthDate: adjustedDate.toISOString().split('T')[0], // YYYY-MM-DD
+            birthTime: parseInt(birthTime, 10), // 時辰索引 (0-11)
             gender: gender,
             service: service,
-            lang: language
+            solar: true, // 預設陽曆
+            lang: language,
+            userMarked as completeId: wixUsers.currentUser.id
         };
-        let url = `/chart?${new URLSearchParams(queryParams).toString()}`;
-        console.log("導向 URL:", url);
+
+        console.log("儲存到 wix-storage 的數據:", birthData);
 
         try {
-            wixLocation.to(url);
-            console.log("導向已觸發");
+            local.setItem("birthChartData", JSON.stringify(birthData));
+            console.log("數據已儲存到 wix-storage");
+
+            // 儲存到 Wix Data
+            const reportData = {
+                userId: birthData.userId,
+                birthDate: birthData.birthDate,
+                birthTime: birthData.birthTime,
+                gender: birthData.gender,
+                service: birthData.service,
+                solar: birthData.solar,
+                lang: birthData.lang,
+                generatedAt: new Date(),
+                status: "pending", // 待報告生成
+                isPaid: false // 預設免費
+            };
+
+            wixData.insert("Reports", reportData)
+                .then(result => {
+                    console.log("報告記錄已儲存到 Wix Data:", result);
+                    wixLocation.to(`/chart?reportId=${result._id}`);
+                })
+                .catch(err => {
+                    console.error("儲存報告記錄失敗:", err);
+                    $w("#submitButton").label = messages[language].error;
+                    setTimeout(() => {
+                        $w("#submitButton").label = messages[language].button;
+                        $w("#submitButton").enable();
+                        isSubmitting = false;
+                    }, 2000);
+                });
         } catch (err) {
-            console.error("導向失敗:", err);
+            console.error("儲存或導向失敗:", err);
             $w("#submitButton").label = messages[language].error;
             setTimeout(() => {
                 $w("#submitButton").label = messages[language].button;
@@ -106,10 +163,5 @@ $w.onReady(function () {
                 isSubmitting = false;
             }, 2000);
         }
-
-        setTimeout(() => {
-            $w("#submitButton").enable();
-            isSubmitting = false;
-        }, 5000); // 延長防抖時間
     });
 });
