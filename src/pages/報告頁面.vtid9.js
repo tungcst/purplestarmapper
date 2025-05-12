@@ -114,39 +114,6 @@ async function generateReport(reportId, birthData) {
         love: "這是您的愛情運勢分析報告，夫妻宮顯示您將遇到穩定且浪漫的伴侶，建議積極參加社交活動。"
     };
     return mockReport[birthData.service] || "報告生成失敗";
-
-    // 自設 LLM API 模板（請提供 API 詳情後取消註釋）
-    /*
-    const apiKey = "YOUR_LLM_API_KEY"; // 替換為實際 API 密鑰
-    const endpoint = "https://your-llm-api.com/generate"; // 替換為實際端點
-    const prompt = `Generate a detailed ${birthData.service} astrology report based on:
-    - Birth Date: ${birthData.birthDate}
-    - Birth Time: ${birthData.birthTime} (Ziwei time index)
-    - Gender: ${birthData.gender}
-    - Language: ${birthData.lang}
-    - Service: ${birthData.service}`;
-
-    try {
-        const response = await fetch(endpoint, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${apiKey}`
-            },
-            body: JSON.stringify({ prompt })
-        });
-
-        if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-        }
-
-        const data = await response.json();
-        return data.text || "報告生成失敗";
-    } catch (err) {
-        console.error("LLM API 調用失敗:", err);
-        throw err;
-    }
-    */
 }
 
 function displayReport(reportText, isPreview) {
