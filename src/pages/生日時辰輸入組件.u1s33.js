@@ -117,7 +117,7 @@ $w.onReady(function () {
             service: service,
             solar: true, // 預設陽曆
             lang: language,
-            userMarked as completeId: wixUsers.currentUser.id
+            userId: wixUsers.currentUser.id
         };
 
         console.log("儲存到 wix-storage 的數據:", birthData);

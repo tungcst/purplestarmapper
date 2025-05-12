@@ -102,7 +102,7 @@ font-family: Arial, sans-serif; }
             const ChartComponent = () => createElement('div', { dangerouslySetInnerHTML: { __html: content } });
             render(createElement(ChartComponent), container);
 
-            // 返回命盤數據（未來可儲存到 Wix Data）
+            // 返回命盤數據
             this.dispatchEvent(new CustomEvent('chartRendered', { detail: chartData }));
         } catch (err) {
             console.error("渲染命盤失敗:", err);
