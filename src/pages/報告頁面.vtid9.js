@@ -57,7 +57,7 @@ $w.onReady(function () {
                             _id: reportId,
                             status: "completed",
                             reportText: reportText,
-                            chartData: {} // 待 ziwei-chart.js 返回命盤數據
+                            chartData: {}
                         })
                             .then(() => {
                                 console.log("報告已更新");
@@ -102,10 +102,13 @@ function renderChart(birthData) {
         try {
             // 設置 data-config 屬性
             customElement.setAttribute('data-config', JSON.stringify(config));
-            // 觸發自訂事件
-            customElement.dispatchEvent('renderChart', config.payload);
+            // 延遲重試，確保元件初始化
+            setTimeout(() => {
+                customElement.setAttribute('data-config', JSON.stringify(config));
+                console.log("重試設置 ziwei-chart 配置:", config);
+            }, 1000);
         } catch (err) {
-            console.error("設置 ziwei-chart 配置或觸發事件失敗:", err);
+            console.error("設置 ziwei-chart 配置失敗:", err);
             showError("無法渲染命盤，請檢查自訂元件");
         }
     } else {
@@ -115,7 +118,6 @@ function renderChart(birthData) {
 }
 
 async function generateReport(reportId, birthData) {
-    // 模擬報告生成（待替換為自設 LLM API）
     const mockReport = {
         ziwei: "這是您的紫微斗數全面分析報告，根據您的生辰數據，命宮為紫微星，事業發展穩定，財運順遂，適合從事領導性工作。",
         career: "這是您的事業運勢分析報告，事業宮顯示您適合從事創意行業，2025年將有升職機會，需注意人際關係。",
@@ -129,11 +131,9 @@ function displayReport(reportText, isPreview) {
     if (reportElement && reportElement.type) {
         console.log("顯示報告文字:", reportText, "試閱模式:", isPreview);
         if (isPreview) {
-            // 試閱模式：顯示前 100 字
             reportElement.text = reportText.substring(0, 100) + "...";
             $w("#upgradeButton").show();
         } else {
-            // 完整報告
             reportElement.text = reportText;
             $w("#upgradeButton").hide();
         }
