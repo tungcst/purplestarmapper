@@ -35,7 +35,7 @@ $w.onReady(function () {
 
             const birthData = {
                 birthDate: report.birthDate,
-                birthTime: report.birthTime,
+                birthTime: report.birthTime.toString(), // 確保為字串
                 gender: report.gender,
                 service: report.service,
                 solar: report.solar || true,
@@ -84,25 +84,26 @@ $w.onReady(function () {
 });
 
 function renderChart(birthData) {
-    const customElement = document.querySelector('#ziweiChart');
-    if (customElement) {
+    const customElement = $w('#ziweiChart');
+    if (customElement && customElement.type) {
         console.log("找到自訂元素:", customElement.id);
-        const message = {
+        const config = {
             type: 'RENDER_CHART',
             payload: {
                 birthDate: birthData.birthDate,
-                birthTime: birthData.birthTime.toString(), // 確保為字串
+                birthTime: birthData.birthTime,
                 gender: birthData.gender,
                 service: birthData.service,
                 solar: birthData.solar,
                 lang: birthData.lang
             }
         };
-        console.log("發送消息給自訂元件:", message);
+        console.log("設置 ziwei-chart 配置:", config);
         try {
-            customElement.postMessage(message, '*');
+            // 使用屬性傳遞數據
+            customElement.setAttribute('data-config', JSON.stringify(config));
         } catch (err) {
-            console.error("發送 postMessage 失敗:", err);
+            console.error("設置 ziwei-chart 配置失敗:", err);
             showError("無法渲染命盤，請檢查自訂元件");
         }
     } else {
