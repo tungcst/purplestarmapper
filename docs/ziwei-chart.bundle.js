@@ -55367,7 +55367,7 @@
 
 	var libExports = requireLib();
 
-	javascript;
+	// src/ziwei-chart/element.js
 	// react-iztro 的 CSS 會由 rollup-plugin-postcss 自動處理並注入
 
 	// 內部 React 組件

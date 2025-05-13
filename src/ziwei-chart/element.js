@@ -1,4 +1,4 @@
-javascript
+
 // src/ziwei-chart/element.js
 import React from 'react';
 import ReactDOM from 'react-dom/client';
