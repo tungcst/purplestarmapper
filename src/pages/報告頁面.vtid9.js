@@ -7,20 +7,6 @@ import { fetch } from 'wix-fetch';
 $w.onReady(function () {
     console.log("報告頁面 Velo onReady 啟動");
 
-    // 動態添加 ziwei-chart 自訂元件
-    const chartContainer = $w('#chartContainer');
-    if (chartContainer) {
-        const ziweiChart = $w.createElement('ziwei-chart', {
-            id: 'ziweiChart',
-            src: 'https://tungcst.github.io/purplestarmapper/ziwei-chart.bundle.js'
-        });
-        chartContainer.append(ziweiChart);
-        console.log('ziwei-chart added to chartContainer');
-    } else {
-        console.error('chartContainer not found');
-        showError('無法載入命盤容器');
-    }
-
     // 檢查會員登錄
     if (!wixUsers.currentUser.loggedIn) {
         console.warn("用戶未登錄，導向登錄頁面");
@@ -79,12 +65,12 @@ $w.onReady(function () {
                             })
                             .catch(err => {
                                 console.error("更新報告失敗:", err);
-                                showError("無法儲存報告");
+                                showError("無法儲存報告，請稍後重試");
                             });
                     })
                     .catch(err => {
                         console.error("生成報告失敗:", err);
-                        showError("無法生成報告");
+                        showError("無法生成報告，請稍後重試");
                     });
             } else {
                 // 顯示已有報告
@@ -93,13 +79,13 @@ $w.onReady(function () {
         })
         .catch(err => {
             console.error("載入報告失敗:", err);
-            showError("無法載入報告");
+            showError("無法載入報告，請稍後重試");
         });
 });
 
 function renderChart(birthData) {
     const customElement = $w('#ziweiChart');
-    if (customElement) {
+    if (customElement && customElement.type) {
         console.log("找到自訂元素:", customElement.id);
         const message = {
             type: 'RENDER_CHART',
@@ -115,8 +101,8 @@ function renderChart(birthData) {
         console.log("發送消息給自訂元件:", message);
         customElement.postMessage(message, '*');
     } else {
-        console.error("自訂元件未找到");
-        showError("無法載入命盤元件");
+        console.error("自訂元件未找到，請確保已通過 UI 添加 ziwei-chart");
+        showError("無法載入命盤元件，請檢查自訂元件設置");
     }
 }
 
@@ -144,7 +130,7 @@ function displayReport(reportText, isPreview) {
         }
     } else {
         console.error("找不到報告文字元素");
-        showError("無法顯示報告");
+        showError("無法顯示報告，請檢查報告文字元素");
     }
 }
 
