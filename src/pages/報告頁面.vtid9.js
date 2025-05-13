@@ -35,7 +35,7 @@ $w.onReady(function () {
 
             const birthData = {
                 birthDate: report.birthDate,
-                birthTime: report.birthTime.toString(), // 確保為字串
+                birthTime: report.birthTime.toString(),
                 gender: report.gender,
                 service: report.service,
                 solar: report.solar || true,
@@ -100,10 +100,12 @@ function renderChart(birthData) {
         };
         console.log("設置 ziwei-chart 配置:", config);
         try {
-            // 使用屬性傳遞數據
+            // 設置 data-config 屬性
             customElement.setAttribute('data-config', JSON.stringify(config));
+            // 觸發自訂事件
+            customElement.dispatchEvent('renderChart', config.payload);
         } catch (err) {
-            console.error("設置 ziwei-chart 配置失敗:", err);
+            console.error("設置 ziwei-chart 配置或觸發事件失敗:", err);
             showError("無法渲染命盤，請檢查自訂元件");
         }
     } else {
@@ -125,6 +127,7 @@ async function generateReport(reportId, birthData) {
 function displayReport(reportText, isPreview) {
     const reportElement = $w("#reportTextElement");
     if (reportElement && reportElement.type) {
+        console.log("顯示報告文字:", reportText, "試閱模式:", isPreview);
         if (isPreview) {
             // 試閱模式：顯示前 100 字
             reportElement.text = reportText.substring(0, 100) + "...";
