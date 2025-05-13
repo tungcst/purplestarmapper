@@ -1,34 +1,44 @@
+// bundler/rollup.config.js
 import resolve from '@rollup/plugin-node-resolve';
 import commonjs from '@rollup/plugin-commonjs';
+import babel from '@rollup/plugin-babel';
+import postcss from 'rollup-plugin-postcss';
+import replace from '@rollup/plugin-replace';
+import terser from '@rollup/plugin-terser';
+import json from '@rollup/plugin-json'; // <--- 新增的導入
+
+const isProduction = process.env.NODE_ENV === 'production';
 
 export default {
-    input: 'src/ziwei-chart.js',
-    output: {
-        file: '../docs/ziwei-chart.bundle.js',
-        format: 'iife',
-        name: 'ZiweiChartBundle',
-        globals: {
-            react: 'React',
-            'react-dom': 'ReactDOM',
-            'react-iztro': 'iztro'
-        }
-    },
-    plugins: [
-        resolve(),
-        commonjs({
-            ignoreTryCatch: true, // 忽略無法解析的模組（如 CSS）
-            sourceMap: false
-        })
-    ],
-    external: [],
-    onwarn(warning, warn) {
-        // 忽略 CSS 相關的解析錯誤
-        if (warning.code === 'PARSE_ERROR' && warning.loc.file.includes('.css')) {
-            return;
-        }
-        if (warning.code === 'UNRESOLVED_IMPORT' && warning.source.includes('.css')) {
-            return;
-        }
-        warn(warning);
-    }
+  input: 'src/ziwei-chart/element.js',
+  output: {
+    file: 'docs/ziwei-chart.bundle.js',
+    format: 'iife',
+    sourcemap: !isProduction,
+    name: 'ZiweiChartCustomElement',
+  },
+  plugins: [
+    resolve({
+      browser: true,
+      extensions: ['.js', '.jsx', '.json'],
+    }),
+    replace({
+      preventAssignment: true,
+      'process.env.NODE_ENV': JSON.stringify(isProduction ? 'production' : 'development'),
+    }),
+    json(), // <--- 使用插件
+    commonjs(),
+    postcss({
+      extensions: ['.css'],
+      extract: false,
+      minimize: isProduction,
+      inject: { insertAt: 'top' },
+    }),
+    babel({
+      babelHelpers: 'bundled',
+      exclude: 'node_modules/**',
+      presets: ['@babel/preset-react'],
+    }),
+    isProduction && terser(),
+  ],
 };

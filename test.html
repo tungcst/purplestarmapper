@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Test ZiweiChart</title>
+</head>
+<body>
+    <ziwei-chart id="ziweiChart"></ziwei-chart>
+    <script src="https://tungcst.github.io/purplestarmapper/ziwei-chart.bundle.js"></script>
+    <script>
+        const chart = document.querySelector('#ziweiChart');
+        chart.addEventListener('message', (e) => console.log('Received:', e.data));
+        // 測試屬性設置
+        chart.setAttribute('data-config', JSON.stringify({
+            type: 'RENDER_CHART',
+            payload: {
+                birthDate: '2025-05-09',
+                birthTime: '0',
+                gender: 'M',
+                service: 'ziwei',
+                solar: true,
+                lang: 'zh'
+            }
+        }));
+        // 測試 postMessage
+        chart.postMessage({
+            type: 'RENDER_CHART',
+            payload: {
+                birthDate: '2025-05-09',
+                birthTime: '0',
+                gender: 'M',
+                service: 'ziwei',
+                solar: true,
+                lang: 'zh'
+            }
+        }, '*');
+    </script>
+</body>
+</html>
