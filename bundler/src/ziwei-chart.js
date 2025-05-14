@@ -1,4 +1,3 @@
-cat << 'EOF' > src/ziwei-chart.js
 // bundler/src/ziwei-chart.js
 import React from 'react';
 import ReactDOM from 'react-dom/client';
@@ -147,7 +146,6 @@ class ZiweiChart extends HTMLElement {
             if (config && config.type === 'RENDER_CHART' && config.payload) {
                 this._renderAstrolabeWithReact(config.payload);
             } else {
-                // 這一行是關鍵，它在「這個」代碼塊中是第 134 行
                 console.warn('[ZiweiChart CE] Invalid config structure or type. Expected { type: "RENDER_CHART", payload: {...} }. Received:', config);
                 this.renderError('命盤配置數據格式無效。');
             }
@@ -230,4 +228,3 @@ if (!customElements.get('ziwei-chart')) {
 } else {
     console.warn('[ZiweiChart CE] Custom element "ziwei-chart" already defined. This might be due to HMR or multiple script loads.');
 }
-EOF
