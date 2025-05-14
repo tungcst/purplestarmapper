@@ -1,21 +1,13 @@
-// bundler/src/ziwei-chart.js (Complete file with extensive logging and injected CSS)
+// bundler/src/ziwei-chart.js (Attempting direct import of Astrolabe again, with focused logging)
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import * as iztro from 'react-iztro';
+import { Astrolabe } from 'react-iztro'; // <--- 嘗試直接導入 Astrolabe
 
-console.log('[ZiweiChart CE SCRIPT] Top-level: Script execution started. React, ReactDOM, iztro imported.');
-console.log('[ZiweiChart CE SCRIPT] Initial iztro library object type:', typeof iztro); 
-if (typeof iztro === 'object' && iztro !== null) {
-    console.log('[ZiweiChart CE SCRIPT] Initial iztro object keys:', Object.keys(iztro)); 
-    console.log('[ZiweiChart CE SCRIPT] Initial iztro.Astrolabe type:', typeof iztro.Astrolabe); 
-} else {
-    console.warn('[ZiweiChart CE SCRIPT] Initial iztro object is not an object or is null.');
-}
+console.log('[ZiweiChart CE SCRIPT] Top-level: Script execution started. React, ReactDOM imported.');
+console.log('[ZiweiChart CE SCRIPT] Type of imported Astrolabe:', typeof Astrolabe);
+console.log('[ZiweiChart CE SCRIPT] Value of imported Astrolabe:', Astrolabe); // 打印 Astrolabe 看看它到底是什麼
 
-// 從 antd@5.x (一個常見的較新版本) 的 reset.css 獲取的內容，確保基礎樣式一致性
-// 來源: https://unpkg.com/antd@5.17.0/dist/reset.css (您可以檢查此鏈接以獲取最新或特定版本的 reset.css)
-// 為了簡潔，這裡只包含核心的 reset 部分，您可以根據需要擴展。
-// 更好的做法是如果 antd 是項目依賴，可以從 node_modules 中找到並讀取。
+// ... (antdResetCSS 和 reactIztroDefaultCSS 保持不變，從我上次提供的代碼中複製過來)
 const antdResetCSS = `
 html, body, div, span, applet, object, iframe,
 h1, h2, h3, h4, h5, h6, p, blockquote, pre,
@@ -80,8 +72,6 @@ body {
   background-color: #fff;
 }
 `;
-
-// 您提供的 react-iztro 的 default.css 內容
 const reactIztroDefaultCSS = `
 .iztro-astrolabe-theme-default {
   --iztro-star-font-size-big: 13px;
@@ -104,229 +94,55 @@ const reactIztroDefaultCSS = `
   --iztro-color-daily: var(--iztro-color-decorator-1);
   --iztro-color-hourly: var(--iztro-color-text);
 }
-
-.iztro-astrolabe {
-  text-align: left;
-}
-
-.iztro-palace {
-  border: 1px solid var(--iztro-color-border);
-}
-
-.iztro-star-soft,
-.iztro-star-tough,
-.iztro-star-adjective,
-.iztro-star-flower,
-.iztro-star-helper,
-.iztro-palace-fate,
-.iztro-palace-horo-star,
-.iztro-palace-scope,
-.iztro-palace-dynamic-name,
-.iztro-palace-lft24,
-.iztro-palace-rgt24 {
-  font-size: var(--iztro-star-font-size-small);
-  font-weight: normal;
-  text-wrap: nowrap;
-}
-.iztro-palace-scope-age {
-  text-wrap: balance;
-}
-.iztro-palace-scope-age,
-.iztro-palace-scope-decadal {
-  color: var(--iztro-color-text);
-}
-
-.iztro-palace-lft24 {
-  color: var(--iztro-color-decorator-1);
-}
-.iztro-palace-rgt24 {
-  color: var(--iztro-color-decorator-2);
-  text-wrap: nowrap;
-}
-
-.iztro-star-major,
-.iztro-star-tianma,
-.iztro-star-lucun,
-.iztro-palace-name,
-.iztro-palace-gz {
-  font-size: var(--iztro-star-font-size-big);
-  font-weight: bold;
-}
-
-.iztro-star-tianma {
-  color: var(--iztro-color-active);
-}
-.iztro-star-lucun {
-  color: var(--iztro-color-awesome);
-}
-
-.iztro-palace-horo-star .iztro-star {
-  opacity: 0.75;
-}
-.iztro-palace-horo-star .iztro-star-tianma,
-.iztro-palace-horo-star .iztro-star-lucun {
-  font-weight: normal;
-  font-size: var(--iztro-star-font-size-small);
-}
-
-.iztro-star-brightness,
-.iztro-star-adjective {
-  font-style: normal;
-  font-weight: normal;
-  color: var(--iztro-color-text);
-}
-
-.iztro-star-brightness {
-  opacity: 0.5;
-}
-
-.iztro-star-major,
-.iztro-star-soft,
-.iztro-palace-name {
-  color: var(--iztro-color-major);
-}
-.iztro-star-tough {
-  color: var(--iztro-color-tough);
-}
-.iztro-star-flower {
-  color: var(--iztro-color-happy);
-}
-.iztro-star-helper,
-.iztro-palace-gz {
-  color: var(--iztro-color-nice);
-}
-
-.iztro-star-mutagen.mutagen-0 {
-  background-color: var(--iztro-color-awesome);
-}
-.iztro-star-mutagen.mutagen-1 {
-  background-color: var(--iztro-color-quan);
-}
-.iztro-star-mutagen.mutagen-2 {
-  background-color: var(--iztro-color-nice);
-}
-.iztro-star-mutagen.mutagen-3 {
-  background-color: var(--iztro-color-focus);
-}
-
-.iztro-star-mutagen.mutagen-decadal {
-  background-color: var(--iztro-color-decadal);
-  opacity: 0.6;
-}
-.iztro-star-mutagen.mutagen-yearly {
-  background-color: var(--iztro-color-yearly);
-  opacity: 0.6;
-}
-.iztro-star-mutagen.mutagen-monthly {
-  background-color: var(--iztro-color-monthly);
-  opacity: 0.6;
-}
-.iztro-star-mutagen.mutagen-daily {
-  background-color: var(--iztro-color-daily);
-  opacity: 0.6;
-}
-.iztro-star-mutagen.mutagen-hourly {
-  background-color: var(--iztro-color-hourly);
-  opacity: 0.6;
-}
-
-.iztro-palace-gz .iztro-palace-gz-active {
-  background-color: var(--iztro-color-nice);
-  color: #fff;
-  font-weight: normal;
-}
-
-.iztro-star-mutagen-0 {
-  background-color: var(--iztro-color-awesome);
-  color: #fff;
-  font-weight: normal;
-}
-
-.iztro-star-mutagen-1 {
-  background-color: var(--iztro-color-quan);
-  color: #fff;
-  font-weight: normal;
-}
-
-.iztro-star-mutagen-2 {
-  background-color: var(--iztro-color-nice);
-  color: #fff;
-  font-weight: normal;
-}
-
-.iztro-star-mutagen-3 {
-  background-color: var(--iztro-color-focus);
-  color: #fff;
-  font-weight: normal;
-}
-
-.iztro-star-self-mutagen-0::before {
-  background-color: var(--iztro-color-awesome);
-}
-.iztro-star-self-mutagen-1::before {
-  background-color: var(--iztro-color-quan);
-}
-.iztro-star-self-mutagen-2::before {
-  background-color: var(--iztro-color-nice);
-}
-.iztro-star-self-mutagen-3::before {
-  background-color: var(--iztro-color-focus);
-}
-
-.iztro-star-hover-mutagen-0::after {
-  background-color: var(--iztro-color-awesome);
-}
-.iztro-star-hover-mutagen-1::after {
-  background-color: var(--iztro-color-quan);
-}
-.iztro-star-hover-mutagen-2::after {
-  background-color: var(--iztro-color-nice);
-}
-.iztro-star-hover-mutagen-3::after {
-  background-color: var(--iztro-color-focus);
-}
-
-.iztro-palace-name-body {
-  font-size: var(--iztro-star-font-size-small);
-  font-weight: normal;
-  position: absolute;
-  margin-top: 2px;
-}
-
-.iztro-palace-fate span {
-  display: block;
-  padding: 0 3px;
-  border-radius: 4px;
-  color: #fff;
-  background-color: var(--iztro-color-major);
-  cursor: pointer;
-}
-
-.iztro-palace-center-item {
-  font-size: var(--iztro-star-font-size-small);
-  line-height: 22px;
-}
-
-.iztro-palace-center-item label {
-  color: var(--iztro-color-text);
-}
-
-.iztro-palace-center-item span {
-  color: var(--iztro-color-decorator-1);
-}
-
-.gender {
-  display: inline-block;
-  margin-right: 5px;
-}
-.gender.gender-male {
-  color: var(--iztro-color-quan);
-}
-.gender.gender-female {
-  color: var(--iztro-color-happy);
-}
+.iztro-astrolabe { text-align: left; }
+.iztro-palace { border: 1px solid var(--iztro-color-border); }
+.iztro-star-soft, .iztro-star-tough, .iztro-star-adjective, .iztro-star-flower, .iztro-star-helper, .iztro-palace-fate, .iztro-palace-horo-star, .iztro-palace-scope, .iztro-palace-dynamic-name, .iztro-palace-lft24, .iztro-palace-rgt24 { font-size: var(--iztro-star-font-size-small); font-weight: normal; text-wrap: nowrap; }
+.iztro-palace-scope-age { text-wrap: balance; }
+.iztro-palace-scope-age, .iztro-palace-scope-decadal { color: var(--iztro-color-text); }
+.iztro-palace-lft24 { color: var(--iztro-color-decorator-1); }
+.iztro-palace-rgt24 { color: var(--iztro-color-decorator-2); text-wrap: nowrap; }
+.iztro-star-major, .iztro-star-tianma, .iztro-star-lucun, .iztro-palace-name, .iztro-palace-gz { font-size: var(--iztro-star-font-size-big); font-weight: bold; }
+.iztro-star-tianma { color: var(--iztro-color-active); }
+.iztro-star-lucun { color: var(--iztro-color-awesome); }
+.iztro-palace-horo-star .iztro-star { opacity: 0.75; }
+.iztro-palace-horo-star .iztro-star-tianma, .iztro-palace-horo-star .iztro-star-lucun { font-weight: normal; font-size: var(--iztro-star-font-size-small); }
+.iztro-star-brightness, .iztro-star-adjective { font-style: normal; font-weight: normal; color: var(--iztro-color-text); }
+.iztro-star-brightness { opacity: 0.5; }
+.iztro-star-major, .iztro-star-soft, .iztro-palace-name { color: var(--iztro-color-major); }
+.iztro-star-tough { color: var(--iztro-color-tough); }
+.iztro-star-flower { color: var(--iztro-color-happy); }
+.iztro-star-helper, .iztro-palace-gz { color: var(--iztro-color-nice); }
+.iztro-star-mutagen.mutagen-0 { background-color: var(--iztro-color-awesome); }
+.iztro-star-mutagen.mutagen-1 { background-color: var(--iztro-color-quan); }
+.iztro-star-mutagen.mutagen-2 { background-color: var(--iztro-color-nice); }
+.iztro-star-mutagen.mutagen-3 { background-color: var(--iztro-color-focus); }
+.iztro-star-mutagen.mutagen-decadal { background-color: var(--iztro-color-decadal); opacity: 0.6; }
+.iztro-star-mutagen.mutagen-yearly { background-color: var(--iztro-color-yearly); opacity: 0.6; }
+.iztro-star-mutagen.mutagen-monthly { background-color: var(--iztro-color-monthly); opacity: 0.6; }
+.iztro-star-mutagen.mutagen-daily { background-color: var(--iztro-color-daily); opacity: 0.6; }
+.iztro-star-mutagen.mutagen-hourly { background-color: var(--iztro-color-hourly); opacity: 0.6; }
+.iztro-palace-gz .iztro-palace-gz-active { background-color: var(--iztro-color-nice); color: #fff; font-weight: normal; }
+.iztro-star-mutagen-0 { background-color: var(--iztro-color-awesome); color: #fff; font-weight: normal; }
+.iztro-star-mutagen-1 { background-color: var(--iztro-color-quan); color: #fff; font-weight: normal; }
+.iztro-star-mutagen-2 { background-color: var(--iztro-color-nice); color: #fff; font-weight: normal; }
+.iztro-star-mutagen-3 { background-color: var(--iztro-color-focus); color: #fff; font-weight: normal; }
+.iztro-star-self-mutagen-0::before { background-color: var(--iztro-color-awesome); }
+.iztro-star-self-mutagen-1::before { background-color: var(--iztro-color-quan); }
+.iztro-star-self-mutagen-2::before { background-color: var(--iztro-color-nice); }
+.iztro-star-self-mutagen-3::before { background-color: var(--iztro-color-focus); }
+.iztro-star-hover-mutagen-0::after { background-color: var(--iztro-color-awesome); }
+.iztro-star-hover-mutagen-1::after { background-color: var(--iztro-color-quan); }
+.iztro-star-hover-mutagen-2::after { background-color: var(--iztro-color-nice); }
+.iztro-star-hover-mutagen-3::after { background-color: var(--iztro-color-focus); }
+.iztro-palace-name-body { font-size: var(--iztro-star-font-size-small); font-weight: normal; position: absolute; margin-top: 2px; }
+.iztro-palace-fate span { display: block; padding: 0 3px; border-radius: 4px; color: #fff; background-color: var(--iztro-color-major); cursor: pointer; }
+.iztro-palace-center-item { font-size: var(--iztro-star-font-size-small); line-height: 22px; }
+.iztro-palace-center-item label { color: var(--iztro-color-text); }
+.iztro-palace-center-item span { color: var(--iztro-color-decorator-1); }
+.gender { display: inline-block; margin-right: 5px; }
+.gender.gender-male { color: var(--iztro-color-quan); }
+.gender.gender-female { color: var(--iztro-color-happy); }
 `;
-
 
 class ZiweiChart extends HTMLElement {
     static get observedAttributes() {
@@ -342,160 +158,96 @@ class ZiweiChart extends HTMLElement {
 
         this.shadowRoot.innerHTML = `
             <style>
-                /* Host styles */
-                :host {
-                    display: block;
-                    width: 100%;
-                    min-height: 500px; /* Ensure host has some size */
-                    border: 3px solid deeppink; /* Very visible host border for debugging */
-                    padding: 5px;
-                    box-sizing: border-box;
-                }
-
-                /* Injected Ant Design Reset CSS */
+                :host { display: block; width: 100%; min-height: 500px; border: 3px solid deeppink; padding: 5px; box-sizing: border-box; }
                 ${antdResetCSS}
-
-                /* Injected react-iztro default theme CSS */
                 ${reactIztroDefaultCSS}
-
-                /* Container for the chart inside Shadow DOM */
-                .chart-wrapper-inside-shadow-dom {
-                    width: 100%;
-                    min-height: 580px; /* Slightly less than host to see padding */
-                    display: flex;
-                    flex-direction: column;
-                    justify-content: center; /* Try to center content */
-                    align-items: center;
-                    border: 2px dashed dodgerblue; /* Visible border for this inner container */
-                    padding: 10px;
-                    box-sizing: border-box;
-                    background-color: #f0f0f0; /* Light background for visibility */
-                }
-                .message-display-in-shadow {
-                    font-size: 16px;
-                    padding: 20px;
-                    border-radius: 4px;
-                    text-align: center;
-                }
-                .loading-message-in-shadow {
-                    background-color: #e9e9e9;
-                    color: #333;
-                }
-                .error-message-in-shadow {
-                    background-color: #ffebee;
-                    color: #c62828;
-                    border: 1px solid #c62828;
-                }
+                .chart-wrapper-inside-shadow-dom { width: 100%; min-height: 580px; display: flex; flex-direction: column; justify-content: center; align-items: center; border: 2px dashed dodgerblue; padding: 10px; box-sizing: border-box; background-color: #f0f0f0; }
+                .message-display-in-shadow { font-size: 16px; padding: 20px; border-radius: 4px; text-align: center; }
+                .loading-message-in-shadow { background-color: #e9e9e9; color: #333; }
+                .error-message-in-shadow { background-color: #ffebee; color: #c62828; border: 1px solid #c62828; }
             </style>
             <div id="chart-render-target" class="chart-wrapper-inside-shadow-dom">
                 <div class="message-display-in-shadow loading-message-in-shadow">命盤組件初始化 (Constructor)...</div>
             </div>
         `;
-        console.log('[ZiweiChart INSTANCE] constructor: Initial Shadow DOM HTML (with styles and target div) set.');
-
+        console.log('[ZiweiChart INSTANCE] constructor: Initial Shadow DOM HTML set.');
         this._reactRoot = null;
         this._currentConfigString = null;
         this._isRendering = false;
     }
 
     connectedCallback() {
-        console.log('[ZiweiChart INSTANCE] connectedCallback CALLED - Element has been connected to the DOM.');
+        console.log('[ZiweiChart INSTANCE] connectedCallback CALLED.');
         const renderTarget = this.shadowRoot.getElementById('chart-render-target');
-
         if (!renderTarget) {
-            console.error('[ZiweiChart INSTANCE] connectedCallback: CRITICAL - #chart-render-target element NOT FOUND in Shadow DOM!');
-            // Try to display error directly in shadow DOM if possible
-            this.shadowRoot.innerHTML = `<div style="color:red; padding:20px; border:1px solid red;">Error: Chart render target not found!</div>`;
+            console.error('[ZiweiChart INSTANCE] connectedCallback: CRITICAL - #chart-render-target NOT FOUND.');
+            this.shadowRoot.innerHTML = `<div class="message-display-in-shadow error-message-in-shadow">內部渲染目標丟失！</div>`;
             return;
         }
-        console.log('[ZiweiChart INSTANCE] connectedCallback: #chart-render-target element found.');
-
+        console.log('[ZiweiChart INSTANCE] connectedCallback: #chart-render-target found.');
         if (ReactDOM.createRoot) {
             this._reactRoot = ReactDOM.createRoot(renderTarget);
-            console.log('[ZiweiChart INSTANCE] connectedCallback: React root CREATED on #chart-render-target.');
+            console.log('[ZiweiChart INSTANCE] connectedCallback: React root CREATED.');
         } else {
-            console.error('[ZiweiChart INSTANCE] connectedCallback: ReactDOM.createRoot is not available. Ensure React 18+ is correctly bundled.');
-            renderTarget.innerHTML = `<div class="message-display-in-shadow error-message-in-shadow">React 環境錯誤 (createRoot不可用)。</div>`;
+            console.error('[ZiweiChart INSTANCE] connectedCallback: ReactDOM.createRoot is UNDEFINED.');
+            renderTarget.innerHTML = `<div class="message-display-in-shadow error-message-in-shadow">React 環境錯誤 (createRoot)。</div>`;
             return;
         }
-
         const initialConfig = this.getAttribute('data-config');
         if (initialConfig) {
-            console.log('[ZiweiChart INSTANCE] connectedCallback: Initial data-config FOUND. Value (first 100):', initialConfig.substring(0, 100));
+            console.log('[ZiweiChart INSTANCE] connectedCallback: Initial data-config FOUND, processing...');
             this._parseAndRender(initialConfig);
         } else {
-            console.log('[ZiweiChart INSTANCE] connectedCallback: NO initial data-config. Rendering placeholder.');
-            this.renderPlaceholder("等待命盤數據 (connectedCallback)...");
+            this.renderPlaceholder("等待命盤數據 (connected)...");
         }
         console.log('[ZiweiChart INSTANCE] connectedCallback FINISHED.');
     }
 
-    disconnectedCallback() {
-        console.log('[ZiweiChart INSTANCE] disconnectedCallback CALLED - Element has been disconnected from the DOM.');
+    disconnectedCallback() { /* ...內容與上次提供的一致，包含日誌... */ 
+        console.log('[ZiweiChart INSTANCE] disconnectedCallback CALLED.');
         if (this._reactRoot && typeof this._reactRoot.unmount === 'function') {
             try {
                 this._reactRoot.unmount();
                 console.log('[ZiweiChart INSTANCE] disconnectedCallback: React root unmounted.');
             } catch (e) {
-                console.error('[ZiweiChart INSTANCE] disconnectedCallback: Error during React root.unmount():', e);
+                console.error('[ZiweiChart INSTANCE] disconnectedCallback: Error during unmount:', e);
             }
         }
         this._reactRoot = null;
     }
 
-    attributeChangedCallback(name, oldValue, newValue) {
+    attributeChangedCallback(name, oldValue, newValue) { /* ...內容與上次提供的一致，包含日誌... */ 
         console.log(`[ZiweiChart INSTANCE] attributeChangedCallback CALLED for attribute: ${name}`);
-        // console.log(`  Old value (type ${typeof oldValue}, first 50):`, oldValue ? oldValue.substring(0, 50) + '...' : oldValue);
-        // console.log(`  New value (type ${typeof newValue}, first 50):`, newValue ? newValue.substring(0, 50) + '...' : newValue);
-
         if (name === 'data-config') {
             if (newValue === null || newValue === undefined) {
-                console.log('[ZiweiChart INSTANCE] attributeChangedCallback: data-config is now null/undefined. Clearing chart.');
-                this.renderPlaceholder("命盤配置已移除 (attributeChangedCallback).");
+                this.renderPlaceholder("命盤配置已移除 (attrChanged).");
                 this._currentConfigString = null;
             } else if (newValue !== this._currentConfigString) {
-                console.log('[ZiweiChart INSTANCE] attributeChangedCallback: data-config has a NEW value. Processing...');
                 this._parseAndRender(newValue);
-            } else {
-                console.log('[ZiweiChart INSTANCE] attributeChangedCallback: data-config value is the SAME as current. Skipping re-render.');
             }
         }
         console.log('[ZiweiChart INSTANCE] attributeChangedCallback FINISHED.');
     }
 
-    _parseAndRender(configString) {
-        console.log('[ZiweiChart INSTANCE] _parseAndRender CALLED. Config string (first 100):', configString ? configString.substring(0, 100) + '...' : 'null/undefined');
-        if (this._isRendering) {
-            console.warn('[ZiweiChart INSTANCE] _parseAndRender: Already rendering, skipping.');
-            return;
-        }
+    _parseAndRender(configString) { /* ...內容與上次提供的一致，包含日誌... */ 
+        console.log('[ZiweiChart INSTANCE] _parseAndRender CALLED.');
+        if (this._isRendering) return;
         this._isRendering = true;
         this._currentConfigString = configString;
-
         if (!configString) {
-            console.warn('[ZiweiChart INSTANCE] _parseAndRender: configString is empty/null.');
-            this.renderError('命盤配置錯誤：數據為空。');
-            this._isRendering = false;
-            return;
+            this.renderError('配置為空。');
+            this._isRendering = false; return;
         }
-
-        let config;
         try {
-            config = JSON.parse(configString);
-            console.log('[ZiweiChart INSTANCE] _parseAndRender: JSON.parse successful. Parsed config:', config);
+            const config = JSON.parse(configString);
+            console.log('[ZiweiChart INSTANCE] _parseAndRender: Parsed config:', config);
+            if (config && config.type === 'RENDER_CHART' && config.payload) {
+                this._renderAstrolabeWithReact(config.payload);
+            } else {
+                this.renderError('配置格式無效。');
+            }
         } catch (error) {
-            console.error('[ZiweiChart INSTANCE] _parseAndRender: ERROR parsing JSON from configString:', error);
             this.renderError(`解析配置錯誤: ${error.message}`);
-            this._isRendering = false;
-            return;
-        }
-
-        if (config && config.type === 'RENDER_CHART' && config.payload) {
-            console.log('[ZiweiChart INSTANCE] _parseAndRender: Valid config.type and payload. Calling _renderAstrolabeWithReact.');
-            this._renderAstrolabeWithReact(config.payload);
-        } else {
-            console.warn('[ZiweiChart INSTANCE] _parseAndRender: Invalid config structure. Expected {type: "RENDER_CHART", payload: Object}, Received:', config);
-            this.renderError('命盤配置格式不正確。');
         }
         this._isRendering = false;
         console.log('[ZiweiChart INSTANCE] _parseAndRender FINISHED.');
@@ -503,14 +255,9 @@ class ZiweiChart extends HTMLElement {
 
     _renderAstrolabeWithReact(payload) {
         console.log('[ZiweiChart INSTANCE] _renderAstrolabeWithReact CALLED. Payload:', JSON.stringify(payload));
-        console.log('[ZiweiChart INSTANCE] Current iztro object in _renderAstrolabeWithReact:', iztro); 
-        if (typeof iztro === 'object' && iztro !== null) {
-            console.log('[ZiweiChart INSTANCE] iztro object keys in _renderAstrolabeWithReact:', Object.keys(iztro));
-            console.log('[ZiweiChart INSTANCE] iztro.Astrolabe type in _renderAstrolabeWithReact:', typeof iztro.Astrolabe);
-            console.log('[ZiweiChart INSTANCE] iztro.Astrolabe value:', iztro.Astrolabe); 
-        } else {
-             console.error('[ZiweiChart INSTANCE] iztro is not an object or is null in _renderAstrolabeWithReact');
-        }
+        console.log('[ZiweiChart INSTANCE] Type of Astrolabe in _renderAstrolabeWithReact:', typeof Astrolabe); // 檢查這裡的 Astrolabe
+        console.log('[ZiweiChart INSTANCE] Value of Astrolabe in _renderAstrolabeWithReact:', Astrolabe);
+
 
         if (!this._reactRoot) {
             console.error('[ZiweiChart INSTANCE] _renderAstrolabeWithReact: React root is NOT INITIALIZED!');
@@ -523,24 +270,22 @@ class ZiweiChart extends HTMLElement {
             return;
         }
 
-        console.log('[ZiweiChart INSTANCE] _renderAstrolabeWithReact: Checking iztro & iztro.Astrolabe availability (again)...');
-        if (typeof iztro === 'undefined' || typeof iztro.Astrolabe === 'undefined') {
-            console.error('[ZiweiChart INSTANCE] _renderAstrolabeWithReact: CRITICAL - iztro library or iztro.Astrolabe component is UNDEFINED!');
-            this.renderError('命盤核心庫 (iztro.Astrolabe) 未加載。');
+        console.log('[ZiweiChart INSTANCE] _renderAstrolabeWithReact: Checking Astrolabe component availability...');
+        if (typeof Astrolabe === 'undefined') { // <--- 修改檢查目標
+            console.error('[ZiweiChart INSTANCE] _renderAstrolabeWithReact: CRITICAL - Astrolabe component is UNDEFINED! (Direct import failed)');
+            this.renderError('命盤核心組件 (Astrolabe) 未能加載。');
             return;
         }
-        console.log('[ZiweiChart INSTANCE] _renderAstrolabeWithReact: iztro and iztro.Astrolabe ARE AVAILABLE.');
+        console.log('[ZiweiChart INSTANCE] _renderAstrolabeWithReact: Astrolabe component IS AVAILABLE.');
 
-        const { birthDate, birthTime, gender, solar, lang } = payload; // 移除了 service，因為 iztro 不直接用它
-        console.log(`[ZiweiChart INSTANCE] _renderAstrolabeWithReact: Destructured props - birthDate: ${birthDate}, birthTime: ${birthTime} (type: ${typeof birthTime}), gender: ${gender}, solar: ${solar}, lang: ${lang}`);
-
+        const { birthDate, birthTime, gender, solar, lang } = payload;
         const iztroBirthTimeNum = parseInt(birthTime, 10);
-        if (isNaN(iztroBirthTimeNum)) { // 稍微加強一下對 NaN 的判斷
-            console.error(`[ZiweiChart INSTANCE] _renderAstrolabeWithReact: birthTime "${birthTime}" is Not a Number after parseInt.`);
-            this.renderError(`出生時辰數據轉換錯誤: "${birthTime}".`);
+
+        if (isNaN(iztroBirthTimeNum)) {
+            console.error(`[ZiweiChart INSTANCE] _renderAstrolabeWithReact: birthTime "${birthTime}" is NaN.`);
+            this.renderError(`時辰數據錯誤: "${birthTime}".`);
             return;
         }
-        console.log(`[ZiweiChart INSTANCE] _renderAstrolabeWithReact: Parsed iztroBirthTimeNum: ${iztroBirthTimeNum} (type: ${typeof iztroBirthTimeNum})`);
 
         const iztroInputOptions = {
             birthday: birthDate,
@@ -549,71 +294,44 @@ class ZiweiChart extends HTMLElement {
             birthdayType: solar ? 'solar' : 'lunar',
             language: lang === 'zh' ? 'zh-TW' : (lang === 'en' ? 'en' : 'zh-TW'),
         };
-        console.log('[ZiweiChart INSTANCE] _renderAstrolabeWithReact: Final options for iztro.Astrolabe:', JSON.stringify(iztroInputOptions));
+        console.log('[ZiweiChart INSTANCE] _renderAstrolabeWithReact: Final options for Astrolabe:', JSON.stringify(iztroInputOptions));
 
         try {
-            console.log('[ZiweiChart INSTANCE] _renderAstrolabeWithReact: Attempting React.createElement for iztro.Astrolabe...');
-            const astrolabeElement = React.createElement(iztro.Astrolabe, iztroInputOptions); // 使用 iztro.Astrolabe
-            console.log('[ZiweiChart INSTANCE] _renderAstrolabeWithReact: React.createElement result:', astrolabeElement ? 'Component created' : 'FAILED to create component (null or undefined)');
+            console.log('[ZiweiChart INSTANCE] _renderAstrolabeWithReact: Attempting React.createElement(Astrolabe)...');
+            const astrolabeElement = React.createElement(Astrolabe, iztroInputOptions); // <--- 使用直接導入的 Astrolabe
+            console.log('[ZiweiChart INSTANCE] _renderAstrolabeWithReact: React.createElement result:', astrolabeElement ? 'Element created' : 'Element creation FAILED');
 
             if (!astrolabeElement) {
-                 console.error('[ZiweiChart INSTANCE] _renderAstrolabeWithReact: React.createElement(iztro.Astrolabe) returned null or undefined. Cannot render.');
-                 this.renderError('無法創建命盤圖表組件實例 (createElement失敗)。');
+                 console.error('[ZiweiChart INSTANCE] _renderAstrolabeWithReact: React.createElement(Astrolabe) returned null/undefined.');
+                 this.renderError('無法創建命盤圖表實例。');
                  return;
             }
 
-            console.log('[ZiweiChart INSTANCE] _renderAstrolabeWithReact: Attempting this._reactRoot.render(astrolabeElement)...');
+            console.log('[ZiweiChart INSTANCE] _renderAstrolabeWithReact: Attempting this._reactRoot.render()...');
             this._reactRoot.render(astrolabeElement);
-            console.log('[ZiweiChart INSTANCE] _renderAstrolabeWithReact: React render() call for Astrolabe executed. UI should update.');
+            console.log('[ZiweiChart INSTANCE] _renderAstrolabeWithReact: React render() call executed.');
 
         } catch (error) {
-            console.error('[ZiweiChart INSTANCE] _renderAstrolabeWithReact: >>> EXCEPTION during React rendering <<<');
-            console.error('  Error Name:', error.name);
-            console.error('  Error Message:', error.message);
-            if (error.stack) {
-                console.error('  Error Stack:', error.stack);
-            }
-            this.renderError(`渲染命盤時發生嚴重錯誤: ${error.message}.`);
+            console.error('[ZiweiChart INSTANCE] _renderAstrolabeWithReact: >>> EXCEPTION during React rendering <<<', error);
+            this.renderError(`渲染命盤時發生內部錯誤: ${error.message}.`);
         }
         console.log('[ZiweiChart INSTANCE] _renderAstrolabeWithReact FINISHED.');
     }
-    
-    renderPlaceholder(message) {
+
+    renderPlaceholder(message) { /* ...內容與上次提供的一致，包含日誌... */ 
         console.log(`[ZiweiChart INSTANCE] renderPlaceholder CALLED. Message: "${message}"`);
         const target = this.shadowRoot.getElementById('chart-render-target');
-        if (!target) {
-            console.error('[ZiweiChart INSTANCE] renderPlaceholder: #chart-render-target NOT FOUND for placeholder.');
-            return;
-        }
-        if (this._reactRoot) {
-            try {
-                this._reactRoot.render(React.createElement('div', { className: 'message-display-in-shadow loading-message-in-shadow' }, message));
-            } catch (e) {
-                target.innerHTML = `<div class="message-display-in-shadow loading-message-in-shadow">${message} (React render failed for placeholder)</div>`;
-            }
-        } else {
-            target.innerHTML = `<div class="message-display-in-shadow loading-message-in-shadow">${message} (React root not ready for placeholder)</div>`;
-        }
+        if (!target) { console.error('Placeholder: Target not found'); return; }
+        if (this._reactRoot) { try { this._reactRoot.render(React.createElement('div', { className: 'message-display-in-shadow loading-message-in-shadow' }, message)); } catch (e) { target.innerHTML = `<div class="message-display-in-shadow loading-message-in-shadow">${message} (React err)</div>`;}
+        } else { target.innerHTML = `<div class="message-display-in-shadow loading-message-in-shadow">${message} (No React root)</div>`; }
     }
 
-    renderError(message, isCritical = false) {
+    renderError(message, isCritical = false) { /* ...內容與上次提供的一致，包含日誌... */ 
         console.error(`[ZiweiChart INSTANCE] renderError CALLED. Message: "${message}", isCritical: ${isCritical}`);
         const target = this.shadowRoot.getElementById('chart-render-target');
-        if (!target) {
-            console.error('[ZiweiChart INSTANCE] renderError: #chart-render-target NOT FOUND for error message.');
-            // If even the target is gone, this is a major issue with shadow DOM setup
-            if (isCritical) this.shadowRoot.innerHTML = `<div style="color:red; padding:20px; border:1px solid red;">FATAL ERROR: ${message}</div>`;
-            return;
-        }
-        if (this._reactRoot && !isCritical) {
-            try {
-                this._reactRoot.render(React.createElement('div', { className: 'message-display-in-shadow error-message-in-shadow' }, message));
-            } catch (e) {
-                target.innerHTML = `<div class="message-display-in-shadow error-message-in-shadow">${message} (React render failed for error)</div>`;
-            }
-        } else {
-            target.innerHTML = `<div class="message-display-in-shadow error-message-in-shadow">${message} (React root not ready or critical error)</div>`;
-        }
+        if (!target) { console.error('ErrorMsg: Target not found'); if(isCritical) this.shadowRoot.innerHTML = `<div style="color:red;">FATAL: ${message}</div>`; return; }
+        if (this._reactRoot && !isCritical) { try { this._reactRoot.render(React.createElement('div', { className: 'message-display-in-shadow error-message-in-shadow' }, message)); } catch (e) { target.innerHTML = `<div class="message-display-in-shadow error-message-in-shadow">${message} (React err)</div>`; }
+        } else { target.innerHTML = `<div class="message-display-in-shadow error-message-in-shadow">${message} (No React root or critical)</div>`; }
     }
 }
 
@@ -626,6 +344,6 @@ if (!customElements.get('ziwei-chart')) {
         console.error('[ZiweiChart CE SCRIPT] CRITICAL ERROR defining custom element "ziwei-chart":', e);
     }
 } else {
-    console.warn('[ZiweiChart CE SCRIPT] Custom element "ziwei-chart" was ALREADY DEFINED. This might indicate multiple script loads or HMR issues.');
+    console.warn('[ZiweiChart CE SCRIPT] Custom element "ziwei-chart" was ALREADY DEFINED.');
 }
 console.log('[ZiweiChart CE SCRIPT] Top-level script execution FINISHED.');
