@@ -227,8 +227,8 @@ function displayReportOnPage(text, isTrialView) {
 ${displayText.substring(0,100)}`);
 
     } else {
-        console.error("[Chart Page] Report text element #reportTextElement not found or essential properties/methods are 
-missing.");
+        console.error("[Chart Page] Report text element #reportTextElement not found or essential properties/methods are" + 
+"missing.");
         showUserError("無法在頁面上顯示報告文本內容。");
     }
 }

@@ -136,8 +136,8 @@ $w.onReady(function () {
     let isSubmitting = false;
     // 再次確認 submitButton.onClick 是否是函數
     if (typeof submitButton.onClick !== 'function') {
-        console.error("[Input Page] CRITICAL ERROR: submitButton.onClick is not a function! Button ID might be incorrect or 
-element is not a button.", submitButton);
+        console.error("[Input Page] CRITICAL ERROR: submitButton.onClick is not a function! Button ID might be incorrect or" + 
+"element is not a button.", submitButton);
         showStatus("頁面提交功能錯誤，請聯繫管理員。", true);
         if (submitButton.disable) submitButton.disable();
         return;
