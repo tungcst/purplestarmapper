@@ -510,13 +510,12 @@ class ZiweiChart extends HTMLElement {
         }
 
         console.log('[ZiweiChart INSTANCE] _renderAstrolabeWithReact: Checking iztro & iztro.Astrolabe availability...');
-        if (typeof iztro === 'undefined' || typeof iztro.Astrolabe === 'undefined') {
-            console.error('[ZiweiChart INSTANCE] _renderAstrolabeWithReact: CRITICAL - iztro library or iztro.Astrolabe component is UNDEFINED!');
-            this.renderError('命盤核心庫 (iztro.Astrolabe) 未加載。');
+        if (typeof Astrolabe === 'undefined') { // 只檢查 Astrolabe
+            console.error('[ZiweiChart INSTANCE] _renderAstrolabeWithReact: CRITICAL - Astrolabe component is UNDEFINED! (Direct import failed)');
+            this.renderError('命盤核心組件 (Astrolabe) 未能加載。');
             return;
         }
-        console.log('[ZiweiChart INSTANCE] _renderAstrolabeWithReact: iztro and iztro.Astrolabe ARE AVAILABLE. iztro object:', iztro);
-
+        console.log('[ZiweiChart INSTANCE] _renderAstrolabeWithReact: Astrolabe component IS AVAILABLE (direct import).');
         const { birthDate, birthTime, gender, solar, lang } = payload;
         console.log(`[ZiweiChart INSTANCE] _renderAstrolabeWithReact: Destructured props - birthDate: ${birthDate}, birthTime: ${birthTime} (type: ${typeof birthTime}), gender: ${gender}, solar: ${solar}, lang: ${lang}`);
 
@@ -540,17 +539,17 @@ class ZiweiChart extends HTMLElement {
 
         try {
             console.log('[ZiweiChart INSTANCE] _renderAstrolabeWithReact: Attempting React.createElement for iztro.Astrolabe...');
-            const astrolabeComponent = React.createElement(iztro.Astrolabe, iztroInputOptions);
-            console.log('[ZiweiChart INSTANCE] _renderAstrolabeWithReact: React.createElement result:', astrolabeComponent ? 'Component created' : 'FAILED to create component');
+            const astrolabeElement = React.createElement(Astrolabe, iztroInputOptions); // 直接使用
+            //             console.log('[ZiweiChart INSTANCE] _renderAstrolabeWithReact: React.createElement result:', astrolabeElement ? 'Component created' : 'FAILED to create component');
 
-            if (!astrolabeComponent) {
+            if (!astrolabeElement) {
                  console.error('[ZiweiChart INSTANCE] _renderAstrolabeWithReact: React.createElement returned null/undefined for iztro.Astrolabe. Cannot render.');
                  this.renderError('無法創建命盤圖表組件實例。');
                  return;
             }
 
-            console.log('[ZiweiChart INSTANCE] _renderAstrolabeWithReact: Attempting this._reactRoot.render(astrolabeComponent)...');
-            this._reactRoot.render(astrolabeComponent);
+            console.log('[ZiweiChart INSTANCE] _renderAstrolabeWithReact: Attempting this._reactRoot.render(astrolabeElement)...');
+            this._reactRoot.render(astrolabeElement);
             console.log('[ZiweiChart INSTANCE] _renderAstrolabeWithReact: React render() call for Astrolabe executed. UI should update.');
 
         } catch (error) {

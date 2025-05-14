@@ -45088,12 +45088,12 @@ body {
         return;
       }
       console.log("[ZiweiChart INSTANCE] _renderAstrolabeWithReact: Checking iztro & iztro.Astrolabe availability...");
-      if (typeof iztro === "undefined" || typeof iztro.Astrolabe === "undefined") {
-        console.error("[ZiweiChart INSTANCE] _renderAstrolabeWithReact: CRITICAL - iztro library or iztro.Astrolabe component is UNDEFINED!");
-        this.renderError("\u547D\u76E4\u6838\u5FC3\u5EAB (iztro.Astrolabe) \u672A\u52A0\u8F09\u3002");
+      if (typeof Astrolabe === "undefined") {
+        console.error("[ZiweiChart INSTANCE] _renderAstrolabeWithReact: CRITICAL - Astrolabe component is UNDEFINED! (Direct import failed)");
+        this.renderError("\u547D\u76E4\u6838\u5FC3\u7D44\u4EF6 (Astrolabe) \u672A\u80FD\u52A0\u8F09\u3002");
         return;
       }
-      console.log("[ZiweiChart INSTANCE] _renderAstrolabeWithReact: iztro and iztro.Astrolabe ARE AVAILABLE. iztro object:", iztro);
+      console.log("[ZiweiChart INSTANCE] _renderAstrolabeWithReact: Astrolabe component IS AVAILABLE (direct import).");
       const { birthDate, birthTime, gender, solar, lang } = payload;
       console.log(`[ZiweiChart INSTANCE] _renderAstrolabeWithReact: Destructured props - birthDate: ${birthDate}, birthTime: ${birthTime} (type: ${typeof birthTime}), gender: ${gender}, solar: ${solar}, lang: ${lang}`);
       const iztroBirthTimeNum = parseInt(birthTime, 10);
@@ -45114,15 +45114,14 @@ body {
       console.log("[ZiweiChart INSTANCE] _renderAstrolabeWithReact: Final options for iztro.Astrolabe:", JSON.stringify(iztroInputOptions));
       try {
         console.log("[ZiweiChart INSTANCE] _renderAstrolabeWithReact: Attempting React.createElement for iztro.Astrolabe...");
-        const astrolabeComponent = import_react.default.createElement(iztro.Astrolabe, iztroInputOptions);
-        console.log("[ZiweiChart INSTANCE] _renderAstrolabeWithReact: React.createElement result:", astrolabeComponent ? "Component created" : "FAILED to create component");
-        if (!astrolabeComponent) {
+        const astrolabeElement = import_react.default.createElement(Astrolabe, iztroInputOptions);
+        if (!astrolabeElement) {
           console.error("[ZiweiChart INSTANCE] _renderAstrolabeWithReact: React.createElement returned null/undefined for iztro.Astrolabe. Cannot render.");
           this.renderError("\u7121\u6CD5\u5275\u5EFA\u547D\u76E4\u5716\u8868\u7D44\u4EF6\u5BE6\u4F8B\u3002");
           return;
         }
-        console.log("[ZiweiChart INSTANCE] _renderAstrolabeWithReact: Attempting this._reactRoot.render(astrolabeComponent)...");
-        this._reactRoot.render(astrolabeComponent);
+        console.log("[ZiweiChart INSTANCE] _renderAstrolabeWithReact: Attempting this._reactRoot.render(astrolabeElement)...");
+        this._reactRoot.render(astrolabeElement);
         console.log("[ZiweiChart INSTANCE] _renderAstrolabeWithReact: React render() call for Astrolabe executed. UI should update.");
       } catch (error) {
         console.error("[ZiweiChart INSTANCE] _renderAstrolabeWithReact: >>> EXCEPTION during React rendering <<<");
