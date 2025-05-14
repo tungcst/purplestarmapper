@@ -4,7 +4,13 @@ import ReactDOM from 'react-dom/client';
 import * as iztro from 'react-iztro';
 
 console.log('[ZiweiChart CE SCRIPT] Top-level: Script execution started. React, ReactDOM, iztro imported.');
-console.log('[ZiweiChart CE SCRIPT] iztro library object:', iztro); // 檢查 iztro 是否真的被導入了
+console.log('[ZiweiChart CE SCRIPT] Initial iztro library object type:', typeof iztro); 
+if (typeof iztro === 'object' && iztro !== null) {
+    console.log('[ZiweiChart CE SCRIPT] Initial iztro object keys:', Object.keys(iztro)); 
+    console.log('[ZiweiChart CE SCRIPT] Initial iztro.Astrolabe type:', typeof iztro.Astrolabe); 
+} else {
+    console.warn('[ZiweiChart CE SCRIPT] Initial iztro object is not an object or is null.');
+}
 
 // 從 antd@5.x (一個常見的較新版本) 的 reset.css 獲取的內容，確保基礎樣式一致性
 // 來源: https://unpkg.com/antd@5.17.0/dist/reset.css (您可以檢查此鏈接以獲取最新或特定版本的 reset.css)
@@ -497,6 +503,14 @@ class ZiweiChart extends HTMLElement {
 
     _renderAstrolabeWithReact(payload) {
         console.log('[ZiweiChart INSTANCE] _renderAstrolabeWithReact CALLED. Payload:', JSON.stringify(payload));
+        console.log('[ZiweiChart INSTANCE] Current iztro object in _renderAstrolabeWithReact:', iztro); 
+        if (typeof iztro === 'object' && iztro !== null) {
+            console.log('[ZiweiChart INSTANCE] iztro object keys in _renderAstrolabeWithReact:', Object.keys(iztro));
+            console.log('[ZiweiChart INSTANCE] iztro.Astrolabe type in _renderAstrolabeWithReact:', typeof iztro.Astrolabe);
+            console.log('[ZiweiChart INSTANCE] iztro.Astrolabe value:', iztro.Astrolabe); 
+        } else {
+             console.error('[ZiweiChart INSTANCE] iztro is not an object or is null in _renderAstrolabeWithReact');
+        }
 
         if (!this._reactRoot) {
             console.error('[ZiweiChart INSTANCE] _renderAstrolabeWithReact: React root is NOT INITIALIZED!');
@@ -509,18 +523,19 @@ class ZiweiChart extends HTMLElement {
             return;
         }
 
-        console.log('[ZiweiChart INSTANCE] _renderAstrolabeWithReact: Checking iztro & iztro.Astrolabe availability...');
-        if (typeof Astrolabe === 'undefined') { // 只檢查 Astrolabe
-            console.error('[ZiweiChart INSTANCE] _renderAstrolabeWithReact: CRITICAL - Astrolabe component is UNDEFINED! (Direct import failed)');
-            this.renderError('命盤核心組件 (Astrolabe) 未能加載。');
+        console.log('[ZiweiChart INSTANCE] _renderAstrolabeWithReact: Checking iztro & iztro.Astrolabe availability (again)...');
+        if (typeof iztro === 'undefined' || typeof iztro.Astrolabe === 'undefined') {
+            console.error('[ZiweiChart INSTANCE] _renderAstrolabeWithReact: CRITICAL - iztro library or iztro.Astrolabe component is UNDEFINED!');
+            this.renderError('命盤核心庫 (iztro.Astrolabe) 未加載。');
             return;
         }
-        console.log('[ZiweiChart INSTANCE] _renderAstrolabeWithReact: Astrolabe component IS AVAILABLE (direct import).');
-        const { birthDate, birthTime, gender, solar, lang } = payload;
+        console.log('[ZiweiChart INSTANCE] _renderAstrolabeWithReact: iztro and iztro.Astrolabe ARE AVAILABLE.');
+
+        const { birthDate, birthTime, gender, solar, lang } = payload; // 移除了 service，因為 iztro 不直接用它
         console.log(`[ZiweiChart INSTANCE] _renderAstrolabeWithReact: Destructured props - birthDate: ${birthDate}, birthTime: ${birthTime} (type: ${typeof birthTime}), gender: ${gender}, solar: ${solar}, lang: ${lang}`);
 
         const iztroBirthTimeNum = parseInt(birthTime, 10);
-        if (isNaN(iztroBirthTimeNum)) {
+        if (isNaN(iztroBirthTimeNum)) { // 稍微加強一下對 NaN 的判斷
             console.error(`[ZiweiChart INSTANCE] _renderAstrolabeWithReact: birthTime "${birthTime}" is Not a Number after parseInt.`);
             this.renderError(`出生時辰數據轉換錯誤: "${birthTime}".`);
             return;
@@ -533,18 +548,17 @@ class ZiweiChart extends HTMLElement {
             gender: gender === 'M' ? 'male' : 'female',
             birthdayType: solar ? 'solar' : 'lunar',
             language: lang === 'zh' ? 'zh-TW' : (lang === 'en' ? 'en' : 'zh-TW'),
-            // config: { astrolabe: { width: 550, height: 750 } } // 可以嘗試強制設定大小
         };
         console.log('[ZiweiChart INSTANCE] _renderAstrolabeWithReact: Final options for iztro.Astrolabe:', JSON.stringify(iztroInputOptions));
 
         try {
             console.log('[ZiweiChart INSTANCE] _renderAstrolabeWithReact: Attempting React.createElement for iztro.Astrolabe...');
-            const astrolabeElement = React.createElement(Astrolabe, iztroInputOptions); // 直接使用
-            //             console.log('[ZiweiChart INSTANCE] _renderAstrolabeWithReact: React.createElement result:', astrolabeElement ? 'Component created' : 'FAILED to create component');
+            const astrolabeElement = React.createElement(iztro.Astrolabe, iztroInputOptions); // 使用 iztro.Astrolabe
+            console.log('[ZiweiChart INSTANCE] _renderAstrolabeWithReact: React.createElement result:', astrolabeElement ? 'Component created' : 'FAILED to create component (null or undefined)');
 
             if (!astrolabeElement) {
-                 console.error('[ZiweiChart INSTANCE] _renderAstrolabeWithReact: React.createElement returned null/undefined for iztro.Astrolabe. Cannot render.');
-                 this.renderError('無法創建命盤圖表組件實例。');
+                 console.error('[ZiweiChart INSTANCE] _renderAstrolabeWithReact: React.createElement(iztro.Astrolabe) returned null or undefined. Cannot render.');
+                 this.renderError('無法創建命盤圖表組件實例 (createElement失敗)。');
                  return;
             }
 
@@ -563,7 +577,7 @@ class ZiweiChart extends HTMLElement {
         }
         console.log('[ZiweiChart INSTANCE] _renderAstrolabeWithReact FINISHED.');
     }
-
+    
     renderPlaceholder(message) {
         console.log(`[ZiweiChart INSTANCE] renderPlaceholder CALLED. Message: "${message}"`);
         const target = this.shadowRoot.getElementById('chart-render-target');
