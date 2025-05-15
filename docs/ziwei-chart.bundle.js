@@ -44651,9 +44651,28 @@ var ZiweiChartCustomElementGlobal = (() => {
   var iztro = __toESM(require_lib4(), 1);
   console.log("[ZiweiChart CE SCRIPT] Top-level: Script execution started. React, ReactDOM, iztro imported.");
   console.log("[ZiweiChart CE SCRIPT] Typeof iztro (imported via * as iztro):", typeof iztro);
-  console.log("[ZiweiChart CE SCRIPT] iztro object keys:", iztro ? Object.keys(iztro) : "iztro is null/undefined");
-  console.log("[ZiweiChart CE SCRIPT] typeof iztro.Astrolabe:", typeof iztro.Astrolabe);
-  console.log("[ZiweiChart CE SCRIPT] typeof iztro.Iztrolabe (old name check):", typeof iztro.Iztrolabe);
+  if (typeof iztro === "object" && iztro !== null) {
+    const initialIztroKeys = Object.getOwnPropertyNames(iztro);
+    console.log("[ZiweiChart CE SCRIPT] ALL Initial iztro object property names (incl. non-enumerable):", initialIztroKeys);
+    initialIztroKeys.forEach((key) => {
+      let valueType = typeof iztro[key];
+      let valuePreview = String(iztro[key]).substring(0, 70);
+      if (typeof iztro[key] === "function") {
+        valuePreview = `[Function: ${iztro[key].name || "anonymous"}]`;
+      } else if (typeof iztro[key] === "object" && iztro[key] !== null) {
+        try {
+          valuePreview = `[Object with keys: ${Object.keys(iztro[key]).join(", ")}]`;
+        } catch (e) {
+          valuePreview = "[Object - cannot get keys]";
+        }
+      }
+      console.log(`[ZiweiChart CE SCRIPT]   Key: "${key}", Type: ${valueType}, Value Preview: ${valuePreview}`);
+    });
+    console.log("[ZiweiChart CE SCRIPT] Direct check - typeof iztro.Iztrolabe (I\u5927\u5BEB):", typeof iztro.Iztrolabe);
+    console.log("[ZiweiChart CE SCRIPT] Direct check - typeof iztro.Astrolabe (A\u5927\u5BEB):", typeof iztro.Astrolabe);
+  } else {
+    console.warn('[ZiweiChart CE SCRIPT] Initial "iztro" object is not an object or is null.');
+  }
   var antdResetCSS = `html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, b, u, i, center, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td, article, aside, canvas, details, embed, figure, figcaption, footer, header, hgroup, menu, nav, output, ruby, section, summary, time, mark, audio, video { margin: 0; padding: 0; border: 0; font-size: 100%; font: inherit; vertical-align: baseline; } article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, section { display: block; } body { line-height: 1; } ol, ul { list-style: none; } blockquote, q { quotes: none; } blockquote:before, blockquote:after, q:before, q:after { content: ''; content: none; } table { border-collapse: collapse; border-spacing: 0; } *, *::before, *::after { box-sizing: border-box; } html { font-family: sans-serif; line-height: 1.15; -webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; -ms-overflow-style: scrollbar; -webkit-tap-highlight-color: rgba(0, 0, 0, 0); } body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji"; font-size: 14px; line-height: 1.5715; color: rgba(0,0,0,.85); background-color: #fff; }`;
   var reactIztroDefaultCSS = `
 .iztro-astrolabe-theme-default {
@@ -44761,53 +44780,45 @@ var ZiweiChartCustomElementGlobal = (() => {
 `;
   var customChartStyles = `
   :host {
-    /* CSS Variables for easier theming from outside or via theme-override attribute */
     --ziwei-font-family: "Noto Sans TC", "Microsoft JhengHei", "PingFang TC", "Heiti TC", "LiHei Pro", "\u5FAE\u8EDF\u6B63\u9ED1\u9AD4", "\u860B\u679C\u5137\u4E2D\u9ED1", sans-serif;
     --ziwei-font-size-base: 12px;
     --ziwei-line-height-base: 1.3;
-    --ziwei-color-text-main: #424242;       /* \u4E3B\u6587\u5B57\u984F\u8272 */
-    --ziwei-color-text-secondary: #757575;  /* \u6B21\u8981\u6587\u5B57\u984F\u8272 */
-    --ziwei-color-brand: #673AB7;           /* \u4E3B\u984C\u54C1\u724C\u8272 (\u4F8B\u5982\u5716\u4E8C\u7684\u7D2B\u8272\u8ABF) */
-    --ziwei-color-border-palace: #E0E0E0;   /* \u5BAE\u4F4D\u908A\u6846\u984F\u8272 */
-    --ziwei-color-border-chart: #BDBDBD;    /* \u547D\u76E4\u5916\u6846\u984F\u8272 */
-    --ziwei-color-bg-chart: #ffffff;        /* \u547D\u76E4\u80CC\u666F\u8272 */
-    --ziwei-color-bg-palace: rgba(250, 250, 250, 0.5); /* \u5BAE\u4F4D\u80CC\u666F\u8272\uFF0C\u8F15\u5FAE\u900F\u660E\u611F */
-    --ziwei-color-bg-center: rgba(245, 245, 245, 0.8); /* \u4E2D\u592E\u5340\u57DF\u80CC\u666F\u8272 */
-    --ziwei-chart-shadow: 0 3px 10px rgba(0,0,0,0.12); /* \u547D\u76E4\u9670\u5F71 */
-    --ziwei-palace-min-height: 120px;       /* \u5BAE\u4F4D\u6700\u5C0F\u9AD8\u5EA6 */
-    --ziwei-palace-padding: 5px 8px;        /* \u5BAE\u4F4D\u5167\u908A\u8DDD */
+    --ziwei-color-text-main: #424242;
+    --ziwei-color-text-secondary: #757575;
+    --ziwei-color-brand: #673AB7;
+    --ziwei-color-border-palace: #E0E0E0;
+    --ziwei-color-border-chart: #BDBDBD;
+    --ziwei-color-bg-chart: #ffffff;
+    --ziwei-color-bg-palace: rgba(250, 250, 250, 0.5);
+    --ziwei-color-bg-center: rgba(245, 245, 245, 0.8);
+    --ziwei-chart-shadow: 0 3px 10px rgba(0,0,0,0.12);
+    --ziwei-palace-min-height: 120px;
+    --ziwei-palace-padding: 5px 8px;
 
-    /* Apply base variables */
     font-family: var(--ziwei-font-family);
     font-size: var(--ziwei-font-size-base);
     line-height: var(--ziwei-line-height-base);
     color: var(--ziwei-color-text-main);
-    display: block; /* Necessary for custom elements to take up space */
+    display: block;
     width: 100%;
     box-sizing: border-box;
   }
 
   .iztro-astrolabe-theme-default {
-    /* Override react-iztro's default theme variables with our custom ones */
-    --iztro-star-font-size-big: 13px;   /* \u4E3B\u661F\u5B57\u865F */
-    --iztro-star-font-size-small: 10px; /* \u8F14\u661F\u3001\u96DC\u66DC\u5B57\u865F */
-    
-    /* \u8272\u5F69\u914D\u7F6E (\u53C3\u8003\u5716\u4E00/\u5716\u4E8C\uFF0C\u4E26\u8CE6\u4E88\u8A9E\u7FA9\u5316\u547D\u540D) */
-    --iztro-color-major: var(--ziwei-color-brand);          /* \u5BAE\u540D\u3001\u7532\u7D1A\u661F\u4E3B\u8272 */
-    --iztro-color-focus: #D32F2F;                           /* \u5316\u5FCC (\u7D05\u8272) */
-    --iztro-color-quan: #1976D2;                            /* \u5316\u6B0A (\u85CD\u8272) */
-    --iztro-color-tough: #6D4C41;                           /* \u715E\u661F (\u6DF1\u5496\u5561\u8272) */
-    --iztro-color-awesome: #FF8F00;                         /* \u5316\u797F\u3001\u797F\u5B58 (\u4EAE\u6A58\u8272) */
-    --iztro-color-active: #FB8C00;                          /* \u5929\u99AC (\u6A58\u8272) */
-    --iztro-color-happy: #D81B60;                           /* \u6843\u82B1\u661F (\u6843\u7D05\u8272) */
-    --iztro-color-nice: #388E3C;                            /* \u5316\u79D1\u3001\u5409\u661F (\u7DA0\u8272) */
-    
-    --iztro-color-decorator-1: var(--ziwei-color-text-secondary); /* \u5E72\u652F\u3001\u8F14\u52A9\u6587\u5B57 */
-    --iztro-color-decorator-2: #9E9E9E;                     /* \u66F4\u6DE1\u7684\u8F14\u52A9\u6587\u5B57 */
-    --iztro-color-text: var(--ziwei-color-text-main);       /* \u4E00\u822C\u5167\u6587 (\u661F\u66DC\u4EAE\u5EA6\u7B49) */
-    --iztro-color-border: var(--ziwei-color-border-palace); /* \u5BAE\u4F4D\u908A\u6846 */
-
-    /* \u6D41\u66DC\u984F\u8272 */
+    --iztro-star-font-size-big: 13px;
+    --iztro-star-font-size-small: 10px;
+    --iztro-color-major: var(--ziwei-color-brand);
+    --iztro-color-focus: #D32F2F;
+    --iztro-color-quan: #1976D2;
+    --iztro-color-tough: #6D4C41;
+    --iztro-color-awesome: #FF8F00;
+    --iztro-color-active: #FB8C00;
+    --iztro-color-happy: #D81B60;
+    --iztro-color-nice: #388E3C;
+    --iztro-color-decorator-1: var(--ziwei-color-text-secondary);
+    --iztro-color-decorator-2: #9E9E9E;
+    --iztro-color-text: var(--ziwei-color-text-main);
+    --iztro-color-border: var(--ziwei-color-border-palace);
     --iztro-color-decadal: var(--iztro-color-major); 
     --iztro-color-yearly: #0288D1;    
     --iztro-color-monthly: #4CAF50;   
@@ -44817,125 +44828,102 @@ var ZiweiChartCustomElementGlobal = (() => {
 
   .iztro-astrolabe {
     display: grid;
-    /* 4 columns, 4 rows. Middle 2x2 area for center info. */
-    grid-template-columns: repeat(4, minmax(90px, 1fr)); /* Min width for palace, then flex */
+    grid-template-columns: repeat(4, minmax(90px, 1fr));
     grid-template-rows: repeat(4, minmax(var(--ziwei-palace-min-height), auto));
     width: 100%;
-    max-width: 880px; /* Max width of the chart */
-    margin: 10px auto; /* Centering the chart */
+    max-width: 880px;
+    margin: 10px auto;
     border: 1px solid var(--ziwei-color-border-chart);
     background-color: var(--ziwei-color-bg-chart);
     box-shadow: var(--ziwei-chart-shadow);
-    border-radius: 6px; /* Slightly rounded corners for the chart */
-    overflow: hidden; /* Ensures child borders don't poke out if rounded */
+    border-radius: 6px;
+    overflow: hidden;
   }
 
   .iztro-palace {
-    border: 1px solid var(--iztro-color-border); /*\u5BAB\u683C\u7EBF\u7531\u5BAB\u4F4D\u81EA\u8EABborder\u5B9E\u73B0*/
-    /* Overlap borders by 1px to avoid double borders in grid */
+    border: 1px solid var(--iztro-color-border);
     margin: -1px 0 0 -1px; 
     padding: var(--ziwei-palace-padding);
     box-sizing: border-box;
-    min-height: var(--ziwei-palace-min-height); /* Ensure consistent height */
+    min-height: var(--ziwei-palace-min-height);
     display: flex;
-    flex-direction: column; /* Stack palace name, stars, GZ */
-    position: relative; /* For absolute positioning of elements like '\u547D\u5BAE' badge */
+    flex-direction: column;
+    position: relative;
     background-color: var(--ziwei-color-bg-palace);
     line-height: var(--ziwei-line-height-base);
   }
 
-  /* 
-    \u5BAE\u4F4D\u5B9A\u4F4D (grid-area): 
-    KEY ASSUMPTION: react-iztro generates <div class="iztro-palace" data-palace-idx="X"> where X is 0-11,
-    AND the order is \u9077\u79FB\u5BAE(idx=6 for react-iztro typically, but could be 0 if it starts there for display purposes),
-    ...ending with \u547D\u5BAE(idx=0 typically).
-    YOU MUST VERIFY THIS  and its order from react-iztro's output.
-    The grid-area is row-start / column-start / row-end / column-end.
-    
-    Standard Zi Wei Chart Layout (clockwise from top-left as viewed):
-    Top Row:      \u9077\u79FB(6)  \u50D5\u5F79(7)  \u5B98\u797F(8)  \u7530\u5B85(9)
-    Left Col:     \u75BE\u5384(5)           \u798F\u5FB7(10)
-    Right Col:    \u8CA1\u5E1B(4)           \u7236\u6BCD(11)
-    Bottom Row:   \u5B50\u5973(3)  \u592B\u59BB(2)  \u5144\u5F1F(1)  \u547D\u5BAE(0)
-    
-    Assuming react-iztro  maps to:
-    0:\u547D, 1:\u5144, 2:\u592B, 3:\u5B50, 4:\u8CA1, 5:\u75BE, 6:\u9077, 7:\u50D5, 8:\u5B98, 9:\u7530, 10:\u798F, 11:\u7236
-  */
-  .iztro-palace[data-palace-idx="6"]  { grid-area: 1 / 1 / 2 / 2; } /* \u9077\u79FB */
-  .iztro-palace[data-palace-idx="7"]  { grid-area: 1 / 2 / 2 / 3; } /* \u50D5\u5F79 (\u4EA4\u53CB) */
-  .iztro-palace[data-palace-idx="8"]  { grid-area: 1 / 3 / 2 / 4; } /* \u5B98\u797F (\u4E8B\u696D) */
-  .iztro-palace[data-palace-idx="9"]  { grid-area: 1 / 4 / 2 / 5; } /* \u7530\u5B85 */
+  /* \u5BAE\u4F4D\u5B9A\u4F4D (grid-area) - \u5047\u8A2D react-iztro \u4F7F\u7528 data-palace-idx \u4E14\u9806\u5E8F\u5982\u4E0B */
+  /* \u60A8\u5FC5\u9808\u4F7F\u7528\u958B\u767C\u8005\u5DE5\u5177\u9A57\u8B49\u5BE6\u969B\u7684 idx \u548C\u9806\u5E8F\uFF0C\u4E26\u76F8\u61C9\u8ABF\u6574 grid-area */
+  .iztro-palace[data-palace-idx="6"]  { grid-area: 1 / 1 / 2 / 2; } /* \u9077\u79FB (Top-Left) */
+  .iztro-palace[data-palace-idx="7"]  { grid-area: 1 / 2 / 2 / 3; } /* \u50D5\u5F79 */
+  .iztro-palace[data-palace-idx="8"]  { grid-area: 1 / 3 / 2 / 4; } /* \u5B98\u797F */
+  .iztro-palace[data-palace-idx="9"]  { grid-area: 1 / 4 / 2 / 5; } /* \u7530\u5B85 (Top-Right) */
 
-  .iztro-palace[data-palace-idx="5"]  { grid-area: 2 / 1 / 3 / 2; } /* \u75BE\u5384 */
+  .iztro-palace[data-palace-idx="5"]  { grid-area: 2 / 1 / 3 / 2; } /* \u75BE\u5384 (Mid-Left) */
   /* Center Area will be 2 / 2 / 4 / 4 */
-  .iztro-palace[data-palace-idx="10"] { grid-area: 2 / 4 / 3 / 5; } /* \u798F\u5FB7 */
+  .iztro-palace[data-palace-idx="10"] { grid-area: 2 / 4 / 3 / 5; } /* \u798F\u5FB7 (Mid-Right) */
 
-  .iztro-palace[data-palace-idx="4"]  { grid-area: 3 / 1 / 4 / 2; } /* \u8CA1\u5E1B */
-  .iztro-palace[data-palace-idx="11"] { grid-area: 3 / 4 / 4 / 5; } /* \u7236\u6BCD */
+  .iztro-palace[data-palace-idx="4"]  { grid-area: 3 / 1 / 4 / 2; } /* \u8CA1\u5E1B (Lower-Left) */
+  .iztro-palace[data-palace-idx="11"] { grid-area: 3 / 4 / 4 / 5; } /* \u7236\u6BCD (Lower-Right) */
 
-  .iztro-palace[data-palace-idx="3"]  { grid-area: 4 / 1 / 5 / 2; } /* \u5B50\u5973 */
+  .iztro-palace[data-palace-idx="3"]  { grid-area: 4 / 1 / 5 / 2; } /* \u5B50\u5973 (Bottom-Left) */
   .iztro-palace[data-palace-idx="2"]  { grid-area: 4 / 2 / 5 / 3; } /* \u592B\u59BB */
   .iztro-palace[data-palace-idx="1"]  { grid-area: 4 / 3 / 5 / 4; } /* \u5144\u5F1F */
-  .iztro-palace[data-palace-idx="0"]  { grid-area: 4 / 4 / 5 / 5; } /* \u547D\u5BAE */
+  .iztro-palace[data-palace-idx="0"]  { grid-area: 4 / 4 / 5 / 5; } /* \u547D\u5BAE (Bottom-Right) */
 
-  /* Alternative: If react-iztro uses data-palace-name="\u547D\u5BAE", etc. */
+  /* \u5099\u9078\u65B9\u6848: \u5982\u679C react-iztro \u4F7F\u7528 data-palace-name="\u547D\u5BAE" \u7B49 */
   /* .iztro-palace[data-palace-name="\u9077\u79FB\u5BAE"] { grid-area: 1 / 1 / 2 / 2; } ... etc. */
-  /* You'll need to uncomment and use these if data-palace-idx is not available or reliable. */
 
-  /* \u4E2D\u592E\u5340\u57DF (\u5929\u76E4\u57FA\u672C\u8CC7\u6599) */
-  /* ASSUMPTION: react-iztro has a div with class .iztro-palace-center for this. */
-  .iztro-astrolabe > .iztro-palace-center { /* If it's a direct child of astrolabe */
-    grid-area: 2 / 2 / 4 / 4; /* Spans 2 rows and 2 columns in the middle */
+  .iztro-astrolabe > .iztro-palace-center {
+    grid-area: 2 / 2 / 4 / 4;
     border: 1px solid var(--iztro-color-border);
     margin: -1px 0 0 -1px; 
     padding: 15px;
     display: flex;
     flex-direction: column;
-    align-items: center; /* Center content horizontally */
-    justify-content: space-around; /* Distribute content vertically */
+    align-items: center;
+    justify-content: space-around;
     text-align: center;
     background-color: var(--ziwei-color-bg-center); 
     box-sizing: border-box;
   }
 
-  /* \u5BAE\u4F4D\u5167\u90E8\u6A23\u5F0F */
   .iztro-palace-name {
-    font-size: calc(var(--iztro-star-font-size-big) + 1px); /* \u5BAE\u540D\u7A0D\u5927 */
+    font-size: calc(var(--iztro-star-font-size-big) + 1px);
     font-weight: 500; 
     color: var(--iztro-color-major);
     text-align: left; 
-    padding-bottom: 3px; /* Space below palace name */
-    border-bottom: 1px solid var(--ziwei-color-border-palace); /* Separator line */
-    margin-bottom: 4px; /* Space after separator */
+    padding-bottom: 3px;
+    border-bottom: 1px solid var(--ziwei-color-border-palace);
+    margin-bottom: 4px;
     line-height: 1.2;
   }
   
-  .iztro-palace-gz { /* \u5E72\u652F */
+  .iztro-palace-gz {
     font-size: calc(var(--iztro-star-font-size-small) - 1px);
     color: var(--iztro-color-decorator-1);
     text-align: right; 
     width: 100%;
-    margin-top: auto; /* Push to the bottom of the flex container */
-    padding-top: 3px; /* Space above GZ */
+    margin-top: auto;
+    padding-top: 3px;
     line-height: 1.2;
   }
   
-  /* Container for stars, allowing scroll if content overflows */
-  /* This assumes react-iztro wraps stars in a div or they are direct children */
-  .iztro-palace-stars-group, /* Ideal: if iztro has a dedicated class for stars */
-  .iztro-palace > div:not(.iztro-palace-name):not(.iztro-palace-gz):not(.iztro-palace-scope):not(.iztro-palace-fate) /* Fallback selector */ {
-    flex-grow: 1; /* Takes up available space */
+  .iztro-palace-stars-group,
+  .iztro-palace > div:not(.iztro-palace-name):not(.iztro-palace-gz):not(.iztro-palace-scope):not(.iztro-palace-fate) {
+    flex-grow: 1;
     text-align: left;
-    overflow-y: auto; /* Scroll if stars overflow */
-    max-height: 65px; /* Adjust based on overall palace height and other content */
+    overflow-y: auto;
+    max-height: 65px;
     padding: 2px 0;
-    line-height: 1.4; /* Slightly more line height for stars */
-    scrollbar-width: thin; /* For Firefox */
-    scrollbar-color: var(--ziwei-color-text-secondary) transparent; /* For Firefox */
+    line-height: 1.4;
+    scrollbar-width: thin;
+    scrollbar-color: var(--ziwei-color-text-secondary) transparent;
   }
   .iztro-palace-stars-group::-webkit-scrollbar,
   .iztro-palace > div:not(.iztro-palace-name):not(.iztro-palace-gz):not(.iztro-palace-scope):not(.iztro-palace-fate)::-webkit-scrollbar {
-    width: 4px; /* Slim scrollbar for Webkit */
+    width: 4px;
   }
   .iztro-palace-stars-group::-webkit-scrollbar-thumb,
   .iztro-palace > div:not(.iztro-palace-name):not(.iztro-palace-gz):not(.iztro-palace-scope):not(.iztro-palace-fate)::-webkit-scrollbar-thumb {
@@ -44944,116 +44932,108 @@ var ZiweiChartCustomElementGlobal = (() => {
   }
 
   .iztro-star {
-    display: inline; /* Keep star and its attributes (mutagen, brightness) together */
-    margin-right: 5px; /* Space between stars */
-    white-space: nowrap; /* Prevent star name from breaking */
+    display: inline;
+    margin-right: 5px;
+    white-space: nowrap;
   }
 
-  .iztro-star-major { font-weight: 500; } /* Already colored by --iztro-color-major */
-  /* Other star type colors are mostly handled by react-iztro's variables */
+  .iztro-star-major { font-weight: 500; }
 
-  /* Example for less important stars (\u96DC\u66DC) - if they have a common class or specific ones */
-  .iztro-star-doctor, .iztro-star-\u535A\u58EB, .iztro-star-\u529B\u58EB, .iztro-star-\u9752\u9F8D, /* ... and so on for common misc stars */
-  .iztro-star-adjective /* If react-iztro uses this for misc stars descriptions */ { 
-    font-size: calc(var(--iztro-star-font-size-small) - 2px); /* Even smaller for misc */
+  .iztro-star-doctor, .iztro-star-\u535A\u58EB, .iztro-star-\u529B\u58EB, .iztro-star-\u9752\u9F8D,
+  .iztro-star-adjective { 
+    font-size: calc(var(--iztro-star-font-size-small) - 2px);
     color: var(--iztro-color-decorator-1); 
     opacity: 0.9;
   }
 
-  .iztro-star-brightness { /* \u4EAE\u5EA6 (\u5EDF\u65FA\u5E73\u9677) */
+  .iztro-star-brightness {
     font-size: calc(var(--iztro-star-font-size-small) - 2px);
-    color: var(--iztro-color-text); /* Use general text color */
-    margin-left: 2px; /* Space from star name */
+    color: var(--iztro-color-text);
+    margin-left: 2px;
     font-style: normal;
-    opacity: 0.65; /* Make it less prominent */
-    font-weight: 300; /* Lighter font weight */
+    opacity: 0.65;
+    font-weight: 300;
   }
 
-  .iztro-star-mutagen { /* \u56DB\u5316\u661F\u6A19\u8A18 (\u79D1\u6B0A\u797F\u5FCC) */
-    display: inline-block; /* To apply padding and background */
-    color: #fff !important; /* Ensure text is white */
+  .iztro-star-mutagen {
+    display: inline-block;
+    color: #fff !important;
     font-size: calc(var(--iztro-star-font-size-small) - 2px);
     font-weight: normal;
     padding: 1px 4px; 
     border-radius: 3px;
     margin-left: 2px;
     line-height: 1; 
-    vertical-align: middle; /* Align with star name */
+    vertical-align: middle;
   }
-  /* Colors for mutagens are set by react-iztro's default CSS variables */
 
-  .iztro-palace-scope { /* \u6D41\u904B\u8CC7\u8A0A (\u5927\u9650\u3001\u5C0F\u9650\u3001\u6D41\u5E74\u7B49) */
+  .iztro-palace-scope {
     font-size: calc(var(--iztro-star-font-size-small) - 1px);
     text-align: left;
-    margin-top: 4px; /* Space from stars group */
+    margin-top: 4px;
     padding-top: 3px;
-    border-top: 1px dashed var(--ziwei-color-border-palace); /* Separator for scopes */
+    border-top: 1px dashed var(--ziwei-color-border-palace);
     line-height: 1.3;
   }
-  .iztro-palace-scope span { /* Each line of scope info */
+  .iztro-palace-scope span {
     display: block; 
     margin-bottom: 1px;
     white-space: nowrap;
   }
-  /* Colors for scopes are set by react-iztro's default CSS variables */
   .iztro-palace-scope-age { 
       color: var(--iztro-color-text) !important; 
       font-size: calc(var(--iztro-star-font-size-small) - 2px); 
       opacity: 0.8;
   }
 
-
-  .iztro-palace-fate { /* \u547D\u5BAE\u3001\u8EAB\u5BAE\u6A19\u8A18 */
+  .iztro-palace-fate {
     position: absolute;
-    top: var(--ziwei-palace-padding); /* Align with padding */
-    right: var(--ziwei-palace-padding); /* Positioned at top-right of palace */
+    top: var(--ziwei-palace-padding);
+    right: var(--ziwei-palace-padding);
     font-size: calc(var(--iztro-star-font-size-small) - 1px);
     z-index: 1; 
   }
-  .iztro-palace-fate span { /* For '\u547D\u5BAE', '\u8EAB\u5BAE' badges */
+  .iztro-palace-fate span {
     display: inline-block;
     padding: 2px 5px;
     border-radius: 3px;
     color: #fff;
     background-color: var(--iztro-color-major);
-    margin-left: 3px; /* If multiple badges */
+    margin-left: 3px;
   }
 
-  /* \u4E2D\u592E\u5340\u57DF\u7684\u8A73\u7D30\u8CC7\u8A0A\u6392\u7248 */
   .iztro-palace-center-item {
     font-size: calc(var(--ziwei-font-size-base) - 1px);
-    line-height: 1.8; /* More spacing for center items */
+    line-height: 1.8;
     margin-bottom: 6px;
-    text-align: left; /* Align items to the left within the center block */
+    text-align: left;
     width: 100%;
-    max-width: 350px; /* Max width for readability */
+    max-width: 350px;
   }
-  .iztro-palace-center-item label { /* e.g., "\u59D3\u540D:", "\u6027\u5225:" */
+  .iztro-palace-center-item label {
     color: var(--ziwei-color-text-secondary);
     margin-right: 8px;
     display: inline-block;
-    min-width: 70px; /* For alignment */
+    min-width: 70px;
     font-weight: 500;
   }
-  .iztro-palace-center-item span { /* The actual data */
+  .iztro-palace-center-item span {
     color: var(--iztro-color-major); 
     font-weight: 400;
   }
   .iztro-palace-center-item .gender.gender-male { color: var(--iztro-color-quan); font-weight: bold; }
   .iztro-palace-center-item .gender.gender-female { color: var(--iztro-color-happy); font-weight: bold; }
 
-  /* --- \u56DE\u61C9\u5F0F\u8A2D\u8A08 --- */
-  /* Medium screens (e.g., tablets) - Adjust breakpoint as needed */
-  @media (max-width: 880px) { /* Breakpoint slightly larger than max-width of chart */
+  @media (max-width: 880px) {
     :host { 
         --ziwei-palace-min-height: 110px; 
         --ziwei-font-size-base: 11px;
     }
     .iztro-astrolabe {
       grid-template-columns: repeat(4, minmax(80px, 1fr));
-      max-width: 100%; /* Allow chart to shrink */
+      max-width: 100%;
       margin: 5px auto;
-      border-radius: 0; /* Full width, no radius */
+      border-radius: 0;
     }
     .iztro-palace-center-item { font-size: 10px; line-height: 1.7; }
     .iztro-palace-name { font-size: 12px;}
@@ -45067,16 +45047,15 @@ var ZiweiChartCustomElementGlobal = (() => {
     }
   }
 
-  /* Small screens (e.g., mobile) - Stack palaces vertically */
   @media (max-width: 600px) {
     :host { 
-        --ziwei-palace-min-height: auto; /* Allow natural height */
+        --ziwei-palace-min-height: auto;
         --ziwei-font-size-base: 10px; 
         --ziwei-palace-padding: 4px 6px;
     }
     .iztro-astrolabe {
       display: flex; 
-      flex-direction: column; /* Stack all children vertically */
+      flex-direction: column;
       border: none;
       box-shadow: none;
       margin: 0;
@@ -45084,31 +45063,29 @@ var ZiweiChartCustomElementGlobal = (() => {
     .iztro-palace, 
     .iztro-astrolabe > .iztro-palace-center {
       width: 100%; 
-      margin: 0 0 1px 0; /* Remove grid margin, add tiny bottom margin for separation */
+      margin: 0 0 1px 0;
       min-height: var(--ziwei-palace-min-height);
-      order: 0 !important; /* Reset any grid-based order */
-      grid-area: auto !important; /* Clear grid area assignments */
+      order: 0 !important;
+      grid-area: auto !important;
       border-left: none;
       border-right: none;
-      border-radius: 0; /* No rounded corners for individual palaces in stack */
-      /* Ensure top/bottom borders are visible if main chart border is removed */
+      border-radius: 0;
       border-top: 1px solid var(--ziwei-color-border-chart); 
     }
-    .iztro-astrolabe > *:first-child { border-top: none; } /* Remove top border for the very first item */
-    .iztro-astrolabe > *:last-child { border-bottom: none; } /* Remove bottom border for the very last item */
-
+    .iztro-astrolabe > *:first-child { border-top: none; }
+    .iztro-astrolabe > *:last-child { border-bottom: none; }
 
     .iztro-palace-stars-group,
     .iztro-palace > div:not(.iztro-palace-name):not(.iztro-palace-gz):not(.iztro-palace-scope):not(.iztro-palace-fate) {
-      max-height: none; /* Allow full height for stars when stacked */
-      overflow-y: visible; /* No scroll needed if height is not restricted */
+      max-height: none;
+      overflow-y: visible;
     }
     .iztro-palace-name, .iztro-palace-gz {
-      text-align: left; /* Consistent alignment */
+      text-align: left;
     }
     .iztro-astrolabe > .iztro-palace-center {
-      order: -1; /* Move center info to the top on mobile */
-      margin-bottom: 5px; /* Space after center block */
+      order: -1;
+      margin-bottom: 5px;
       padding: 10px;
     }
     
@@ -45157,18 +45134,16 @@ var ZiweiChartCustomElementGlobal = (() => {
                 width: 100%; 
                 padding: 0; 
                 box-sizing: border-box;
-                /* Default values for CSS variables, can be overridden by :host styles from outside */
-                --color-html-bg: #f0f2f5; /* A light grey for the page background, if chart is on it */
+                --color-html-bg: #f0f2f5;
             }
             .chart-wrapper-inside-shadow-dom { 
                 width: 100%; 
-                /* min-height: 500px; /* Consider removing fixed min-height or making it a CSS var */
-                display: flex; /* To center placeholder messages */
+                display: flex; 
                 justify-content: center;
-                align-items: flex-start; /* Align chart to top */
-                padding: 0; /* Padding is handled by .iztro-astrolabe margin now */
+                align-items: flex-start; 
+                padding: 0; 
                 box-sizing: border-box; 
-                background-color: var(--color-html-bg, #f0f2f5); /* Use a variable for background */
+                background-color: var(--color-html-bg, #f0f2f5);
             }
             .message-display-in-shadow { font-size: 16px; padding: 20px; border-radius: 4px; text-align: center; margin: 20px; }
             .loading-message-in-shadow { background-color: #e6f7ff; color: #1890ff; border: 1px solid #91d5ff; }
@@ -45306,15 +45281,14 @@ var ZiweiChartCustomElementGlobal = (() => {
         } else {
           console.warn("[ZiweiChart INSTANCE] _parseAndRender: Invalid config structure or missing/invalid payload.", config);
           this.renderError("\u547D\u76E4\u914D\u7F6E\u683C\u5F0F\u7121\u6548\u6216\u7F3A\u5C11\u5FC5\u9808\u7684 payload \u6578\u64DA\u3002");
+          this._isRendering = false;
         }
       } catch (error) {
         console.error("[ZiweiChart INSTANCE] _parseAndRender: ERROR parsing JSON config:", error);
         this.renderError(`\u89E3\u6790\u547D\u76E4\u914D\u7F6E\u6642\u767C\u751F\u932F\u8AA4: ${error.message}`);
-      }
-      if (this._isRendering) {
         this._isRendering = false;
       }
-      console.log("[ZiweiChart INSTANCE] _parseAndRender FINISHED processing.");
+      console.log("[ZiweiChart INSTANCE] _parseAndRender FINISHED initial processing.");
     }
     _renderAstrolabeWithReact(payload) {
       console.log("[ZiweiChart INSTANCE] _renderAstrolabeWithReact CALLED with payload.");
@@ -45329,28 +45303,22 @@ var ZiweiChartCustomElementGlobal = (() => {
         this._isRendering = false;
         return;
       }
-      const AstrolabeComponent = iztro.Astrolabe;
-      if (typeof AstrolabeComponent === "undefined") {
-        console.error("[ZiweiChart INSTANCE] _renderAstrolabeWithReact: CRITICAL - AstrolabeComponent (iztro.Astrolabe) is UNDEFINED!");
-        this.renderError("\u547D\u76E4\u6838\u5FC3\u7D44\u4EF6 (iztro.Astrolabe) \u672A\u80FD\u6B63\u78BA\u8F09\u5165\u3002");
+      const AstrolabeComponentToUse = iztro.Iztrolabe;
+      console.log("[ZiweiChart INSTANCE] _renderAstrolabeWithReact: Using AstrolabeComponentToUse (expected: iztro.Iztrolabe). Type:", typeof AstrolabeComponentToUse);
+      if (typeof AstrolabeComponentToUse === "undefined") {
+        console.error("[ZiweiChart INSTANCE] _renderAstrolabeWithReact: CRITICAL - AstrolabeComponentToUse (iztro.Iztrolabe) is UNDEFINED!");
+        this.renderError("\u547D\u76E4\u6838\u5FC3\u7D44\u4EF6 (iztro.Iztrolabe) \u672A\u80FD\u6B63\u78BA\u8F09\u5165\u3002");
         this._isRendering = false;
         return;
       }
       const {
         birthDate,
-        // Expected: YYYY-MM-DD string
         birthTime,
-        // Expected: number (0-23)
         gender,
-        // Expected: "M" or "F"
         solar = true,
         lang = "zh-CN",
-        // Default to Simplified Chinese if not provided
         fixLeap = false,
-        // For lunar calendar leap months
-        // palaces, // Optional: pre-calculated palace data (not typically used with react-iztro component)
         options: payloadOptions = {}
-        // Options for react-iztro itself
       } = payload;
       if (!birthDate || !/^\d{4}-\d{2}-\d{2}$/.test(birthDate)) {
         this.renderError(`\u51FA\u751F\u65E5\u671F\u683C\u5F0F\u932F\u8AA4: "${birthDate}". \u61C9\u70BA YYYY-MM-DD\u3002`);
@@ -45372,41 +45340,18 @@ var ZiweiChartCustomElementGlobal = (() => {
         birthday: birthDate,
         birthTime: iztroBirthTimeNum,
         gender: gender === "M" ? "male" : "female",
-        // react-iztro expects 'male'/'female'
         birthdayType: solar ? "solar" : "lunar",
         language: lang,
-        // 'zh-CN', 'zh-TW', 'en'
         fixedLeap: fixLeap
-        // boolean
-        // palaces: palaces, // if you were to pass pre-calculated data
       };
       const iztroComponentOptions = {
         theme: "default",
-        // This will be styled by customChartStyles
-        // --- Common react-iztro options (VERIFY THESE NAMES AND EXISTENCE) ---
-        // showFullAstrolabe: true,    // Might control overall visibility
-        // showPalaceName: true,       //宫位名称
-        // showStars: true,            //星曜
-        // showMutagens: true,         //四化
-        // showBrightness: true,       //亮度
-        // showFiveElementsClass: true,//五行局
-        // showChineseDate: true,      //农历日期
-        // showDecadalScope: true,     //大限
-        // showYearlyScope: true,      //流年
-        // showMonthlyScope: false,    //流月 (typically less common on main chart)
-        // showDailyScope: false,      //流日
-        // showHourlyScope: false,     //流时
-        // responsive: true, // If react-iztro has its own responsive handling
-        // --- Example of passing a custom click handler if supported ---
-        // onPalaceClick: (palaceData, event) => {
-        //   console.log('[ZiweiChart] Palace Clicked:', palaceData);
-        //   this.dispatchEvent(new CustomEvent('palaceclick', { detail: palaceData, bubbles: true, composed: true }));
-        // },
+        // Add other react-iztro options here if needed, based on its documentation
+        // e.g., showDecadalScope: true, etc.
         ...payloadOptions
-        // Payload options can override defaults
       };
-      const finalProps = { ...chartDataProps, options: iztroComponentOptions };
-      console.log("[ZiweiChart INSTANCE] _renderAstrolabeWithReact: Final props for Astrolabe:", JSON.stringify(finalProps));
+      const finalProps = { ...chartDataProps, ...iztroComponentOptions };
+      console.log("[ZiweiChart INSTANCE] _renderAstrolabeWithReact: Final props for Iztrolabe:", JSON.stringify(finalProps));
       this.renderPlaceholder("\u6B63\u5728\u751F\u6210\u547D\u76E4\uFF0C\u8ACB\u7A0D\u5019...");
       setTimeout(() => {
         if (!this._reactRoot) {
@@ -45416,7 +45361,7 @@ var ZiweiChartCustomElementGlobal = (() => {
           return;
         }
         try {
-          const astrolabeElement = import_react.default.createElement(AstrolabeComponent, finalProps);
+          const astrolabeElement = import_react.default.createElement(AstrolabeComponentToUse, finalProps);
           if (!astrolabeElement) {
             console.error("[ZiweiChart INSTANCE] _renderAstrolabeWithReact (timeout): React.createElement returned null/undefined.");
             this.renderError("\u7121\u6CD5\u5275\u5EFA\u547D\u76E4\u5716\u8868\u5BE6\u4F8B (createElement failed)\u3002");

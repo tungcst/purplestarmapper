@@ -1,22 +1,36 @@
 // bundler/src/ziwei-chart.js
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import * as iztro from 'react-iztro'; // Assuming react-iztro is the correct export
+import * as iztro from 'react-iztro';
 
 console.log('[ZiweiChart CE SCRIPT] Top-level: Script execution started. React, ReactDOM, iztro imported.');
 console.log('[ZiweiChart CE SCRIPT] Typeof iztro (imported via * as iztro):', typeof iztro);
-console.log('[ZiweiChart CE SCRIPT] iztro object keys:', iztro ? Object.keys(iztro) : 'iztro is null/undefined');
-console.log('[ZiweiChart CE SCRIPT] typeof iztro.Astrolabe:', typeof iztro.Astrolabe); // This is the component we'll likely use
-console.log('[ZiweiChart CE SCRIPT] typeof iztro.Iztrolabe (old name check):', typeof iztro.Iztrolabe);
+
+if (typeof iztro === 'object' && iztro !== null) {
+    const initialIztroKeys = Object.getOwnPropertyNames(iztro);
+    console.log('[ZiweiChart CE SCRIPT] ALL Initial iztro object property names (incl. non-enumerable):', initialIztroKeys);
+    initialIztroKeys.forEach(key => {
+        let valueType = typeof iztro[key];
+        let valuePreview = String(iztro[key]).substring(0, 70);
+        if (typeof iztro[key] === 'function') {
+            valuePreview = `[Function: ${iztro[key].name || 'anonymous'}]`;
+        } else if (typeof iztro[key] === 'object' && iztro[key] !== null) {
+            try {
+                valuePreview = `[Object with keys: ${Object.keys(iztro[key]).join(', ')}]`;
+            } catch (e) { valuePreview = '[Object - cannot get keys]'; }
+        }
+        console.log(`[ZiweiChart CE SCRIPT]   Key: "${key}", Type: ${valueType}, Value Preview: ${valuePreview}`);
+    });
+    console.log('[ZiweiChart CE SCRIPT] Direct check - typeof iztro.Iztrolabe (I大寫):', typeof iztro.Iztrolabe);
+    console.log('[ZiweiChart CE SCRIPT] Direct check - typeof iztro.Astrolabe (A大寫):', typeof iztro.Astrolabe);
+} else {
+    console.warn('[ZiweiChart CE SCRIPT] Initial "iztro" object is not an object or is null.');
+}
 
 
 // --- CSS Definitions ---
-
-// 1. Ant Design-like Reset (Simplified)
 const antdResetCSS = `html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, b, u, i, center, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td, article, aside, canvas, details, embed, figure, figcaption, footer, header, hgroup, menu, nav, output, ruby, section, summary, time, mark, audio, video { margin: 0; padding: 0; border: 0; font-size: 100%; font: inherit; vertical-align: baseline; } article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, section { display: block; } body { line-height: 1; } ol, ul { list-style: none; } blockquote, q { quotes: none; } blockquote:before, blockquote:after, q:before, q:after { content: ''; content: none; } table { border-collapse: collapse; border-spacing: 0; } *, *::before, *::after { box-sizing: border-box; } html { font-family: sans-serif; line-height: 1.15; -webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; -ms-overflow-style: scrollbar; -webkit-tap-highlight-color: rgba(0, 0, 0, 0); } body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji"; font-size: 14px; line-height: 1.5715; color: rgba(0,0,0,.85); background-color: #fff; }`;
 
-// 2. Default CSS from react-iztro (version 0.11.3)
-// It's good to include this as a base, so custom styles mainly override or extend.
 const reactIztroDefaultCSS = `
 .iztro-astrolabe-theme-default {
   --iztro-star-font-size-big: 13px;
@@ -122,56 +136,47 @@ const reactIztroDefaultCSS = `
 .gender.gender-female { color: var(--iztro-color-happy); }
 `;
 
-// 3. Custom Chart Styles for 图一/图二 look and feel + Responsiveness
 const customChartStyles = `
   :host {
-    /* CSS Variables for easier theming from outside or via theme-override attribute */
     --ziwei-font-family: "Noto Sans TC", "Microsoft JhengHei", "PingFang TC", "Heiti TC", "LiHei Pro", "微軟正黑體", "蘋果儷中黑", sans-serif;
     --ziwei-font-size-base: 12px;
     --ziwei-line-height-base: 1.3;
-    --ziwei-color-text-main: #424242;       /* 主文字顏色 */
-    --ziwei-color-text-secondary: #757575;  /* 次要文字顏色 */
-    --ziwei-color-brand: #673AB7;           /* 主題品牌色 (例如圖二的紫色調) */
-    --ziwei-color-border-palace: #E0E0E0;   /* 宮位邊框顏色 */
-    --ziwei-color-border-chart: #BDBDBD;    /* 命盤外框顏色 */
-    --ziwei-color-bg-chart: #ffffff;        /* 命盤背景色 */
-    --ziwei-color-bg-palace: rgba(250, 250, 250, 0.5); /* 宮位背景色，輕微透明感 */
-    --ziwei-color-bg-center: rgba(245, 245, 245, 0.8); /* 中央區域背景色 */
-    --ziwei-chart-shadow: 0 3px 10px rgba(0,0,0,0.12); /* 命盤陰影 */
-    --ziwei-palace-min-height: 120px;       /* 宮位最小高度 */
-    --ziwei-palace-padding: 5px 8px;        /* 宮位內邊距 */
+    --ziwei-color-text-main: #424242;
+    --ziwei-color-text-secondary: #757575;
+    --ziwei-color-brand: #673AB7;
+    --ziwei-color-border-palace: #E0E0E0;
+    --ziwei-color-border-chart: #BDBDBD;
+    --ziwei-color-bg-chart: #ffffff;
+    --ziwei-color-bg-palace: rgba(250, 250, 250, 0.5);
+    --ziwei-color-bg-center: rgba(245, 245, 245, 0.8);
+    --ziwei-chart-shadow: 0 3px 10px rgba(0,0,0,0.12);
+    --ziwei-palace-min-height: 120px;
+    --ziwei-palace-padding: 5px 8px;
 
-    /* Apply base variables */
     font-family: var(--ziwei-font-family);
     font-size: var(--ziwei-font-size-base);
     line-height: var(--ziwei-line-height-base);
     color: var(--ziwei-color-text-main);
-    display: block; /* Necessary for custom elements to take up space */
+    display: block;
     width: 100%;
     box-sizing: border-box;
   }
 
   .iztro-astrolabe-theme-default {
-    /* Override react-iztro's default theme variables with our custom ones */
-    --iztro-star-font-size-big: 13px;   /* 主星字號 */
-    --iztro-star-font-size-small: 10px; /* 輔星、雜曜字號 */
-    
-    /* 色彩配置 (參考圖一/圖二，並賦予語義化命名) */
-    --iztro-color-major: var(--ziwei-color-brand);          /* 宮名、甲級星主色 */
-    --iztro-color-focus: #D32F2F;                           /* 化忌 (紅色) */
-    --iztro-color-quan: #1976D2;                            /* 化權 (藍色) */
-    --iztro-color-tough: #6D4C41;                           /* 煞星 (深咖啡色) */
-    --iztro-color-awesome: #FF8F00;                         /* 化祿、祿存 (亮橘色) */
-    --iztro-color-active: #FB8C00;                          /* 天馬 (橘色) */
-    --iztro-color-happy: #D81B60;                           /* 桃花星 (桃紅色) */
-    --iztro-color-nice: #388E3C;                            /* 化科、吉星 (綠色) */
-    
-    --iztro-color-decorator-1: var(--ziwei-color-text-secondary); /* 干支、輔助文字 */
-    --iztro-color-decorator-2: #9E9E9E;                     /* 更淡的輔助文字 */
-    --iztro-color-text: var(--ziwei-color-text-main);       /* 一般內文 (星曜亮度等) */
-    --iztro-color-border: var(--ziwei-color-border-palace); /* 宮位邊框 */
-
-    /* 流曜顏色 */
+    --iztro-star-font-size-big: 13px;
+    --iztro-star-font-size-small: 10px;
+    --iztro-color-major: var(--ziwei-color-brand);
+    --iztro-color-focus: #D32F2F;
+    --iztro-color-quan: #1976D2;
+    --iztro-color-tough: #6D4C41;
+    --iztro-color-awesome: #FF8F00;
+    --iztro-color-active: #FB8C00;
+    --iztro-color-happy: #D81B60;
+    --iztro-color-nice: #388E3C;
+    --iztro-color-decorator-1: var(--ziwei-color-text-secondary);
+    --iztro-color-decorator-2: #9E9E9E;
+    --iztro-color-text: var(--ziwei-color-text-main);
+    --iztro-color-border: var(--ziwei-color-border-palace);
     --iztro-color-decadal: var(--iztro-color-major); 
     --iztro-color-yearly: #0288D1;    
     --iztro-color-monthly: #4CAF50;   
@@ -181,125 +186,102 @@ const customChartStyles = `
 
   .iztro-astrolabe {
     display: grid;
-    /* 4 columns, 4 rows. Middle 2x2 area for center info. */
-    grid-template-columns: repeat(4, minmax(90px, 1fr)); /* Min width for palace, then flex */
+    grid-template-columns: repeat(4, minmax(90px, 1fr));
     grid-template-rows: repeat(4, minmax(var(--ziwei-palace-min-height), auto));
     width: 100%;
-    max-width: 880px; /* Max width of the chart */
-    margin: 10px auto; /* Centering the chart */
+    max-width: 880px;
+    margin: 10px auto;
     border: 1px solid var(--ziwei-color-border-chart);
     background-color: var(--ziwei-color-bg-chart);
     box-shadow: var(--ziwei-chart-shadow);
-    border-radius: 6px; /* Slightly rounded corners for the chart */
-    overflow: hidden; /* Ensures child borders don't poke out if rounded */
+    border-radius: 6px;
+    overflow: hidden;
   }
 
   .iztro-palace {
-    border: 1px solid var(--iztro-color-border); /*宫格线由宫位自身border实现*/
-    /* Overlap borders by 1px to avoid double borders in grid */
+    border: 1px solid var(--iztro-color-border);
     margin: -1px 0 0 -1px; 
     padding: var(--ziwei-palace-padding);
     box-sizing: border-box;
-    min-height: var(--ziwei-palace-min-height); /* Ensure consistent height */
+    min-height: var(--ziwei-palace-min-height);
     display: flex;
-    flex-direction: column; /* Stack palace name, stars, GZ */
-    position: relative; /* For absolute positioning of elements like '命宮' badge */
+    flex-direction: column;
+    position: relative;
     background-color: var(--ziwei-color-bg-palace);
     line-height: var(--ziwei-line-height-base);
   }
 
-  /* 
-    宮位定位 (grid-area): 
-    KEY ASSUMPTION: react-iztro generates <div class="iztro-palace" data-palace-idx="X"> where X is 0-11,
-    AND the order is 遷移宮(idx=6 for react-iztro typically, but could be 0 if it starts there for display purposes),
-    ...ending with 命宮(idx=0 typically).
-    YOU MUST VERIFY THIS  and its order from react-iztro's output.
-    The grid-area is row-start / column-start / row-end / column-end.
-    
-    Standard Zi Wei Chart Layout (clockwise from top-left as viewed):
-    Top Row:      遷移(6)  僕役(7)  官祿(8)  田宅(9)
-    Left Col:     疾厄(5)           福德(10)
-    Right Col:    財帛(4)           父母(11)
-    Bottom Row:   子女(3)  夫妻(2)  兄弟(1)  命宮(0)
-    
-    Assuming react-iztro  maps to:
-    0:命, 1:兄, 2:夫, 3:子, 4:財, 5:疾, 6:遷, 7:僕, 8:官, 9:田, 10:福, 11:父
-  */
-  .iztro-palace[data-palace-idx="6"]  { grid-area: 1 / 1 / 2 / 2; } /* 遷移 */
-  .iztro-palace[data-palace-idx="7"]  { grid-area: 1 / 2 / 2 / 3; } /* 僕役 (交友) */
-  .iztro-palace[data-palace-idx="8"]  { grid-area: 1 / 3 / 2 / 4; } /* 官祿 (事業) */
-  .iztro-palace[data-palace-idx="9"]  { grid-area: 1 / 4 / 2 / 5; } /* 田宅 */
+  /* 宮位定位 (grid-area) - 假設 react-iztro 使用 data-palace-idx 且順序如下 */
+  /* 您必須使用開發者工具驗證實際的 idx 和順序，並相應調整 grid-area */
+  .iztro-palace[data-palace-idx="6"]  { grid-area: 1 / 1 / 2 / 2; } /* 遷移 (Top-Left) */
+  .iztro-palace[data-palace-idx="7"]  { grid-area: 1 / 2 / 2 / 3; } /* 僕役 */
+  .iztro-palace[data-palace-idx="8"]  { grid-area: 1 / 3 / 2 / 4; } /* 官祿 */
+  .iztro-palace[data-palace-idx="9"]  { grid-area: 1 / 4 / 2 / 5; } /* 田宅 (Top-Right) */
 
-  .iztro-palace[data-palace-idx="5"]  { grid-area: 2 / 1 / 3 / 2; } /* 疾厄 */
+  .iztro-palace[data-palace-idx="5"]  { grid-area: 2 / 1 / 3 / 2; } /* 疾厄 (Mid-Left) */
   /* Center Area will be 2 / 2 / 4 / 4 */
-  .iztro-palace[data-palace-idx="10"] { grid-area: 2 / 4 / 3 / 5; } /* 福德 */
+  .iztro-palace[data-palace-idx="10"] { grid-area: 2 / 4 / 3 / 5; } /* 福德 (Mid-Right) */
 
-  .iztro-palace[data-palace-idx="4"]  { grid-area: 3 / 1 / 4 / 2; } /* 財帛 */
-  .iztro-palace[data-palace-idx="11"] { grid-area: 3 / 4 / 4 / 5; } /* 父母 */
+  .iztro-palace[data-palace-idx="4"]  { grid-area: 3 / 1 / 4 / 2; } /* 財帛 (Lower-Left) */
+  .iztro-palace[data-palace-idx="11"] { grid-area: 3 / 4 / 4 / 5; } /* 父母 (Lower-Right) */
 
-  .iztro-palace[data-palace-idx="3"]  { grid-area: 4 / 1 / 5 / 2; } /* 子女 */
+  .iztro-palace[data-palace-idx="3"]  { grid-area: 4 / 1 / 5 / 2; } /* 子女 (Bottom-Left) */
   .iztro-palace[data-palace-idx="2"]  { grid-area: 4 / 2 / 5 / 3; } /* 夫妻 */
   .iztro-palace[data-palace-idx="1"]  { grid-area: 4 / 3 / 5 / 4; } /* 兄弟 */
-  .iztro-palace[data-palace-idx="0"]  { grid-area: 4 / 4 / 5 / 5; } /* 命宮 */
+  .iztro-palace[data-palace-idx="0"]  { grid-area: 4 / 4 / 5 / 5; } /* 命宮 (Bottom-Right) */
 
-  /* Alternative: If react-iztro uses data-palace-name="命宮", etc. */
+  /* 備選方案: 如果 react-iztro 使用 data-palace-name="命宮" 等 */
   /* .iztro-palace[data-palace-name="遷移宮"] { grid-area: 1 / 1 / 2 / 2; } ... etc. */
-  /* You'll need to uncomment and use these if data-palace-idx is not available or reliable. */
 
-  /* 中央區域 (天盤基本資料) */
-  /* ASSUMPTION: react-iztro has a div with class .iztro-palace-center for this. */
-  .iztro-astrolabe > .iztro-palace-center { /* If it's a direct child of astrolabe */
-    grid-area: 2 / 2 / 4 / 4; /* Spans 2 rows and 2 columns in the middle */
+  .iztro-astrolabe > .iztro-palace-center {
+    grid-area: 2 / 2 / 4 / 4;
     border: 1px solid var(--iztro-color-border);
     margin: -1px 0 0 -1px; 
     padding: 15px;
     display: flex;
     flex-direction: column;
-    align-items: center; /* Center content horizontally */
-    justify-content: space-around; /* Distribute content vertically */
+    align-items: center;
+    justify-content: space-around;
     text-align: center;
     background-color: var(--ziwei-color-bg-center); 
     box-sizing: border-box;
   }
 
-  /* 宮位內部樣式 */
   .iztro-palace-name {
-    font-size: calc(var(--iztro-star-font-size-big) + 1px); /* 宮名稍大 */
+    font-size: calc(var(--iztro-star-font-size-big) + 1px);
     font-weight: 500; 
     color: var(--iztro-color-major);
     text-align: left; 
-    padding-bottom: 3px; /* Space below palace name */
-    border-bottom: 1px solid var(--ziwei-color-border-palace); /* Separator line */
-    margin-bottom: 4px; /* Space after separator */
+    padding-bottom: 3px;
+    border-bottom: 1px solid var(--ziwei-color-border-palace);
+    margin-bottom: 4px;
     line-height: 1.2;
   }
   
-  .iztro-palace-gz { /* 干支 */
+  .iztro-palace-gz {
     font-size: calc(var(--iztro-star-font-size-small) - 1px);
     color: var(--iztro-color-decorator-1);
     text-align: right; 
     width: 100%;
-    margin-top: auto; /* Push to the bottom of the flex container */
-    padding-top: 3px; /* Space above GZ */
+    margin-top: auto;
+    padding-top: 3px;
     line-height: 1.2;
   }
   
-  /* Container for stars, allowing scroll if content overflows */
-  /* This assumes react-iztro wraps stars in a div or they are direct children */
-  .iztro-palace-stars-group, /* Ideal: if iztro has a dedicated class for stars */
-  .iztro-palace > div:not(.iztro-palace-name):not(.iztro-palace-gz):not(.iztro-palace-scope):not(.iztro-palace-fate) /* Fallback selector */ {
-    flex-grow: 1; /* Takes up available space */
+  .iztro-palace-stars-group,
+  .iztro-palace > div:not(.iztro-palace-name):not(.iztro-palace-gz):not(.iztro-palace-scope):not(.iztro-palace-fate) {
+    flex-grow: 1;
     text-align: left;
-    overflow-y: auto; /* Scroll if stars overflow */
-    max-height: 65px; /* Adjust based on overall palace height and other content */
+    overflow-y: auto;
+    max-height: 65px;
     padding: 2px 0;
-    line-height: 1.4; /* Slightly more line height for stars */
-    scrollbar-width: thin; /* For Firefox */
-    scrollbar-color: var(--ziwei-color-text-secondary) transparent; /* For Firefox */
+    line-height: 1.4;
+    scrollbar-width: thin;
+    scrollbar-color: var(--ziwei-color-text-secondary) transparent;
   }
   .iztro-palace-stars-group::-webkit-scrollbar,
   .iztro-palace > div:not(.iztro-palace-name):not(.iztro-palace-gz):not(.iztro-palace-scope):not(.iztro-palace-fate)::-webkit-scrollbar {
-    width: 4px; /* Slim scrollbar for Webkit */
+    width: 4px;
   }
   .iztro-palace-stars-group::-webkit-scrollbar-thumb,
   .iztro-palace > div:not(.iztro-palace-name):not(.iztro-palace-gz):not(.iztro-palace-scope):not(.iztro-palace-fate)::-webkit-scrollbar-thumb {
@@ -308,116 +290,108 @@ const customChartStyles = `
   }
 
   .iztro-star {
-    display: inline; /* Keep star and its attributes (mutagen, brightness) together */
-    margin-right: 5px; /* Space between stars */
-    white-space: nowrap; /* Prevent star name from breaking */
+    display: inline;
+    margin-right: 5px;
+    white-space: nowrap;
   }
 
-  .iztro-star-major { font-weight: 500; } /* Already colored by --iztro-color-major */
-  /* Other star type colors are mostly handled by react-iztro's variables */
+  .iztro-star-major { font-weight: 500; }
 
-  /* Example for less important stars (雜曜) - if they have a common class or specific ones */
-  .iztro-star-doctor, .iztro-star-博士, .iztro-star-力士, .iztro-star-青龍, /* ... and so on for common misc stars */
-  .iztro-star-adjective /* If react-iztro uses this for misc stars descriptions */ { 
-    font-size: calc(var(--iztro-star-font-size-small) - 2px); /* Even smaller for misc */
+  .iztro-star-doctor, .iztro-star-博士, .iztro-star-力士, .iztro-star-青龍,
+  .iztro-star-adjective { 
+    font-size: calc(var(--iztro-star-font-size-small) - 2px);
     color: var(--iztro-color-decorator-1); 
     opacity: 0.9;
   }
 
-  .iztro-star-brightness { /* 亮度 (廟旺平陷) */
+  .iztro-star-brightness {
     font-size: calc(var(--iztro-star-font-size-small) - 2px);
-    color: var(--iztro-color-text); /* Use general text color */
-    margin-left: 2px; /* Space from star name */
+    color: var(--iztro-color-text);
+    margin-left: 2px;
     font-style: normal;
-    opacity: 0.65; /* Make it less prominent */
-    font-weight: 300; /* Lighter font weight */
+    opacity: 0.65;
+    font-weight: 300;
   }
 
-  .iztro-star-mutagen { /* 四化星標記 (科權祿忌) */
-    display: inline-block; /* To apply padding and background */
-    color: #fff !important; /* Ensure text is white */
+  .iztro-star-mutagen {
+    display: inline-block;
+    color: #fff !important;
     font-size: calc(var(--iztro-star-font-size-small) - 2px);
     font-weight: normal;
     padding: 1px 4px; 
     border-radius: 3px;
     margin-left: 2px;
     line-height: 1; 
-    vertical-align: middle; /* Align with star name */
+    vertical-align: middle;
   }
-  /* Colors for mutagens are set by react-iztro's default CSS variables */
 
-  .iztro-palace-scope { /* 流運資訊 (大限、小限、流年等) */
+  .iztro-palace-scope {
     font-size: calc(var(--iztro-star-font-size-small) - 1px);
     text-align: left;
-    margin-top: 4px; /* Space from stars group */
+    margin-top: 4px;
     padding-top: 3px;
-    border-top: 1px dashed var(--ziwei-color-border-palace); /* Separator for scopes */
+    border-top: 1px dashed var(--ziwei-color-border-palace);
     line-height: 1.3;
   }
-  .iztro-palace-scope span { /* Each line of scope info */
+  .iztro-palace-scope span {
     display: block; 
     margin-bottom: 1px;
     white-space: nowrap;
   }
-  /* Colors for scopes are set by react-iztro's default CSS variables */
   .iztro-palace-scope-age { 
       color: var(--iztro-color-text) !important; 
       font-size: calc(var(--iztro-star-font-size-small) - 2px); 
       opacity: 0.8;
   }
 
-
-  .iztro-palace-fate { /* 命宮、身宮標記 */
+  .iztro-palace-fate {
     position: absolute;
-    top: var(--ziwei-palace-padding); /* Align with padding */
-    right: var(--ziwei-palace-padding); /* Positioned at top-right of palace */
+    top: var(--ziwei-palace-padding);
+    right: var(--ziwei-palace-padding);
     font-size: calc(var(--iztro-star-font-size-small) - 1px);
     z-index: 1; 
   }
-  .iztro-palace-fate span { /* For '命宮', '身宮' badges */
+  .iztro-palace-fate span {
     display: inline-block;
     padding: 2px 5px;
     border-radius: 3px;
     color: #fff;
     background-color: var(--iztro-color-major);
-    margin-left: 3px; /* If multiple badges */
+    margin-left: 3px;
   }
 
-  /* 中央區域的詳細資訊排版 */
   .iztro-palace-center-item {
     font-size: calc(var(--ziwei-font-size-base) - 1px);
-    line-height: 1.8; /* More spacing for center items */
+    line-height: 1.8;
     margin-bottom: 6px;
-    text-align: left; /* Align items to the left within the center block */
+    text-align: left;
     width: 100%;
-    max-width: 350px; /* Max width for readability */
+    max-width: 350px;
   }
-  .iztro-palace-center-item label { /* e.g., "姓名:", "性別:" */
+  .iztro-palace-center-item label {
     color: var(--ziwei-color-text-secondary);
     margin-right: 8px;
     display: inline-block;
-    min-width: 70px; /* For alignment */
+    min-width: 70px;
     font-weight: 500;
   }
-  .iztro-palace-center-item span { /* The actual data */
+  .iztro-palace-center-item span {
     color: var(--iztro-color-major); 
     font-weight: 400;
   }
   .iztro-palace-center-item .gender.gender-male { color: var(--iztro-color-quan); font-weight: bold; }
   .iztro-palace-center-item .gender.gender-female { color: var(--iztro-color-happy); font-weight: bold; }
 
-  /* --- 回應式設計 --- */
-  /* Medium screens (e.g., tablets) - Adjust breakpoint as needed */
-  @media (max-width: 880px) { /* Breakpoint slightly larger than max-width of chart */
+  @media (max-width: 880px) {
     :host { 
         --ziwei-palace-min-height: 110px; 
         --ziwei-font-size-base: 11px;
     }
     .iztro-astrolabe {
       grid-template-columns: repeat(4, minmax(80px, 1fr));
-      max-width: 100%; /* Allow chart to shrink */
+      max-width: 100%;
       margin: 5px auto;
-      border-radius: 0; /* Full width, no radius */
+      border-radius: 0;
     }
     .iztro-palace-center-item { font-size: 10px; line-height: 1.7; }
     .iztro-palace-name { font-size: 12px;}
@@ -431,16 +405,15 @@ const customChartStyles = `
     }
   }
 
-  /* Small screens (e.g., mobile) - Stack palaces vertically */
   @media (max-width: 600px) {
     :host { 
-        --ziwei-palace-min-height: auto; /* Allow natural height */
+        --ziwei-palace-min-height: auto;
         --ziwei-font-size-base: 10px; 
         --ziwei-palace-padding: 4px 6px;
     }
     .iztro-astrolabe {
       display: flex; 
-      flex-direction: column; /* Stack all children vertically */
+      flex-direction: column;
       border: none;
       box-shadow: none;
       margin: 0;
@@ -448,31 +421,29 @@ const customChartStyles = `
     .iztro-palace, 
     .iztro-astrolabe > .iztro-palace-center {
       width: 100%; 
-      margin: 0 0 1px 0; /* Remove grid margin, add tiny bottom margin for separation */
+      margin: 0 0 1px 0;
       min-height: var(--ziwei-palace-min-height);
-      order: 0 !important; /* Reset any grid-based order */
-      grid-area: auto !important; /* Clear grid area assignments */
+      order: 0 !important;
+      grid-area: auto !important;
       border-left: none;
       border-right: none;
-      border-radius: 0; /* No rounded corners for individual palaces in stack */
-      /* Ensure top/bottom borders are visible if main chart border is removed */
+      border-radius: 0;
       border-top: 1px solid var(--ziwei-color-border-chart); 
     }
-    .iztro-astrolabe > *:first-child { border-top: none; } /* Remove top border for the very first item */
-    .iztro-astrolabe > *:last-child { border-bottom: none; } /* Remove bottom border for the very last item */
-
+    .iztro-astrolabe > *:first-child { border-top: none; }
+    .iztro-astrolabe > *:last-child { border-bottom: none; }
 
     .iztro-palace-stars-group,
     .iztro-palace > div:not(.iztro-palace-name):not(.iztro-palace-gz):not(.iztro-palace-scope):not(.iztro-palace-fate) {
-      max-height: none; /* Allow full height for stars when stacked */
-      overflow-y: visible; /* No scroll needed if height is not restricted */
+      max-height: none;
+      overflow-y: visible;
     }
     .iztro-palace-name, .iztro-palace-gz {
-      text-align: left; /* Consistent alignment */
+      text-align: left;
     }
     .iztro-astrolabe > .iztro-palace-center {
-      order: -1; /* Move center info to the top on mobile */
-      margin-bottom: 5px; /* Space after center block */
+      order: -1;
+      margin-bottom: 5px;
       padding: 10px;
     }
     
@@ -490,7 +461,7 @@ const customChartStyles = `
 class ZiweiChart extends HTMLElement {
     static get observedAttributes() {
         console.log('[ZiweiChart CLASS] static get observedAttributes CALLED');
-        return ['data-config', 'theme-override']; // Added 'theme-override'
+        return ['data-config', 'theme-override'];
     }
 
     constructor() {
@@ -499,7 +470,6 @@ class ZiweiChart extends HTMLElement {
         this.attachShadow({ mode: 'open' });
         console.log('[ZiweiChart INSTANCE] constructor: Shadow DOM attached.');
 
-        // Initial minimal HTML. Styles and content will be injected/rendered.
         this.shadowRoot.innerHTML = `
             <style id="ziwei-dynamic-styles">
                 /* CSS will be injected here */
@@ -512,7 +482,7 @@ class ZiweiChart extends HTMLElement {
         this._reactRoot = null;
         this._currentConfigString = null;
         this._currentThemeOverride = null;
-        this._isRendering = false; // Flag to prevent concurrent rendering attempts
+        this._isRendering = false;
     }
 
     _injectStyles() {
@@ -522,25 +492,22 @@ class ZiweiChart extends HTMLElement {
             return;
         }
 
-        // Base styles for the host and wrapper, message placeholders
         let combinedCSS = `
             :host { 
                 display: block; 
                 width: 100%; 
                 padding: 0; 
                 box-sizing: border-box;
-                /* Default values for CSS variables, can be overridden by :host styles from outside */
-                --color-html-bg: #f0f2f5; /* A light grey for the page background, if chart is on it */
+                --color-html-bg: #f0f2f5;
             }
             .chart-wrapper-inside-shadow-dom { 
                 width: 100%; 
-                /* min-height: 500px; /* Consider removing fixed min-height or making it a CSS var */
-                display: flex; /* To center placeholder messages */
+                display: flex; 
                 justify-content: center;
-                align-items: flex-start; /* Align chart to top */
-                padding: 0; /* Padding is handled by .iztro-astrolabe margin now */
+                align-items: flex-start; 
+                padding: 0; 
                 box-sizing: border-box; 
-                background-color: var(--color-html-bg, #f0f2f5); /* Use a variable for background */
+                background-color: var(--color-html-bg, #f0f2f5);
             }
             .message-display-in-shadow { font-size: 16px; padding: 20px; border-radius: 4px; text-align: center; margin: 20px; }
             .loading-message-in-shadow { background-color: #e6f7ff; color: #1890ff; border: 1px solid #91d5ff; }
@@ -549,7 +516,7 @@ class ZiweiChart extends HTMLElement {
         
         combinedCSS += antdResetCSS;
         combinedCSS += reactIztroDefaultCSS;
-        combinedCSS += customChartStyles; // Your main theme
+        combinedCSS += customChartStyles;
 
         if (this._currentThemeOverride) {
             console.log("[ZiweiChart INSTANCE] _injectStyles: Applying theme-override CSS.");
@@ -562,12 +529,11 @@ class ZiweiChart extends HTMLElement {
     
     connectedCallback() {
         console.log('[ZiweiChart INSTANCE] connectedCallback CALLED.');
-        this._injectStyles(); // Inject styles as the first step
+        this._injectStyles();
 
         const renderTarget = this.shadowRoot.getElementById('chart-render-target');
         if (!renderTarget) {
             console.error('[ZiweiChart INSTANCE] connectedCallback: CRITICAL - #chart-render-target NOT FOUND in Shadow DOM.');
-            // Attempt to display error directly in shadow root if target is missing
             this.shadowRoot.innerHTML = `<style>.error-message-in-shadow { background-color: #fff1f0; color: #f5222d; border: 1px solid #ffa39e; font-size: 16px; padding: 20px; border-radius: 4px; text-align: center; margin: 20px; }</style><div class="error-message-in-shadow">內部渲染目標丟失！組件無法初始化。</div>`;
             return;
         }
@@ -591,12 +557,11 @@ class ZiweiChart extends HTMLElement {
         if (initialThemeOverride && initialThemeOverride !== this._currentThemeOverride) {
             console.log('[ZiweiChart INSTANCE] connectedCallback: Initial theme-override found, applying styles.');
             this._currentThemeOverride = initialThemeOverride;
-            this._injectStyles(); // Re-inject styles if theme override is present on connect
+            this._injectStyles();
         }
 
         if (initialConfig) {
             console.log('[ZiweiChart INSTANCE] connectedCallback: Initial data-config found, preparing to parse and render.');
-            // Defer parsing to allow current call stack to complete, ensuring DOM is ready.
             Promise.resolve().then(() => this._parseAndRender(initialConfig));
         } else {
             this.renderPlaceholder("等待命盤數據配置 (connected)...");
@@ -614,28 +579,25 @@ class ZiweiChart extends HTMLElement {
                 console.error('[ZiweiChart INSTANCE] disconnectedCallback: Error during React root unmount:', e);
             }
         }
-        this._reactRoot = null; // Important to nullify for potential re-attachment
-        this._currentConfigString = null; // Reset config state
-        this._isRendering = false; // Reset rendering flag
+        this._reactRoot = null;
+        this._currentConfigString = null;
+        this._isRendering = false;
         console.log('[ZiweiChart INSTANCE] disconnectedCallback: _reactRoot and config state reset.');
     }
 
     attributeChangedCallback(name, oldValue, newValue) { 
         console.log(`[ZiweiChart INSTANCE] attributeChangedCallback: Attribute '${name}' changed.`);
-        // console.log(`  Old Value (short): ${oldValue ? String(oldValue).substring(0,50)+'...' : oldValue}`);
-        // console.log(`  New Value (short): ${newValue ? String(newValue).substring(0,50)+'...' : newValue}`);
 
         if (name === 'theme-override') {
             if (newValue !== this._currentThemeOverride) {
                 console.log('[ZiweiChart INSTANCE] attributeChangedCallback: theme-override changed. Updating styles.');
                 this._currentThemeOverride = newValue;
-                this._injectStyles(); // Re-apply all styles with the new override
+                this._injectStyles();
 
-                // If a chart is already rendered, re-parse the current config to apply theme potentially affecting React output
                 if (this._currentConfigString && this._reactRoot) {
                     console.log('[ZiweiChart INSTANCE] attributeChangedCallback: Forcing re-render due to theme change with existing config.');
                     const tempConfig = this._currentConfigString;
-                    this._currentConfigString = null; // Force _parseAndRender to see it as new
+                    this._currentConfigString = null; 
                      Promise.resolve().then(() => this._parseAndRender(tempConfig));
                 }
             }
@@ -648,8 +610,6 @@ class ZiweiChart extends HTMLElement {
                 return;
             }
             
-            // If React root isn't ready yet (e.g., attribute set before connectedCallback runs or completes)
-            // connectedCallback will handle the initial render with the latest attribute value.
             if (!this._reactRoot) { 
                 console.warn('[ZiweiChart INSTANCE] attributeChangedCallback: React root not ready for data-config. Render will be handled by connectedCallback or later update.');
                 return; 
@@ -658,7 +618,7 @@ class ZiweiChart extends HTMLElement {
             if (newValue === null || newValue === undefined) {
                 console.log('[ZiweiChart INSTANCE] attributeChangedCallback: data-config removed. Clearing chart.');
                 this.renderPlaceholder("命盤配置已移除。");
-                this._currentConfigString = null; // Clear stored config
+                this._currentConfigString = null;
             } else {
                 console.log('[ZiweiChart INSTANCE] attributeChangedCallback: data-config has new value. Preparing to parse and render.');
                  Promise.resolve().then(() => this._parseAndRender(newValue));
@@ -669,16 +629,14 @@ class ZiweiChart extends HTMLElement {
 
     _parseAndRender(configString) { 
         console.log('[ZiweiChart INSTANCE] _parseAndRender CALLED.');
-        // console.log('  Config string (first 100):', configString ? configString.substring(0, 100) + '...' : 'null/undefined');
         
-        if (this._isRendering && configString === this._currentConfigString) { // Avoid re-entry if already processing the exact same config
+        if (this._isRendering && configString === this._currentConfigString) {
             console.warn('[ZiweiChart INSTANCE] _parseAndRender: Skipped. Already rendering this exact config or in progress.');
             return;
         }
         this._isRendering = true;
-        this._currentConfigString = configString; // Update current config *before* async operations
+        this._currentConfigString = configString;
 
-        // Ensure React root is available. It should be by now if connected.
         if (!this._reactRoot) {
             console.error('[ZiweiChart INSTANCE] _parseAndRender: React root is unexpectedly null. Attempting to re-initialize (fallback).');
             const renderTarget = this.shadowRoot.getElementById('chart-render-target');
@@ -709,22 +667,19 @@ class ZiweiChart extends HTMLElement {
             } else {
                 console.warn('[ZiweiChart INSTANCE] _parseAndRender: Invalid config structure or missing/invalid payload.', config);
                 this.renderError('命盤配置格式無效或缺少必須的 payload 數據。');
+                 this._isRendering = false; // Set flag if error before async call
             }
         } catch (error) {
             console.error('[ZiweiChart INSTANCE] _parseAndRender: ERROR parsing JSON config:', error);
             this.renderError(`解析命盤配置時發生錯誤: ${error.message}`);
+            this._isRendering = false; // Set flag on error
         }
-        // _isRendering will be set to false within _renderAstrolabeWithReact's final block or error handlers
-        // For synchronous errors here, set it.
-        if(this._isRendering) { // if not cleared by async _renderAstrolabeWithReact
-            this._isRendering = false;
-        }
-        console.log('[ZiweiChart INSTANCE] _parseAndRender FINISHED processing.');
+        // Note: _isRendering is set to false within _renderAstrolabeWithReact's final block or its error handlers
+        console.log('[ZiweiChart INSTANCE] _parseAndRender FINISHED initial processing.');
     }
     
     _renderAstrolabeWithReact(payload) {
         console.log('[ZiweiChart INSTANCE] _renderAstrolabeWithReact CALLED with payload.');
-        // console.debug('  Payload details:', JSON.stringify(payload)); // For deep debugging if needed
 
         if (!this._reactRoot) {
             this.renderError('無法渲染命盤：React渲染核心丟失。', true);
@@ -739,28 +694,28 @@ class ZiweiChart extends HTMLElement {
             return;
         }
 
-        // Use iztro.Astrolabe (assuming this is the main chart component from react-iztro)
-        const AstrolabeComponent = iztro.Astrolabe; 
-        if (typeof AstrolabeComponent === 'undefined') {
-            console.error('[ZiweiChart INSTANCE] _renderAstrolabeWithReact: CRITICAL - AstrolabeComponent (iztro.Astrolabe) is UNDEFINED!');
-            this.renderError('命盤核心組件 (iztro.Astrolabe) 未能正確載入。');
+        // ***** CRITICAL FIX: Use Iztrolabe (I大寫) based on your logs *****
+        const AstrolabeComponentToUse = iztro.Iztrolabe; 
+        
+        console.log('[ZiweiChart INSTANCE] _renderAstrolabeWithReact: Using AstrolabeComponentToUse (expected: iztro.Iztrolabe). Type:', typeof AstrolabeComponentToUse);
+
+        if (typeof AstrolabeComponentToUse === 'undefined') {
+            console.error('[ZiweiChart INSTANCE] _renderAstrolabeWithReact: CRITICAL - AstrolabeComponentToUse (iztro.Iztrolabe) is UNDEFINED!');
+            this.renderError('命盤核心組件 (iztro.Iztrolabe) 未能正確載入。');
             this._isRendering = false;
             return;
         }
         
-        // Destructure payload with defaults for safety
         const { 
-            birthDate, // Expected: YYYY-MM-DD string
-            birthTime, // Expected: number (0-23)
-            gender,    // Expected: "M" or "F"
+            birthDate, 
+            birthTime, 
+            gender,    
             solar = true, 
-            lang = 'zh-CN', // Default to Simplified Chinese if not provided
-            fixLeap = false, // For lunar calendar leap months
-            // palaces, // Optional: pre-calculated palace data (not typically used with react-iztro component)
-            options: payloadOptions = {} // Options for react-iztro itself
+            lang = 'zh-CN', 
+            fixLeap = false, 
+            options: payloadOptions = {} 
         } = payload;
 
-        // --- Input Validation ---
         if (!birthDate || !/^\d{4}-\d{2}-\d{2}$/.test(birthDate)) {
             this.renderError(`出生日期格式錯誤: "${birthDate}". 應為 YYYY-MM-DD。`);
             this._isRendering = false; return;
@@ -775,58 +730,39 @@ class ZiweiChart extends HTMLElement {
             this._isRendering = false; return;
         }
 
-        // --- Prepare Props for react-iztro's Astrolabe component ---
         const chartDataProps = {
             birthday: birthDate,
             birthTime: iztroBirthTimeNum,
-            gender: gender === 'M' ? 'male' : 'female', // react-iztro expects 'male'/'female'
+            gender: gender === 'M' ? 'male' : 'female',
             birthdayType: solar ? 'solar' : 'lunar',
-            language: lang, // 'zh-CN', 'zh-TW', 'en'
-            fixedLeap: fixLeap, // boolean
-            // palaces: palaces, // if you were to pass pre-calculated data
+            language: lang, 
+            fixedLeap: fixLeap,
         };
         
-        // Default options for react-iztro, merged with any payloadOptions
-        // YOU MUST CHECK react-iztro DOCUMENTATION FOR THE CORRECT AND AVAILABLE OPTIONS.
         const iztroComponentOptions = {
-             theme: 'default', // This will be styled by customChartStyles
-             // --- Common react-iztro options (VERIFY THESE NAMES AND EXISTENCE) ---
-             // showFullAstrolabe: true,    // Might control overall visibility
-             // showPalaceName: true,       //宫位名称
-             // showStars: true,            //星曜
-             // showMutagens: true,         //四化
-             // showBrightness: true,       //亮度
-             // showFiveElementsClass: true,//五行局
-             // showChineseDate: true,      //农历日期
-             // showDecadalScope: true,     //大限
-             // showYearlyScope: true,      //流年
-             // showMonthlyScope: false,    //流月 (typically less common on main chart)
-             // showDailyScope: false,      //流日
-             // showHourlyScope: false,     //流时
-             // responsive: true, // If react-iztro has its own responsive handling
-             // --- Example of passing a custom click handler if supported ---
-             // onPalaceClick: (palaceData, event) => {
-             //   console.log('[ZiweiChart] Palace Clicked:', palaceData);
-             //   this.dispatchEvent(new CustomEvent('palaceclick', { detail: palaceData, bubbles: true, composed: true }));
-             // },
-             ...payloadOptions, // Payload options can override defaults
+             theme: 'default',
+             // Add other react-iztro options here if needed, based on its documentation
+             // e.g., showDecadalScope: true, etc.
+             ...payloadOptions,
         };
 
-        const finalProps = { ...chartDataProps, options: iztroComponentOptions };
+        // In react-iztro, options are often passed directly, not nested under an 'options' key
+        // unless the component specifically expects that.
+        // The backup code passed props directly. Let's stick to that structure.
+        const finalProps = { ...chartDataProps, ...iztroComponentOptions }; // Spread options directly
 
-        console.log('[ZiweiChart INSTANCE] _renderAstrolabeWithReact: Final props for Astrolabe:', JSON.stringify(finalProps));
-        this.renderPlaceholder("正在生成命盤，請稍候..."); // Update placeholder
+        console.log('[ZiweiChart INSTANCE] _renderAstrolabeWithReact: Final props for Iztrolabe:', JSON.stringify(finalProps));
+        this.renderPlaceholder("正在生成命盤，請稍候...");
 
-        // Use setTimeout to allow the placeholder message to render before potentially blocking React render.
         setTimeout(() => {
-            if (!this._reactRoot) { // Re-check root, in case of unmount during timeout
+            if (!this._reactRoot) {
                 console.error('[ZiweiChart INSTANCE] _renderAstrolabeWithReact (timeout): _reactRoot became null before rendering!');
                 this.renderError('渲染命盤前 React Root 丟失 (timeout)。', true);
                 this._isRendering = false;
                 return;
             }
             try {
-                const astrolabeElement = React.createElement(AstrolabeComponent, finalProps);
+                const astrolabeElement = React.createElement(AstrolabeComponentToUse, finalProps);
                 if (!astrolabeElement) {
                      console.error('[ZiweiChart INSTANCE] _renderAstrolabeWithReact (timeout): React.createElement returned null/undefined.');
                      this.renderError('無法創建命盤圖表實例 (createElement failed)。');
@@ -842,10 +778,10 @@ class ZiweiChart extends HTMLElement {
                 if (renderError.stack) console.error('  Error Stack:', renderError.stack);
                 this.renderError(`渲染命盤時發生內部錯誤: ${renderError.message}.`);
             } finally {
-                this._isRendering = false; // Ensure rendering flag is reset
+                this._isRendering = false;
                 console.log('[ZiweiChart INSTANCE] _renderAstrolabeWithReact (timeout): Rendering process finished.');
             }
-        }, 50); // Small delay (e.g., 50ms) to ensure UI update for placeholder
+        }, 50);
     }
     
     renderPlaceholder(message) { 
@@ -859,7 +795,7 @@ class ZiweiChart extends HTMLElement {
             return;
         }
         try { 
-            const key = `placeholder-${Date.now()}`; // Unique key to ensure re-render
+            const key = `placeholder-${Date.now()}`;
             this._reactRoot.render(React.createElement('div', { key, className: 'message-display-in-shadow loading-message-in-shadow' }, message)); 
         } catch (e) { 
             console.error('[ZiweiChart INSTANCE] renderPlaceholder: Error rendering placeholder with React:', e);
@@ -880,7 +816,7 @@ class ZiweiChart extends HTMLElement {
             return;
         }
         
-        if (!renderTarget && isCritical) { // Critical error, and render target itself is missing
+        if (!renderTarget && isCritical) {
             this.shadowRoot.innerHTML = `<style>.error-message-in-shadow { background-color: #fff1f0; color: #f5222d; border: 1px solid #ffa39e; font-size: 16px; padding: 20px; border-radius: 4px; text-align: center; margin: 20px; }</style><div class="message-display-in-shadow error-message-in-shadow">FATAL: ${message} (No render target in Shadow DOM)</div>`;
             console.error("Critical error rendered directly to Shadow DOM root due to missing target.");
             return;
@@ -888,13 +824,13 @@ class ZiweiChart extends HTMLElement {
 
         if (this._reactRoot && !isCritical) { 
             try { 
-                const key = `error-${Date.now()}`; // Unique key
+                const key = `error-${Date.now()}`;
                 this._reactRoot.render(React.createElement('div', { key, className: 'message-display-in-shadow error-message-in-shadow' }, message)); 
             } catch (e) { 
                  console.error('[ZiweiChart INSTANCE] renderError: Error rendering error message with React:', e);
                  if(renderTarget) renderTarget.innerHTML = `<div class="message-display-in-shadow error-message-in-shadow">${message} (React error: ${e.message})</div>`;
             }
-        } else if (renderTarget) { // Fallback to direct HTML injection if React root issue or critical
+        } else if (renderTarget) {
             renderTarget.innerHTML = `<div class="message-display-in-shadow error-message-in-shadow">${message} ${isCritical ? '(Critical Error)' : '(React Root Issue)'}</div>`; 
             if (isCritical) console.error("Critical error rendered directly to HTML target due to React root issue or criticality.");
         }
@@ -909,7 +845,6 @@ if (customElements && typeof customElements.get === 'function' && !customElement
         console.log('[ZiweiChart CE SCRIPT] Custom element "ziwei-chart" DEFINED SUCCESSFULLY.');
     } catch (e) {
         console.error('[ZiweiChart CE SCRIPT] CRITICAL ERROR defining custom element "ziwei-chart":', e);
-        // Fallback: display error on the page if possible, for diagnosis
         const errorDiv = document.createElement('div');
         errorDiv.textContent = `Failed to define ziwei-chart: ${e.message}. Check console.`;
         errorDiv.style.color = 'red'; errorDiv.style.padding = '10px'; errorDiv.style.border = '1px solid red';
