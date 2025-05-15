@@ -28,7 +28,7 @@ if (typeof iztro === 'object' && iztro !== null) {
 }
 
 
-// --- CSS Definitions ---
+// --- CSS Definitions (保持不變，確保您已刪除之前引起構建錯誤的註釋或已修正它們) ---
 const antdResetCSS = `html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, b, u, i, center, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td, article, aside, canvas, details, embed, figure, figcaption, footer, header, hgroup, menu, nav, output, ruby, section, summary, time, mark, audio, video { margin: 0; padding: 0; border: 0; font-size: 100%; font: inherit; vertical-align: baseline; } article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, section { display: block; } body { line-height: 1; } ol, ul { list-style: none; } blockquote, q { quotes: none; } blockquote:before, blockquote:after, q:before, q:after { content: ''; content: none; } table { border-collapse: collapse; border-spacing: 0; } *, *::before, *::after { box-sizing: border-box; } html { font-family: sans-serif; line-height: 1.15; -webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; -ms-overflow-style: scrollbar; -webkit-tap-highlight-color: rgba(0, 0, 0, 0); } body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji"; font-size: 14px; line-height: 1.5715; color: rgba(0,0,0,.85); background-color: #fff; }`;
 
 const reactIztroDefaultCSS = `
@@ -233,7 +233,7 @@ const customChartStyles = `
   /* 備選方案: 如果 react-iztro 使用 data-palace-name="命宮" 等 */
   /* .iztro-palace[data-palace-name="遷移宮"] { grid-area: 1 / 1 / 2 / 2; } ... etc. */
 
-  .iztro-astrolabe > .iztro-palace-center {
+  .iztro-astrolabe > .iztro-palace-center { /* Assumes this class exists for the center block */
     grid-area: 2 / 2 / 4 / 4;
     border: 1px solid var(--iztro-color-border);
     margin: -1px 0 0 -1px; 
@@ -268,8 +268,8 @@ const customChartStyles = `
     line-height: 1.2;
   }
   
-  .iztro-palace-stars-group,
-  .iztro-palace > div:not(.iztro-palace-name):not(.iztro-palace-gz):not(.iztro-palace-scope):not(.iztro-palace-fate) {
+  .iztro-palace-stars-group, /* If iztro has a dedicated class for stars */
+  .iztro-palace > div:not(.iztro-palace-name):not(.iztro-palace-gz):not(.iztro-palace-scope):not(.iztro-palace-fate) /* Fallback selector */ {
     flex-grow: 1;
     text-align: left;
     overflow-y: auto;
@@ -297,8 +297,8 @@ const customChartStyles = `
 
   .iztro-star-major { font-weight: 500; }
 
-  .iztro-star-doctor, .iztro-star-博士, .iztro-star-力士, .iztro-star-青龍,
-  .iztro-star-adjective { 
+  .iztro-star-doctor, .iztro-star-博士, .iztro-star-力士, .iztro-star-青龍, /* Common misc stars */
+  .iztro-star-adjective /* If react-iztro uses this for misc stars descriptions */ { 
     font-size: calc(var(--iztro-star-font-size-small) - 2px);
     color: var(--iztro-color-decorator-1); 
     opacity: 0.9;
@@ -667,14 +667,13 @@ class ZiweiChart extends HTMLElement {
             } else {
                 console.warn('[ZiweiChart INSTANCE] _parseAndRender: Invalid config structure or missing/invalid payload.', config);
                 this.renderError('命盤配置格式無效或缺少必須的 payload 數據。');
-                 this._isRendering = false; // Set flag if error before async call
+                 this._isRendering = false;
             }
         } catch (error) {
             console.error('[ZiweiChart INSTANCE] _parseAndRender: ERROR parsing JSON config:', error);
             this.renderError(`解析命盤配置時發生錯誤: ${error.message}`);
-            this._isRendering = false; // Set flag on error
+            this._isRendering = false;
         }
-        // Note: _isRendering is set to false within _renderAstrolabeWithReact's final block or its error handlers
         console.log('[ZiweiChart INSTANCE] _parseAndRender FINISHED initial processing.');
     }
     
@@ -694,7 +693,6 @@ class ZiweiChart extends HTMLElement {
             return;
         }
 
-        // ***** CRITICAL FIX: Use Iztrolabe (I大寫) based on your logs *****
         const AstrolabeComponentToUse = iztro.Iztrolabe; 
         
         console.log('[ZiweiChart INSTANCE] _renderAstrolabeWithReact: Using AstrolabeComponentToUse (expected: iztro.Iztrolabe). Type:', typeof AstrolabeComponentToUse);
@@ -706,16 +704,20 @@ class ZiweiChart extends HTMLElement {
             return;
         }
         
+        // Destructure payload received from Velo
         const { 
             birthDate, 
             birthTime, 
             gender,    
             solar = true, 
-            lang = 'zh-CN', 
-            fixLeap = false, 
-            options: payloadOptions = {} 
+            lang = 'zh-CN', // Default language
+            // fixedLeap is a direct prop name, not from a sub-options object
+            fixedLeap = false, // Assuming this comes from Velo payload or a default is fine
+            // Any other options from Velo can be caught by `...otherPayloadOptions`
+            ...otherPayloadOptions 
         } = payload;
 
+        // Basic validation (already present, good)
         if (!birthDate || !/^\d{4}-\d{2}-\d{2}$/.test(birthDate)) {
             this.renderError(`出生日期格式錯誤: "${birthDate}". 應為 YYYY-MM-DD。`);
             this._isRendering = false; return;
@@ -730,26 +732,43 @@ class ZiweiChart extends HTMLElement {
             this._isRendering = false; return;
         }
 
-        const chartDataProps = {
+        // --- Prepare Props for react-iztro's Iztrolabe component ---
+        // These are the core data props
+        const coreDataProps = {
             birthday: birthDate,
             birthTime: iztroBirthTimeNum,
             gender: gender === 'M' ? 'male' : 'female',
             birthdayType: solar ? 'solar' : 'lunar',
             language: lang, 
-            fixedLeap: fixLeap,
+            fixedLeap: fixedLeap, // Make sure this is correctly passed or defaulted
         };
         
-        const iztroComponentOptions = {
-             theme: 'default',
-             // Add other react-iztro options here if needed, based on its documentation
-             // e.g., showDecadalScope: true, etc.
-             ...payloadOptions,
+        // These are the display/behavioral options, passed as top-level props
+        // Merging defaults with any options passed from Velo via otherPayloadOptions
+        const displayOptions = {
+             theme: 'default', // We will style this using customChartStyles
+             showPalaceName: true,
+             // showStars: true, // react-iztro defaults to true for stars, no need to explicitly set if default is fine
+             showMutagens: true,         
+             showBrightness: true,       
+             showFiveElementsClass: true,
+             showChineseDate: true,      
+             showDecadalScope: true,     
+             showYearlyScope: true,      
+             showMonthlyScope: true, // Set to true to see if it appears
+             showDailyScope: false,   // Usually off by default
+             showHourlyScope: false,  // Usually off by default
+             showTransNatal: true,    // Borrow opposite palace stars
+             // horoscopeDate: new Date(), // To show current time flowing stars, or pass specific date from Velo if needed
+             // ...otherPayloadOptions, // Spread any other options from Velo payload
         };
 
-        // In react-iztro, options are often passed directly, not nested under an 'options' key
-        // unless the component specifically expects that.
-        // The backup code passed props directly. Let's stick to that structure.
-        const finalProps = { ...chartDataProps, ...iztroComponentOptions }; // Spread options directly
+        // Combine core data, display options, and any other options from Velo
+        const finalProps = { 
+            ...coreDataProps, 
+            ...displayOptions,
+            ...otherPayloadOptions // This ensures Velo can pass any valid Iztrolabe prop
+        };
 
         console.log('[ZiweiChart INSTANCE] _renderAstrolabeWithReact: Final props for Iztrolabe:', JSON.stringify(finalProps));
         this.renderPlaceholder("正在生成命盤，請稍候...");

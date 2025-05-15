@@ -117,7 +117,7 @@ ${reportDocument.userId}).`);
             gender: reportDocument.gender,               // "M" 或 "F"
             service: reportDocument.service,
             solar: reportDocument.solar,                 // true 或 false
-            lang: reportDocument.lang || 'zh'            // 語言代碼
+            lang: reportDocument.lang || 'zh-TW'            // 語言代碼
         };
         
         // --- 設置 Custom Element 的 data-config attribute ---

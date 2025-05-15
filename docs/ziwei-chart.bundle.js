@@ -44875,7 +44875,7 @@ var ZiweiChartCustomElementGlobal = (() => {
   /* \u5099\u9078\u65B9\u6848: \u5982\u679C react-iztro \u4F7F\u7528 data-palace-name="\u547D\u5BAE" \u7B49 */
   /* .iztro-palace[data-palace-name="\u9077\u79FB\u5BAE"] { grid-area: 1 / 1 / 2 / 2; } ... etc. */
 
-  .iztro-astrolabe > .iztro-palace-center {
+  .iztro-astrolabe > .iztro-palace-center { /* Assumes this class exists for the center block */
     grid-area: 2 / 2 / 4 / 4;
     border: 1px solid var(--iztro-color-border);
     margin: -1px 0 0 -1px; 
@@ -44910,8 +44910,8 @@ var ZiweiChartCustomElementGlobal = (() => {
     line-height: 1.2;
   }
   
-  .iztro-palace-stars-group,
-  .iztro-palace > div:not(.iztro-palace-name):not(.iztro-palace-gz):not(.iztro-palace-scope):not(.iztro-palace-fate) {
+  .iztro-palace-stars-group, /* If iztro has a dedicated class for stars */
+  .iztro-palace > div:not(.iztro-palace-name):not(.iztro-palace-gz):not(.iztro-palace-scope):not(.iztro-palace-fate) /* Fallback selector */ {
     flex-grow: 1;
     text-align: left;
     overflow-y: auto;
@@ -44939,8 +44939,8 @@ var ZiweiChartCustomElementGlobal = (() => {
 
   .iztro-star-major { font-weight: 500; }
 
-  .iztro-star-doctor, .iztro-star-\u535A\u58EB, .iztro-star-\u529B\u58EB, .iztro-star-\u9752\u9F8D,
-  .iztro-star-adjective { 
+  .iztro-star-doctor, .iztro-star-\u535A\u58EB, .iztro-star-\u529B\u58EB, .iztro-star-\u9752\u9F8D, /* Common misc stars */
+  .iztro-star-adjective /* If react-iztro uses this for misc stars descriptions */ { 
     font-size: calc(var(--iztro-star-font-size-small) - 2px);
     color: var(--iztro-color-decorator-1); 
     opacity: 0.9;
@@ -45317,8 +45317,12 @@ var ZiweiChartCustomElementGlobal = (() => {
         gender,
         solar = true,
         lang = "zh-CN",
-        fixLeap = false,
-        options: payloadOptions = {}
+        // Default language
+        // fixedLeap is a direct prop name, not from a sub-options object
+        fixedLeap = false,
+        // Assuming this comes from Velo payload or a default is fine
+        // Any other options from Velo can be caught by `...otherPayloadOptions`
+        ...otherPayloadOptions
       } = payload;
       if (!birthDate || !/^\d{4}-\d{2}-\d{2}$/.test(birthDate)) {
         this.renderError(`\u51FA\u751F\u65E5\u671F\u683C\u5F0F\u932F\u8AA4: "${birthDate}". \u61C9\u70BA YYYY-MM-DD\u3002`);
@@ -45336,21 +45340,43 @@ var ZiweiChartCustomElementGlobal = (() => {
         this._isRendering = false;
         return;
       }
-      const chartDataProps = {
+      const coreDataProps = {
         birthday: birthDate,
         birthTime: iztroBirthTimeNum,
         gender: gender === "M" ? "male" : "female",
         birthdayType: solar ? "solar" : "lunar",
         language: lang,
-        fixedLeap: fixLeap
+        fixedLeap
+        // Make sure this is correctly passed or defaulted
       };
-      const iztroComponentOptions = {
+      const displayOptions = {
         theme: "default",
-        // Add other react-iztro options here if needed, based on its documentation
-        // e.g., showDecadalScope: true, etc.
-        ...payloadOptions
+        // We will style this using customChartStyles
+        showPalaceName: true,
+        // showStars: true, // react-iztro defaults to true for stars, no need to explicitly set if default is fine
+        showMutagens: true,
+        showBrightness: true,
+        showFiveElementsClass: true,
+        showChineseDate: true,
+        showDecadalScope: true,
+        showYearlyScope: true,
+        showMonthlyScope: true,
+        // Set to true to see if it appears
+        showDailyScope: false,
+        // Usually off by default
+        showHourlyScope: false,
+        // Usually off by default
+        showTransNatal: true
+        // Borrow opposite palace stars
+        // horoscopeDate: new Date(), // To show current time flowing stars, or pass specific date from Velo if needed
+        // ...otherPayloadOptions, // Spread any other options from Velo payload
       };
-      const finalProps = { ...chartDataProps, ...iztroComponentOptions };
+      const finalProps = {
+        ...coreDataProps,
+        ...displayOptions,
+        ...otherPayloadOptions
+        // This ensures Velo can pass any valid Iztrolabe prop
+      };
       console.log("[ZiweiChart INSTANCE] _renderAstrolabeWithReact: Final props for Iztrolabe:", JSON.stringify(finalProps));
       this.renderPlaceholder("\u6B63\u5728\u751F\u6210\u547D\u76E4\uFF0C\u8ACB\u7A0D\u5019...");
       setTimeout(() => {
