@@ -163,17 +163,16 @@ ${JSON.stringify(payload).substring(0,150)}...`);
             console.log("[Chart Page] data-config attribute set successfully on #ziweiChart.");
         } catch (e) {
             console.error("[Chart Page] Failed to set data-config attribute on #ziweiChart:", e);
-            showUserError("無法初始化命盤圖表組件。");
+            showUserError("無法初始化命盤圖表組件。"); // <--- 如果這裡也想用，也要注意
         }
 
-    } else { // 這是新貼上的 else 塊
-        console.error("[Chart Page] Custom Element #ziweiChart not found or setAttribute is not a function. Check Wix Editor ID" 
- + "and that it's a Custom Element.");
-        showUserErrorOnPage("命盤圖表組件加載失敗，請檢查頁面配置。");
+    } else {
+        console.error("[Chart Page] Custom Element #ziweiChart not found or setAttribute is not a function. Check Wix Editor ID"
+ + " and that it's a Custom Element."); // 注意這裡的字符串拼接有個小問題，我順便修正了
+        // ***** CRITICAL FIX: Change function name here *****
+        showUserError("命盤圖表組件加載失敗，請檢查頁面配置。"); // 修改: showUserErrorOnPage -> showUserError
     }
-// 這是 setChartDataConfig 函數的結束括號
 }
-
 
 // LLM 報告生成函數 (模擬)
 async function generateReportContentLLM(reportId, birthData) {
