@@ -1,11 +1,16 @@
-// bundler/src/ziwei-chart.js (Attempting direct import of Astrolabe again, with focused logging)
+// bundler/src/ziwei-chart.js
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import { Astrolabe } from 'react-iztro'; // <--- 嘗試直接導入 Astrolabe
+// import * as iztro from 'react-iztro'; // <--- 將這一行註釋掉或刪除
+import { Astrolabe } from 'react-iztro'; // <--- 確保這一行是有效的
 
 console.log('[ZiweiChart CE SCRIPT] Top-level: Script execution started. React, ReactDOM imported.');
-console.log('[ZiweiChart CE SCRIPT] Type of imported Astrolabe:', typeof Astrolabe);
-console.log('[ZiweiChart CE SCRIPT] Value of imported Astrolabe:', Astrolabe); // 打印 Astrolabe 看看它到底是什麼
+// 下面兩行是新的，用來檢查直接導入的 Astrolabe
+console.log('[ZiweiChart CE SCRIPT] Type of directly imported Astrolabe:', typeof Astrolabe);
+console.log('[ZiweiChart CE SCRIPT] Value of directly imported Astrolabe:', Astrolabe);
+
+// antdResetCSS 和 reactIztroDefaultCSS 保持不變...
+// class ZiweiChart extends HTMLElement { ...
 
 // ... (antdResetCSS 和 reactIztroDefaultCSS 保持不變，從我上次提供的代碼中複製過來)
 const antdResetCSS = `
