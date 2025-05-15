@@ -29111,8 +29111,8 @@ var ZiweiChartCustomElementGlobal = (() => {
       exports.t = t2;
       var kot = function(value, k) {
         var res = value;
-        for (var _i = 0, _a = Object.entries(resources); _i < _a.length; _i++) {
-          var _b = _a[_i], item = _b[1];
+        for (var _i = 0, _a2 = Object.entries(resources); _i < _a2.length; _i++) {
+          var _b = _a2[_i], item = _b[1];
           for (var _c = 0, _d = Object.entries(item.translation); _c < _d.length; _c++) {
             var _e = _d[_c], transKey = _e[0], trans = _e[1];
             if ((k && transKey.includes(k) || !k) && trans === value) {
@@ -40482,7 +40482,7 @@ var ZiweiChartCustomElementGlobal = (() => {
       };
       exports.normalizeDateStr = normalizeDateStr;
       var solar2lunar = function(dateStr) {
-        var _a = (0, exports.normalizeDateStr)(dateStr), year = _a[0], month = _a[1], day = _a[2];
+        var _a2 = (0, exports.normalizeDateStr)(dateStr), year = _a2[0], month = _a2[1], day = _a2[2];
         var solar = lunar_typescript_1.Solar.fromYmd(year, month, day);
         var lunar = solar.getLunar();
         var lunarYear = lunar.getYear();
@@ -40504,7 +40504,7 @@ var ZiweiChartCustomElementGlobal = (() => {
       };
       exports.solar2lunar = solar2lunar;
       var lunar2solar = function(dateStr, isLeapMonth) {
-        var _a = (0, exports.normalizeDateStr)(dateStr), year = _a[0], month = _a[1], day = _a[2];
+        var _a2 = (0, exports.normalizeDateStr)(dateStr), year = _a2[0], month = _a2[1], day = _a2[2];
         var lunar = lunar_typescript_1.Lunar.fromYmd(year, month, day);
         var lunarYear = lunar_typescript_1.LunarYear.fromYear(lunar.getYear());
         var leapMonth = lunarYear.getLeapMonth();
@@ -40538,7 +40538,7 @@ var ZiweiChartCustomElementGlobal = (() => {
       var constants_1 = require_constants2();
       var convertor_1 = require_convertor();
       var getSign = function(solarDateStr) {
-        var _a = (0, convertor_1.normalizeDateStr)(solarDateStr), year = _a[0], month = _a[1], day = _a[2];
+        var _a2 = (0, convertor_1.normalizeDateStr)(solarDateStr), year = _a2[0], month = _a2[1], day = _a2[2];
         return lunar_typescript_1.Solar.fromYmd(year, month, day).getXingZuo() + "\u5EA7";
       };
       exports.getSign = getSign;
@@ -40547,10 +40547,10 @@ var ZiweiChartCustomElementGlobal = (() => {
       };
       exports.getZodiac = getZodiac;
       var getTotalDaysOfLunarMonth = function(solarDateStr) {
-        var _a;
+        var _a2;
         var _b = (0, convertor_1.solar2lunar)(solarDateStr), lunarYear = _b.lunarYear, lunarMonth = _b.lunarMonth, isLeap = _b.isLeap;
         var month = lunar_typescript_1.LunarMonth.fromYm(lunarYear, isLeap ? 0 - lunarMonth : lunarMonth);
-        return (_a = month === null || month === void 0 ? void 0 : month.getDayCount()) !== null && _a !== void 0 ? _a : 0;
+        return (_a2 = month === null || month === void 0 ? void 0 : month.getDayCount()) !== null && _a2 !== void 0 ? _a2 : 0;
       };
       exports.getTotalDaysOfLunarMonth = getTotalDaysOfLunarMonth;
     }
@@ -40576,7 +40576,7 @@ var ZiweiChartCustomElementGlobal = (() => {
         if (options === void 0) {
           options = { year: "exact" };
         }
-        var _a = (0, convertor_1.normalizeDateStr)(dateStr), year = _a[0], month = _a[1], date = _a[2];
+        var _a2 = (0, convertor_1.normalizeDateStr)(dateStr), year = _a2[0], month = _a2[1], date = _a2[2];
         var solar = lunar_typescript_1.Solar.fromYmdHms(year, month, date, Math.max(timeIndex * 2 - 1, 0), 30, 0);
         var lunar = solar.getLunar();
         var yearlyGan = (options === null || options === void 0 ? void 0 : options.year) === "normal" ? lunar.getYearGan() : lunar.getYearGanByLiChun();
@@ -40946,9 +40946,9 @@ var ZiweiChartCustomElementGlobal = (() => {
       var FunctionalSurpalaces = (
         /** @class */
         /* @__PURE__ */ function() {
-          function FunctionalSurpalaces2(_a) {
+          function FunctionalSurpalaces2(_a2) {
             var _this = this;
-            var target = _a.target, opposite = _a.opposite, wealth = _a.wealth, career = _a.career;
+            var target = _a2.target, opposite = _a2.opposite, wealth = _a2.wealth, career = _a2.career;
             this.have = function(stars) {
               return (0, analyzer_1.isSurroundedByStars)(_this, stars);
             };
@@ -41038,8 +41038,8 @@ var ZiweiChartCustomElementGlobal = (() => {
           return star.mutagen && (0, i18n_1.kot)(star.mutagen) === mutagenKey;
         });
       };
-      var _getAllStarsInSurroundedPalaces = function(_a) {
-        var target = _a.target, opposite = _a.opposite, wealth = _a.wealth, career = _a.career;
+      var _getAllStarsInSurroundedPalaces = function(_a2) {
+        var target = _a2.target, opposite = _a2.opposite, wealth = _a2.wealth, career = _a2.career;
         return _concatStars(target.majorStars, target.minorStars, target.adjectiveStars, opposite.majorStars, opposite.minorStars, opposite.adjectiveStars, wealth.majorStars, wealth.minorStars, wealth.adjectiveStars, career.majorStars, career.minorStars, career.adjectiveStars);
       };
       var getSurroundedPalaces = function($, indexOrName) {
@@ -41236,12 +41236,12 @@ var ZiweiChartCustomElementGlobal = (() => {
               });
             };
             this.hasHoroscopeMutagen = function(palaceName, scope, horoscopeMutagen) {
-              var _a, _b, _c, _d;
+              var _a2, _b, _c, _d;
               if (scope === "origin") {
                 return false;
               }
               var palaceIndex = _getHoroscopePalaceIndex(_this, scope, palaceName);
-              var majorStars = (_b = (_a = _this.astrolabe.palace(palaceIndex)) === null || _a === void 0 ? void 0 : _a.majorStars) !== null && _b !== void 0 ? _b : [];
+              var majorStars = (_b = (_a2 = _this.astrolabe.palace(palaceIndex)) === null || _a2 === void 0 ? void 0 : _a2.majorStars) !== null && _b !== void 0 ? _b : [];
               var minorStars = (_d = (_c = _this.astrolabe.palace(palaceIndex)) === null || _c === void 0 ? void 0 : _c.minorStars) !== null && _d !== void 0 ? _d : [];
               var stars = (0, utils_1.mergeStars)([majorStars], [minorStars])[0].map(function(star) {
                 return (0, i18n_1.kot)(star.name);
@@ -41303,10 +41303,10 @@ var ZiweiChartCustomElementGlobal = (() => {
         var _birthday = (0, lunar_lite_1.solar2lunar)($.solarDate);
         var _date = (0, lunar_lite_1.solar2lunar)(targetDate);
         var convertTimeIndex = (0, utils_1.timeToIndex)((0, dayjs_1.default)(targetDate).hour());
-        var _a = (0, lunar_lite_1.getHeavenlyStemAndEarthlyBranchBySolarDate)(targetDate, timeIndex || convertTimeIndex, {
+        var _a2 = (0, lunar_lite_1.getHeavenlyStemAndEarthlyBranchBySolarDate)(targetDate, timeIndex || convertTimeIndex, {
           // 运限是以立春为界，但为了满足部分流派允许配置
           year: (0, astro_1.getConfig)().horoscopeDivide
-        }), yearly = _a.yearly, monthly = _a.monthly, daily = _a.daily, hourly = _a.hourly;
+        }), yearly = _a2.yearly, monthly = _a2.monthly, daily = _a2.daily, hourly = _a2.hourly;
         var nominalAge = _date.lunarYear - _birthday.lunarYear;
         var isChildhood = false;
         if ((0, astro_1.getConfig)().ageDivide === "birthday") {
@@ -41326,8 +41326,8 @@ var ZiweiChartCustomElementGlobal = (() => {
         var hourlyIndex = -1;
         var heavenlyStemOfAge = "jia";
         var earthlyBranchOfAge = "zi";
-        $.palaces.some(function(_a2, index) {
-          var decadal = _a2.decadal;
+        $.palaces.some(function(_a3, index) {
+          var decadal = _a3.decadal;
           if (nominalAge >= decadal.range[0] && nominalAge <= decadal.range[1]) {
             decadalIndex = index;
             heavenlyStemOfDecade = decadal.heavenlyStem;
@@ -41346,8 +41346,8 @@ var ZiweiChartCustomElementGlobal = (() => {
             earthlyBranchOfDecade = targetPalace.earthlyBranch;
           }
         }
-        $.palaces.some(function(_a2, index) {
-          var ages = _a2.ages, heavenlyStem = _a2.heavenlyStem, earthlyBranch = _a2.earthlyBranch;
+        $.palaces.some(function(_a3, index) {
+          var ages = _a3.ages, heavenlyStem = _a3.heavenlyStem, earthlyBranch = _a3.earthlyBranch;
           if (ages.includes(nominalAge)) {
             ageIndex = index;
             heavenlyStemOfAge = heavenlyStem;
@@ -41518,8 +41518,8 @@ var ZiweiChartCustomElementGlobal = (() => {
               return (0, analyzer_1.notHaveMutagenInPalce)(_this, mutagen);
             };
             this.isEmpty = function(excludeStars) {
-              var _a;
-              if ((_a = _this.majorStars) === null || _a === void 0 ? void 0 : _a.filter(function(star) {
+              var _a2;
+              if ((_a2 = _this.majorStars) === null || _a2 === void 0 ? void 0 : _a2.filter(function(star) {
                 return star.type === "major";
               }).length) {
                 return false;
@@ -41536,8 +41536,8 @@ var ZiweiChartCustomElementGlobal = (() => {
               return _this._astrolabe;
             };
             this.fliesTo = function(to, withMutagens) {
-              var _a;
-              var toPalace = (_a = _this.astrolabe()) === null || _a === void 0 ? void 0 : _a.palace(to);
+              var _a2;
+              var toPalace = (_a2 = _this.astrolabe()) === null || _a2 === void 0 ? void 0 : _a2.palace(to);
               if (!toPalace) {
                 return false;
               }
@@ -41549,8 +41549,8 @@ var ZiweiChartCustomElementGlobal = (() => {
               return toPalace.has(stars);
             };
             this.fliesOneOfTo = function(to, withMutagens) {
-              var _a;
-              var toPalace = (_a = _this.astrolabe()) === null || _a === void 0 ? void 0 : _a.palace(to);
+              var _a2;
+              var toPalace = (_a2 = _this.astrolabe()) === null || _a2 === void 0 ? void 0 : _a2.palace(to);
               if (!toPalace) {
                 return false;
               }
@@ -41562,8 +41562,8 @@ var ZiweiChartCustomElementGlobal = (() => {
               return toPalace.hasOneOf(stars);
             };
             this.notFlyTo = function(to, withMutagens) {
-              var _a;
-              var toPalace = (_a = _this.astrolabe()) === null || _a === void 0 ? void 0 : _a.palace(to);
+              var _a2;
+              var toPalace = (_a2 = _this.astrolabe()) === null || _a2 === void 0 ? void 0 : _a2.palace(to);
               if (!toPalace) {
                 return false;
               }
@@ -41668,21 +41668,21 @@ var ZiweiChartCustomElementGlobal = (() => {
         _plugins.push(plugin);
       };
       exports.loadPlugin = loadPlugin;
-      var config = function(_a) {
-        var mutagens = _a.mutagens, brightness = _a.brightness, _b = _a.yearDivide, yearDivide = _b === void 0 ? _yearDivide : _b, _c = _a.ageDivide, ageDivide = _c === void 0 ? _ageDivide : _c, _d = _a.horoscopeDivide, horoscopeDivide = _d === void 0 ? _horoscopeDivide : _d, _e = _a.algorithm, algorithm = _e === void 0 ? _algorithm : _e;
+      var config = function(_a2) {
+        var mutagens = _a2.mutagens, brightness = _a2.brightness, _b = _a2.yearDivide, yearDivide = _b === void 0 ? _yearDivide : _b, _c = _a2.ageDivide, ageDivide = _c === void 0 ? _ageDivide : _c, _d = _a2.horoscopeDivide, horoscopeDivide = _d === void 0 ? _horoscopeDivide : _d, _e = _a2.algorithm, algorithm = _e === void 0 ? _algorithm : _e;
         if (mutagens) {
-          Object.entries(mutagens).forEach(function(_a2) {
+          Object.entries(mutagens).forEach(function(_a3) {
             var _b2;
-            var key = _a2[0], value = _a2[1];
+            var key = _a3[0], value = _a3[1];
             _mutagens[(0, i18n_1.kot)(key)] = (_b2 = value.map(function(item) {
               return (0, i18n_1.kot)(item);
             })) !== null && _b2 !== void 0 ? _b2 : [];
           });
         }
         if (brightness) {
-          Object.entries(brightness).forEach(function(_a2) {
+          Object.entries(brightness).forEach(function(_a3) {
             var _b2;
-            var key = _a2[0], value = _a2[1];
+            var key = _a3[0], value = _a3[1];
             _brightness[(0, i18n_1.kot)(key)] = (_b2 = value.map(function(item) {
               return (0, i18n_1.kot)(item);
             })) !== null && _b2 !== void 0 ? _b2 : [];
@@ -41723,11 +41723,11 @@ var ZiweiChartCustomElementGlobal = (() => {
         }).yearly;
         var earthlyBranchOfYear = (0, i18n_1.kot)(yearly[1], "Earthly");
         var heavenlyStemOfYear = (0, i18n_1.kot)(yearly[0], "Heavenly");
-        var _a = (0, palace_1.getSoulAndBody)({
+        var _a2 = (0, palace_1.getSoulAndBody)({
           solarDate,
           timeIndex,
           fixLeap
-        }), bodyIndex = _a.bodyIndex, soulIndex = _a.soulIndex, heavenlyStemOfSoul = _a.heavenlyStemOfSoul, earthlyBranchOfSoul = _a.earthlyBranchOfSoul;
+        }), bodyIndex = _a2.bodyIndex, soulIndex = _a2.soulIndex, heavenlyStemOfSoul = _a2.heavenlyStemOfSoul, earthlyBranchOfSoul = _a2.earthlyBranchOfSoul;
         var palaceNames = (0, palace_1.getPalaceNames)(soulIndex);
         var majorStars = (0, star_1.getMajorStar)({ solarDate, timeIndex, fixLeap });
         var minorStars = (0, star_1.getMinorStar)(solarDate, timeIndex, fixLeap);
@@ -41818,8 +41818,8 @@ var ZiweiChartCustomElementGlobal = (() => {
         return bySolar(solarDate.toString(), timeIndex, gender, fixLeap, language);
       }
       exports.byLunar = byLunar;
-      function rearrangeAstrolable(_a) {
-        var from = _a.from, astrolable = _a.astrolable, option = _a.option;
+      function rearrangeAstrolable(_a2) {
+        var from = _a2.from, astrolable = _a2.astrolable, option = _a2.option;
         var timeIndex = option.timeIndex, fixLeap = option.fixLeap;
         var _b = (0, palace_1.getSoulAndBody)({
           solarDate: astrolable.solarDate,
@@ -41851,7 +41851,7 @@ var ZiweiChartCustomElementGlobal = (() => {
       }
       exports.rearrangeAstrolable = rearrangeAstrolable;
       function withOptions(option) {
-        var _a = option.type, type = _a === void 0 ? "solar" : _a, dateStr = option.dateStr, timeIndex = option.timeIndex, gender = option.gender, isLeapMonth = option.isLeapMonth, fixLeap = option.fixLeap, language = option.language, astroType = option.astroType, cfg = option.config;
+        var _a2 = option.type, type = _a2 === void 0 ? "solar" : _a2, dateStr = option.dateStr, timeIndex = option.timeIndex, gender = option.gender, isLeapMonth = option.isLeapMonth, fixLeap = option.fixLeap, language = option.language, astroType = option.astroType, cfg = option.config;
         if (cfg) {
           (0, exports.config)(cfg);
         }
@@ -41946,9 +41946,9 @@ var ZiweiChartCustomElementGlobal = (() => {
       var astro_1 = require_astro();
       var getSoulAndBody = function(param) {
         var solarDate = param.solarDate, timeIndex = param.timeIndex, fixLeap = param.fixLeap, from = param.from;
-        var _a = (0, lunar_lite_1.getHeavenlyStemAndEarthlyBranchBySolarDate)(solarDate, timeIndex, {
+        var _a2 = (0, lunar_lite_1.getHeavenlyStemAndEarthlyBranchBySolarDate)(solarDate, timeIndex, {
           year: (0, astro_1.getConfig)().yearDivide
-        }), yearly = _a.yearly, hourly = _a.hourly;
+        }), yearly = _a2.yearly, hourly = _a2.hourly;
         var earthlyBranchOfTime = (0, i18n_1.kot)(hourly[1], "Earthly");
         var heavenlyStemOfYear = (0, i18n_1.kot)(yearly[0], "Heavenly");
         var firstIndex = data_1.EARTHLY_BRANCHES.indexOf("yinEarthly");
@@ -41995,7 +41995,7 @@ var ZiweiChartCustomElementGlobal = (() => {
       };
       exports.getPalaceNames = getPalaceNames;
       var getHoroscope = function(param) {
-        var _a, _b;
+        var _a2, _b;
         var solarDate = param.solarDate, timeIndex = param.timeIndex, gender = param.gender, from = param.from;
         var decadals = [];
         var genderKey = (0, i18n_1.kot)(gender);
@@ -42006,7 +42006,7 @@ var ZiweiChartCustomElementGlobal = (() => {
         var heavenlyStem = (0, i18n_1.kot)(yearly[0], "Heavenly");
         var earthlyBranch = (0, i18n_1.kot)(yearly[1], "Earthly");
         var _c = (0, exports.getSoulAndBody)(param), soulIndex = _c.soulIndex, heavenlyStemOfSoul = _c.heavenlyStemOfSoul, earthlyBranchOfSoul = _c.earthlyBranchOfSoul;
-        var fiveElementsClass = (0, i18n_1.kot)((0, exports.getFiveElementsClass)((_a = from === null || from === void 0 ? void 0 : from.heavenlyStem) !== null && _a !== void 0 ? _a : heavenlyStemOfSoul, (_b = from === null || from === void 0 ? void 0 : from.earthlyBranch) !== null && _b !== void 0 ? _b : earthlyBranchOfSoul));
+        var fiveElementsClass = (0, i18n_1.kot)((0, exports.getFiveElementsClass)((_a2 = from === null || from === void 0 ? void 0 : from.heavenlyStem) !== null && _a2 !== void 0 ? _a2 : heavenlyStemOfSoul, (_b = from === null || from === void 0 ? void 0 : from.earthlyBranch) !== null && _b !== void 0 ? _b : earthlyBranchOfSoul));
         var startHeavenlyStem = data_1.TIGER_RULE[heavenlyStem];
         for (var i = 0; i < 12; i++) {
           var idx = data_1.GENDER[genderKey] === data_1.earthlyBranches[earthlyBranch].yinYang ? (0, utils_1.fixIndex)(soulIndex + i) : (0, utils_1.fixIndex)(soulIndex - i);
@@ -42077,11 +42077,11 @@ var ZiweiChartCustomElementGlobal = (() => {
       var i18n_1 = require_i18n();
       var utils_1 = require_utils();
       var getStartIndex = function(param) {
-        var _a, _b;
+        var _a2, _b;
         var solarDate = param.solarDate, timeIndex = param.timeIndex, fixLeap = param.fixLeap, from = param.from;
         var _c = (0, astro_1.getSoulAndBody)({ solarDate, timeIndex, fixLeap }), heavenlyStemOfSoul = _c.heavenlyStemOfSoul, earthlyBranchOfSoul = _c.earthlyBranchOfSoul;
         var lunarDay = (0, lunar_lite_1.solar2lunar)(solarDate).lunarDay;
-        var baseHeavenlyStem = (_a = from === null || from === void 0 ? void 0 : from.heavenlyStem) !== null && _a !== void 0 ? _a : heavenlyStemOfSoul;
+        var baseHeavenlyStem = (_a2 = from === null || from === void 0 ? void 0 : from.heavenlyStem) !== null && _a2 !== void 0 ? _a2 : heavenlyStemOfSoul;
         var baseEarthlyBranch = (_b = from === null || from === void 0 ? void 0 : from.earthlyBranch) !== null && _b !== void 0 ? _b : earthlyBranchOfSoul;
         var fiveElements = (0, i18n_1.kot)((0, astro_1.getFiveElementsClass)(baseHeavenlyStem, baseEarthlyBranch));
         var fiveElementsValue = data_1.FiveElementsClass[fiveElements];
@@ -42231,7 +42231,7 @@ var ZiweiChartCustomElementGlobal = (() => {
       var getDailyStarIndex = function(solarDateStr, timeIndex, fixLeap) {
         var lunarDay = (0, lunar_lite_1.solar2lunar)(solarDateStr).lunarDay;
         var monthIndex = (0, utils_1.fixLunarMonthIndex)(solarDateStr, timeIndex, fixLeap);
-        var _a = (0, exports.getZuoYouIndex)(monthIndex + 1), zuoIndex = _a.zuoIndex, youIndex = _a.youIndex;
+        var _a2 = (0, exports.getZuoYouIndex)(monthIndex + 1), zuoIndex = _a2.zuoIndex, youIndex = _a2.youIndex;
         var _b = (0, exports.getChangQuIndex)(timeIndex), changIndex = _b.changIndex, quIndex = _b.quIndex;
         var dayIndex = (0, utils_1.fixLunarDayIndex)(lunarDay, timeIndex);
         var santaiIndex = (0, utils_1.fixIndex)((zuoIndex + dayIndex) % 12);
@@ -42423,7 +42423,7 @@ var ZiweiChartCustomElementGlobal = (() => {
       };
       exports.getDahaoIndex = getDahaoIndex;
       var getYearlyStarIndex = function(param) {
-        var _a;
+        var _a2;
         var solarDate = param.solarDate, timeIndex = param.timeIndex, gender = param.gender, fixLeap = param.fixLeap;
         var _b = (0, astro_1.getConfig)(), horoscopeDivide = _b.horoscopeDivide, algorithm = _b.algorithm;
         var yearly = (0, lunar_lite_1.getHeavenlyStemAndEarthlyBranchBySolarDate)(solarDate, timeIndex, {
@@ -42465,7 +42465,7 @@ var ZiweiChartCustomElementGlobal = (() => {
         var tianshangIndex = (0, utils_1.fixIndex)(data_1.PALACES.indexOf("friendsPalace") + soulIndex);
         var tianshiIndex = (0, utils_1.fixIndex)(data_1.PALACES.indexOf("healthPalace") + soulIndex);
         if (algorithm === "zhongzhou" && !sameYinyang) {
-          _a = [tianshangIndex, tianshiIndex], tianshiIndex = _a[0], tianshangIndex = _a[1];
+          _a2 = [tianshangIndex, tianshiIndex], tianshiIndex = _a2[0], tianshangIndex = _a2[1];
         }
         return {
           xianchiIndex,
@@ -42594,11 +42594,11 @@ var ZiweiChartCustomElementGlobal = (() => {
               return _this._palace;
             };
             this.surroundedPalaces = function() {
-              var _a;
+              var _a2;
               if (!_this._palace) {
                 return void 0;
               }
-              return (_a = _this._astrolabe) === null || _a === void 0 ? void 0 : _a.surroundedPalaces(_this._palace.name);
+              return (_a2 = _this._astrolabe) === null || _a2 === void 0 ? void 0 : _a2.surroundedPalaces(_this._palace.name);
             };
             this.withMutagen = function(mutagen) {
               if (Array.isArray(mutagen)) {
@@ -42648,7 +42648,7 @@ var ZiweiChartCustomElementGlobal = (() => {
       var astro_1 = require_astro2();
       var getMajorStar = function(param) {
         var solarDate = param.solarDate, timeIndex = param.timeIndex;
-        var _a = (0, location_1.getStartIndex)(param), ziweiIndex = _a.ziweiIndex, tianfuIndex = _a.tianfuIndex;
+        var _a2 = (0, location_1.getStartIndex)(param), ziweiIndex = _a2.ziweiIndex, tianfuIndex = _a2.tianfuIndex;
         var yearly = (0, lunar_lite_1.getHeavenlyStemAndEarthlyBranchBySolarDate)(solarDate, timeIndex, {
           year: (0, astro_1.getConfig)().yearDivide
         }).yearly;
@@ -42727,7 +42727,7 @@ var ZiweiChartCustomElementGlobal = (() => {
           year: (0, astro_1.getConfig)().yearDivide
         }).yearly;
         var monthIndex = (0, utils_1.fixLunarMonthIndex)(solarDateStr, timeIndex, fixLeap);
-        var _a = (0, location_1.getZuoYouIndex)(monthIndex + 1), zuoIndex = _a.zuoIndex, youIndex = _a.youIndex;
+        var _a2 = (0, location_1.getZuoYouIndex)(monthIndex + 1), zuoIndex = _a2.zuoIndex, youIndex = _a2.youIndex;
         var _b = (0, location_1.getChangQuIndex)(timeIndex), changIndex = _b.changIndex, quIndex = _b.quIndex;
         var _c = (0, location_1.getKuiYueIndex)(yearly[0]), kuiIndex = _c.kuiIndex, yueIndex = _c.yueIndex;
         var _d = (0, location_1.getHuoLingIndex)(yearly[1], timeIndex), huoIndex = _d.huoIndex, lingIndex = _d.lingIndex;
@@ -42853,7 +42853,7 @@ var ZiweiChartCustomElementGlobal = (() => {
         var monthlyIndex = (0, location_1.getMonthlyStarIndex)(solarDate, timeIndex, fixLeap);
         var dailyIndex = (0, location_1.getDailyStarIndex)(solarDate, timeIndex, fixLeap);
         var timelyIndex = (0, location_1.getTimelyStarIndex)(timeIndex);
-        var _a = (0, location_1.getLuanXiIndex)(yearly[1]), hongluanIndex = _a.hongluanIndex, tianxiIndex = _a.tianxiIndex;
+        var _a2 = (0, location_1.getLuanXiIndex)(yearly[1]), hongluanIndex = _a2.hongluanIndex, tianxiIndex = _a2.tianxiIndex;
         var suiqian12 = (0, _1.getYearly12)(solarDate).suiqian12;
         stars[hongluanIndex].push(new FunctionalStar_1.default({ name: (0, i18n_1.t)("hongluan"), type: "flower", scope: "origin" }));
         stars[tianxiIndex].push(new FunctionalStar_1.default({ name: (0, i18n_1.t)("tianxi"), type: "flower", scope: "origin" }));
@@ -42955,7 +42955,7 @@ var ZiweiChartCustomElementGlobal = (() => {
         }).yearly;
         var earthlyBranchNameOfYear = yearly[1];
         var earthlyBranchOfYear = (0, i18n_1.kot)(earthlyBranchNameOfYear, "Earthly");
-        var _a = (0, astro_1.getSoulAndBody)(param), heavenlyStemOfSoul = _a.heavenlyStemOfSoul, earthlyBranchOfSoul = _a.earthlyBranchOfSoul;
+        var _a2 = (0, astro_1.getSoulAndBody)(param), heavenlyStemOfSoul = _a2.heavenlyStemOfSoul, earthlyBranchOfSoul = _a2.earthlyBranchOfSoul;
         var fiveElementClass = (0, astro_1.getFiveElementsClass)(heavenlyStemOfSoul, earthlyBranchOfSoul);
         var stars = [
           "changsheng",
@@ -43107,7 +43107,7 @@ var ZiweiChartCustomElementGlobal = (() => {
       var FunctionalStar_1 = __importDefault(require_FunctionalStar());
       var location_1 = require_location();
       var getHoroscopeStar = function(heavenlyStem, earthlyBranch, scope) {
-        var _a = (0, location_1.getKuiYueIndex)(heavenlyStem), kuiIndex = _a.kuiIndex, yueIndex = _a.yueIndex;
+        var _a2 = (0, location_1.getKuiYueIndex)(heavenlyStem), kuiIndex = _a2.kuiIndex, yueIndex = _a2.yueIndex;
         var _b = (0, location_1.getChangQuIndexByHeavenlyStem)(heavenlyStem), changIndex = _b.changIndex, quIndex = _b.quIndex;
         var _c = (0, location_1.getLuYangTuoMaIndex)(heavenlyStem, earthlyBranch), luIndex = _c.luIndex, yangIndex = _c.yangIndex, tuoIndex = _c.tuoIndex, maIndex = _c.maIndex;
         var _d = (0, location_1.getLuanXiIndex)(earthlyBranch), hongluanIndex = _d.hongluanIndex, tianxiIndex = _d.tianxiIndex;
@@ -43257,11 +43257,11 @@ var ZiweiChartCustomElementGlobal = (() => {
       var lunar_lite_1 = require_lib();
       var astro_1 = require_astro2();
       var getTargetMutagens = function(heavenlyStem) {
-        var _a, _b;
+        var _a2, _b;
         var mutagens = (0, astro_1.getConfig)().mutagens;
         var result;
         if (mutagens && mutagens[heavenlyStem]) {
-          result = (_a = mutagens[heavenlyStem]) !== null && _a !== void 0 ? _a : [];
+          result = (_a2 = mutagens[heavenlyStem]) !== null && _a2 !== void 0 ? _a2 : [];
         } else {
           result = (_b = data_1.heavenlyStems[heavenlyStem].mutagen) !== null && _b !== void 0 ? _b : [];
         }
@@ -43288,10 +43288,10 @@ var ZiweiChartCustomElementGlobal = (() => {
       };
       exports.earthlyBranchIndexToPalaceIndex = earthlyBranchIndexToPalaceIndex;
       var getBrightness = function(starName, index) {
-        var _a;
+        var _a2;
         var star = (0, i18n_1.kot)(starName);
         var brightness = (0, astro_1.getConfig)().brightness;
-        var targetBrightness = brightness[star] ? brightness[star] : (_a = data_1.STARS_INFO[star]) === null || _a === void 0 ? void 0 : _a.brightness;
+        var targetBrightness = brightness[star] ? brightness[star] : (_a2 = data_1.STARS_INFO[star]) === null || _a2 === void 0 ? void 0 : _a2.brightness;
         if (!targetBrightness) {
           return "";
         }
@@ -43319,7 +43319,7 @@ var ZiweiChartCustomElementGlobal = (() => {
       };
       exports.fixEarthlyBranchIndex = fixEarthlyBranchIndex;
       var fixLunarMonthIndex = function(solarDateStr, timeIndex, fixLeap) {
-        var _a = (0, lunar_lite_1.solar2lunar)(solarDateStr), lunarMonth = _a.lunarMonth, lunarDay = _a.lunarDay, isLeap = _a.isLeap;
+        var _a2 = (0, lunar_lite_1.solar2lunar)(solarDateStr), lunarMonth = _a2.lunarMonth, lunarDay = _a2.lunarDay, isLeap = _a2.isLeap;
         var firstIndex = data_1.EARTHLY_BRANCHES.indexOf("yinEarthly");
         var needToAdd = isLeap && fixLeap && lunarDay > 15 && timeIndex !== 12;
         return (0, exports.fixIndex)(lunarMonth + 1 - firstIndex + (needToAdd ? 1 : 0));
@@ -43461,8 +43461,8 @@ var ZiweiChartCustomElementGlobal = (() => {
       var data_1 = require_data();
       var i18n_1 = require_i18n();
       var utils_1 = require_utils();
-      var Izstar = function(_a) {
-        var horoscopeMutagens = _a.horoscopeMutagens, activeHeavenlyStem = _a.activeHeavenlyStem, hoverHeavenlyStem = _a.hoverHeavenlyStem, palaceHeavenlyStem = _a.palaceHeavenlyStem, star = __rest(_a, ["horoscopeMutagens", "activeHeavenlyStem", "hoverHeavenlyStem", "palaceHeavenlyStem"]);
+      var Izstar = function(_a2) {
+        var horoscopeMutagens = _a2.horoscopeMutagens, activeHeavenlyStem = _a2.activeHeavenlyStem, hoverHeavenlyStem = _a2.hoverHeavenlyStem, palaceHeavenlyStem = _a2.palaceHeavenlyStem, star = __rest(_a2, ["horoscopeMutagens", "activeHeavenlyStem", "hoverHeavenlyStem", "palaceHeavenlyStem"]);
         var mutagenStyle = (0, react_1.useMemo)(function() {
           if (!activeHeavenlyStem) {
             return "";
@@ -43615,9 +43615,9 @@ var ZiweiChartCustomElementGlobal = (() => {
       var Izstar_1 = require_Izstar2();
       var i18n_1 = require_i18n();
       var utils_1 = require_utils();
-      var Izpalace = function(_a) {
+      var Izpalace = function(_a2) {
         var _b, _c, _d, _e;
-        var index = _a.index, taichiPalace = _a.taichiPalace, focusedIndex = _a.focusedIndex, onFocused = _a.onFocused, horoscope = _a.horoscope, activeHeavenlyStem = _a.activeHeavenlyStem, toggleActiveHeavenlyStem = _a.toggleActiveHeavenlyStem, hoverHeavenlyStem = _a.hoverHeavenlyStem, setHoverHeavenlyStem = _a.setHoverHeavenlyStem, _f = _a.showDecadalScope, showDecadalScope = _f === void 0 ? false : _f, _g = _a.showYearlyScope, showYearlyScope = _g === void 0 ? false : _g, _h = _a.showMonthlyScope, showMonthlyScope = _h === void 0 ? false : _h, _j = _a.showDailyScope, showDailyScope = _j === void 0 ? false : _j, _k = _a.showHourlyScope, showHourlyScope = _k === void 0 ? false : _k, toggleScope = _a.toggleScope, toggleTaichiPoint = _a.toggleTaichiPoint, palace = __rest(_a, ["index", "taichiPalace", "focusedIndex", "onFocused", "horoscope", "activeHeavenlyStem", "toggleActiveHeavenlyStem", "hoverHeavenlyStem", "setHoverHeavenlyStem", "showDecadalScope", "showYearlyScope", "showMonthlyScope", "showDailyScope", "showHourlyScope", "toggleScope", "toggleTaichiPoint"]);
+        var index = _a2.index, taichiPalace = _a2.taichiPalace, focusedIndex = _a2.focusedIndex, onFocused = _a2.onFocused, horoscope = _a2.horoscope, activeHeavenlyStem = _a2.activeHeavenlyStem, toggleActiveHeavenlyStem = _a2.toggleActiveHeavenlyStem, hoverHeavenlyStem = _a2.hoverHeavenlyStem, setHoverHeavenlyStem = _a2.setHoverHeavenlyStem, _f = _a2.showDecadalScope, showDecadalScope = _f === void 0 ? false : _f, _g = _a2.showYearlyScope, showYearlyScope = _g === void 0 ? false : _g, _h = _a2.showMonthlyScope, showMonthlyScope = _h === void 0 ? false : _h, _j = _a2.showDailyScope, showDailyScope = _j === void 0 ? false : _j, _k = _a2.showHourlyScope, showHourlyScope = _k === void 0 ? false : _k, toggleScope = _a2.toggleScope, toggleTaichiPoint = _a2.toggleTaichiPoint, palace = __rest(_a2, ["index", "taichiPalace", "focusedIndex", "onFocused", "horoscope", "activeHeavenlyStem", "toggleActiveHeavenlyStem", "hoverHeavenlyStem", "setHoverHeavenlyStem", "showDecadalScope", "showYearlyScope", "showMonthlyScope", "showDailyScope", "showHourlyScope", "toggleScope", "toggleTaichiPoint"]);
         var horoscopeNames = (0, react_1.useMemo)(function() {
           var horoscopeNames2 = [];
           if ((horoscope === null || horoscope === void 0 ? void 0 : horoscope.decadal.index) === index) {
@@ -43729,10 +43729,10 @@ var ZiweiChartCustomElementGlobal = (() => {
             })))
           ),
           react_1.default.createElement("div", { className: (0, classnames_1.default)("iztro-palace-fate") }, horoscopeNames === null || horoscopeNames === void 0 ? void 0 : horoscopeNames.map(function(item) {
-            var _a2;
+            var _a3;
             return react_1.default.createElement(
               "span",
-              { key: item.name, className: (0, classnames_1.default)((_a2 = {}, _a2["iztro-palace-".concat(item.scope, "-active")] = item.show, _a2)), onClick: item.scope ? function() {
+              { key: item.name, className: (0, classnames_1.default)((_a3 = {}, _a3["iztro-palace-".concat(item.scope, "-active")] = item.show, _a3)), onClick: item.scope ? function() {
                 return toggleScope === null || toggleScope === void 0 ? void 0 : toggleScope(item.scope);
               } : void 0 },
               item.name,
@@ -43845,8 +43845,8 @@ var ZiweiChartCustomElementGlobal = (() => {
       var react_1 = __importDefault(require_react());
       var classnames_1 = __importDefault(require_classnames());
       require_IzpalaceCenter();
-      var Item = function(_a) {
-        var title = _a.title, content = _a.content;
+      var Item = function(_a2) {
+        var title = _a2.title, content = _a2.content;
         return react_1.default.createElement(
           "li",
           { className: (0, classnames_1.default)("iztro-palace-center-item") },
@@ -43898,8 +43898,8 @@ var ZiweiChartCustomElementGlobal = (() => {
       exports.Line = void 0;
       var react_1 = __importStar(require_react());
       var utils_1 = require_utils();
-      var Line = function(_a) {
-        var index = _a.index, scope = _a.scope;
+      var Line = function(_a2) {
+        var index = _a2.index, scope = _a2.scope;
         var line = (0, react_1.useRef)(null);
         var strokeColor = (0, react_1.useMemo)(function() {
           if (scope) {
@@ -43915,7 +43915,7 @@ var ZiweiChartCustomElementGlobal = (() => {
           if (!canvasDom || idx < 0) {
             return;
           }
-          var _a2 = canvasDom.getBoundingClientRect(), height = _a2.height, width = _a2.width;
+          var _a3 = canvasDom.getBoundingClientRect(), height = _a3.height, width = _a3.width;
           canvasDom.width = width;
           canvasDom.height = height;
           var w = width / 2;
@@ -44029,9 +44029,9 @@ var ZiweiChartCustomElementGlobal = (() => {
       var lunar_lite_1 = require_lib();
       var i18n_1 = require_i18n();
       var data_1 = require_data();
-      var IzpalaceCenter = function(_a) {
+      var IzpalaceCenter = function(_a2) {
         var _b, _c;
-        var astrolabe = _a.astrolabe, horoscope = _a.horoscope, arrowIndex = _a.arrowIndex, arrowScope = _a.arrowScope, _d = _a.horoscopeDate, horoscopeDate = _d === void 0 ? /* @__PURE__ */ new Date() : _d, _e = _a.horoscopeHour, horoscopeHour = _e === void 0 ? 0 : _e, setHoroscopeDate = _a.setHoroscopeDate, setHoroscopeHour = _a.setHoroscopeHour, centerPalaceAlign = _a.centerPalaceAlign;
+        var astrolabe = _a2.astrolabe, horoscope = _a2.horoscope, arrowIndex = _a2.arrowIndex, arrowScope = _a2.arrowScope, _d = _a2.horoscopeDate, horoscopeDate = _d === void 0 ? /* @__PURE__ */ new Date() : _d, _e = _a2.horoscopeHour, horoscopeHour = _e === void 0 ? 0 : _e, setHoroscopeDate = _a2.setHoroscopeDate, setHoroscopeHour = _a2.setHoroscopeHour, centerPalaceAlign = _a2.centerPalaceAlign;
         var records = (0, react_1.useMemo)(function() {
           return [
             {
@@ -44086,7 +44086,7 @@ var ZiweiChartCustomElementGlobal = (() => {
         }, [astrolabe, horoscope]);
         var horoDate = (0, react_1.useMemo)(function() {
           var dateStr = horoscopeDate !== null && horoscopeDate !== void 0 ? horoscopeDate : /* @__PURE__ */ new Date();
-          var _a2 = (0, lunar_lite_1.normalizeDateStr)(dateStr), year = _a2[0], month = _a2[1], date = _a2[2];
+          var _a3 = (0, lunar_lite_1.normalizeDateStr)(dateStr), year = _a3[0], month = _a3[1], date = _a3[2];
           var dt = new Date(year, month - 1, date);
           return {
             solar: "".concat(year, "-").concat(month, "-").concat(date),
@@ -44098,7 +44098,7 @@ var ZiweiChartCustomElementGlobal = (() => {
           if (!(astrolabe === null || astrolabe === void 0 ? void 0 : astrolabe.solarDate)) {
             return true;
           }
-          var _a2 = (0, lunar_lite_1.normalizeDateStr)(horoscopeDate), year = _a2[0], month = _a2[1], date = _a2[2];
+          var _a3 = (0, lunar_lite_1.normalizeDateStr)(horoscopeDate), year = _a3[0], month = _a3[1], date = _a3[2];
           var dt = new Date(year, month - 1, date);
           var _b2 = (0, lunar_lite_1.normalizeDateStr)(astrolabe.solarDate), birthYear = _b2[0], birthMonth = _b2[1], birthDate = _b2[2];
           var birthday = new Date(birthYear, birthMonth - 1, birthDate);
@@ -44134,7 +44134,7 @@ var ZiweiChartCustomElementGlobal = (() => {
           if (!(astrolabe === null || astrolabe === void 0 ? void 0 : astrolabe.solarDate)) {
             return true;
           }
-          var _a2 = (0, lunar_lite_1.normalizeDateStr)(dateStr), year = _a2[0], month = _a2[1], date = _a2[2];
+          var _a3 = (0, lunar_lite_1.normalizeDateStr)(dateStr), year = _a3[0], month = _a3[1], date = _a3[2];
           var dt = new Date(year, month - 1, date);
           var _b2 = (0, lunar_lite_1.normalizeDateStr)(astrolabe.solarDate), birthYear = _b2[0], birthMonth = _b2[1], birthDate = _b2[2];
           var birthday = new Date(birthYear, birthMonth - 1, birthDate);
@@ -44340,7 +44340,7 @@ var ZiweiChartCustomElementGlobal = (() => {
       function useIztro(input) {
         var _currentDate = /* @__PURE__ */ new Date();
         var _currentHour = _currentDate.getHours();
-        var _a = (0, react_1.useState)(), astrolabe = _a[0], _setAstrolabe = _a[1];
+        var _a2 = (0, react_1.useState)(), astrolabe = _a2[0], _setAstrolabe = _a2[1];
         var _b = (0, react_1.useState)(_currentDate), _horoscopeDate = _b[0], _setHoroscopeDate = _b[1];
         var _c = (0, react_1.useState)((0, utils_1.timeToIndex)(_currentHour)), _horoscopeHour = _c[0], _setHoroscopeHour = _c[1];
         var _d = (0, react_1.useState)(), horoscope = _d[0], _setHoroscope = _d[1];
@@ -44462,7 +44462,7 @@ var ZiweiChartCustomElementGlobal = (() => {
       require_default();
       var astro_1 = require_astro2();
       var Iztrolabe = function(props) {
-        var _a = (0, react_1.useState)(-1), taichiPoint = _a[0], setTaichiPoint = _a[1];
+        var _a2 = (0, react_1.useState)(-1), taichiPoint = _a2[0], setTaichiPoint = _a2[1];
         var _b = (0, react_1.useState)(), taichiPalaces = _b[0], setTaichiPalaces = _b[1];
         var _c = (0, react_1.useState)(), activeHeavenlyStem = _c[0], setActiveHeavenlyStem = _c[1];
         var _d = (0, react_1.useState)(), hoverHeavenlyStem = _d[0], setHoverHeavenlyStem = _d[1];
@@ -44543,8 +44543,8 @@ var ZiweiChartCustomElementGlobal = (() => {
           }
         }, [showDecadal, showYearly, showMonthly, showDaily, showHourly, horoscope]);
         (0, react_1.useEffect)(function() {
-          var _a2, _b2;
-          setHoroscopeDate((_a2 = props.horoscopeDate) !== null && _a2 !== void 0 ? _a2 : /* @__PURE__ */ new Date());
+          var _a3, _b2;
+          setHoroscopeDate((_a3 = props.horoscopeDate) !== null && _a3 !== void 0 ? _a3 : /* @__PURE__ */ new Date());
           setHoroscopeHour((_b2 = props.horoscopeHour) !== null && _b2 !== void 0 ? _b2 : 0);
         }, [props.horoscopeDate, props.horoscopeHour]);
         (0, react_1.useEffect)(function() {
@@ -44648,253 +44648,54 @@ var ZiweiChartCustomElementGlobal = (() => {
   // src/ziwei-chart.js
   var import_react = __toESM(require_react(), 1);
   var import_client = __toESM(require_client(), 1);
-  var import_react_iztro = __toESM(require_lib4(), 1);
-  console.log("[ZiweiChart CE SCRIPT] Top-level: Script execution started. React, ReactDOM imported.");
-  console.log("[ZiweiChart CE SCRIPT] Type of directly imported Astrolabe:", typeof import_react_iztro.Astrolabe);
-  console.log("[ZiweiChart CE SCRIPT] Value of directly imported Astrolabe:", import_react_iztro.Astrolabe);
-  var antdResetCSS = `
-html, body, div, span, applet, object, iframe,
-h1, h2, h3, h4, h5, h6, p, blockquote, pre,
-a, abbr, acronym, address, big, cite, code,
-del, dfn, em, img, ins, kbd, q, s, samp,
-small, strike, strong, sub, sup, tt, var,
-b, u, i, center,
-dl, dt, dd, ol, ul, li,
-fieldset, form, label, legend,
-table, caption, tbody, tfoot, thead, tr, th, td,
-article, aside, canvas, details, embed, 
-figure, figcaption, footer, header, hgroup, 
-menu, nav, output, ruby, section, summary,
-time, mark, audio, video {
-  margin: 0;
-  padding: 0;
-  border: 0;
-  font-size: 100%;
-  font: inherit;
-  vertical-align: baseline;
-}
-article, aside, details, figcaption, figure, 
-footer, header, hgroup, menu, nav, section {
-  display: block;
-}
-body {
-  line-height: 1;
-}
-ol, ul {
-  list-style: none;
-}
-blockquote, q {
-  quotes: none;
-}
-blockquote:before, blockquote:after,
-q:before, q:after {
-  content: '';
-  content: none;
-}
-table {
-  border-collapse: collapse;
-  border-spacing: 0;
-}
-*,
-*::before,
-*::after {
-  box-sizing: border-box;
-}
-html {
-  font-family: sans-serif; /* 1 */
-  line-height: 1.15; /* 2 */
-  -webkit-text-size-adjust: 100%; /* 3 */
-  -ms-text-size-adjust: 100%; /* 3 */
-  -ms-overflow-style: scrollbar; /* 4 */
-  -webkit-tap-highlight-color: rgba(0, 0, 0, 0); /* 5 */
-}
-body {
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
-  font-size: 14px;
-  line-height: 1.5715;
-  color: rgba(0,0,0,.85);
-  background-color: #fff;
-}
-`;
-  var reactIztroDefaultCSS = `
-.iztro-astrolabe-theme-default {
-  --iztro-star-font-size-big: 13px;
-  --iztro-star-font-size-small: 12px;
-  --iztro-color-major: #531dab;
-  --iztro-color-focus: #000;
-  --iztro-color-quan: #2f54eb;
-  --iztro-color-tough: #612500;
-  --iztro-color-awesome: #d4380d;
-  --iztro-color-active: #1890ff;
-  --iztro-color-happy: #c41d7f;
-  --iztro-color-nice: #237804;
-  --iztro-color-decorator-1: #90983c;
-  --iztro-color-decorator-2: #813359;
-  --iztro-color-text: #8c8c8c;
-  --iztro-color-border: #00152912;
-  --iztro-color-decadal: var(--iztro-color-active);
-  --iztro-color-yearly: var(--iztro-color-decorator-2);
-  --iztro-color-monthly: var(--iztro-color-nice);
-  --iztro-color-daily: var(--iztro-color-decorator-1);
-  --iztro-color-hourly: var(--iztro-color-text);
-}
-.iztro-astrolabe { text-align: left; }
-.iztro-palace { border: 1px solid var(--iztro-color-border); }
-.iztro-star-soft, .iztro-star-tough, .iztro-star-adjective, .iztro-star-flower, .iztro-star-helper, .iztro-palace-fate, .iztro-palace-horo-star, .iztro-palace-scope, .iztro-palace-dynamic-name, .iztro-palace-lft24, .iztro-palace-rgt24 { font-size: var(--iztro-star-font-size-small); font-weight: normal; text-wrap: nowrap; }
-.iztro-palace-scope-age { text-wrap: balance; }
-.iztro-palace-scope-age, .iztro-palace-scope-decadal { color: var(--iztro-color-text); }
-.iztro-palace-lft24 { color: var(--iztro-color-decorator-1); }
-.iztro-palace-rgt24 { color: var(--iztro-color-decorator-2); text-wrap: nowrap; }
-.iztro-star-major, .iztro-star-tianma, .iztro-star-lucun, .iztro-palace-name, .iztro-palace-gz { font-size: var(--iztro-star-font-size-big); font-weight: bold; }
-.iztro-star-tianma { color: var(--iztro-color-active); }
-.iztro-star-lucun { color: var(--iztro-color-awesome); }
-.iztro-palace-horo-star .iztro-star { opacity: 0.75; }
-.iztro-palace-horo-star .iztro-star-tianma, .iztro-palace-horo-star .iztro-star-lucun { font-weight: normal; font-size: var(--iztro-star-font-size-small); }
-.iztro-star-brightness, .iztro-star-adjective { font-style: normal; font-weight: normal; color: var(--iztro-color-text); }
-.iztro-star-brightness { opacity: 0.5; }
-.iztro-star-major, .iztro-star-soft, .iztro-palace-name { color: var(--iztro-color-major); }
-.iztro-star-tough { color: var(--iztro-color-tough); }
-.iztro-star-flower { color: var(--iztro-color-happy); }
-.iztro-star-helper, .iztro-palace-gz { color: var(--iztro-color-nice); }
-.iztro-star-mutagen.mutagen-0 { background-color: var(--iztro-color-awesome); }
-.iztro-star-mutagen.mutagen-1 { background-color: var(--iztro-color-quan); }
-.iztro-star-mutagen.mutagen-2 { background-color: var(--iztro-color-nice); }
-.iztro-star-mutagen.mutagen-3 { background-color: var(--iztro-color-focus); }
-.iztro-star-mutagen.mutagen-decadal { background-color: var(--iztro-color-decadal); opacity: 0.6; }
-.iztro-star-mutagen.mutagen-yearly { background-color: var(--iztro-color-yearly); opacity: 0.6; }
-.iztro-star-mutagen.mutagen-monthly { background-color: var(--iztro-color-monthly); opacity: 0.6; }
-.iztro-star-mutagen.mutagen-daily { background-color: var(--iztro-color-daily); opacity: 0.6; }
-.iztro-star-mutagen.mutagen-hourly { background-color: var(--iztro-color-hourly); opacity: 0.6; }
-.iztro-palace-gz .iztro-palace-gz-active { background-color: var(--iztro-color-nice); color: #fff; font-weight: normal; }
-.iztro-star-mutagen-0 { background-color: var(--iztro-color-awesome); color: #fff; font-weight: normal; }
-.iztro-star-mutagen-1 { background-color: var(--iztro-color-quan); color: #fff; font-weight: normal; }
-.iztro-star-mutagen-2 { background-color: var(--iztro-color-nice); color: #fff; font-weight: normal; }
-.iztro-star-mutagen-3 { background-color: var(--iztro-color-focus); color: #fff; font-weight: normal; }
-.iztro-star-self-mutagen-0::before { background-color: var(--iztro-color-awesome); }
-.iztro-star-self-mutagen-1::before { background-color: var(--iztro-color-quan); }
-.iztro-star-self-mutagen-2::before { background-color: var(--iztro-color-nice); }
-.iztro-star-self-mutagen-3::before { background-color: var(--iztro-color-focus); }
-.iztro-star-hover-mutagen-0::after { background-color: var(--iztro-color-awesome); }
-.iztro-star-hover-mutagen-1::after { background-color: var(--iztro-color-quan); }
-.iztro-star-hover-mutagen-2::after { background-color: var(--iztro-color-nice); }
-.iztro-star-hover-mutagen-3::after { background-color: var(--iztro-color-focus); }
-.iztro-palace-name-body { font-size: var(--iztro-star-font-size-small); font-weight: normal; position: absolute; margin-top: 2px; }
-.iztro-palace-fate span { display: block; padding: 0 3px; border-radius: 4px; color: #fff; background-color: var(--iztro-color-major); cursor: pointer; }
-.iztro-palace-center-item { font-size: var(--iztro-star-font-size-small); line-height: 22px; }
-.iztro-palace-center-item label { color: var(--iztro-color-text); }
-.iztro-palace-center-item span { color: var(--iztro-color-decorator-1); }
-.gender { display: inline-block; margin-right: 5px; }
-.gender.gender-male { color: var(--iztro-color-quan); }
-.gender.gender-female { color: var(--iztro-color-happy); }
-`;
+  var iztro = __toESM(require_lib4(), 1);
+  console.log("[ZiweiChart CE SCRIPT] Top-level: Script execution started. React, ReactDOM, iztro imported.");
+  console.log("[ZiweiChart CE SCRIPT] Type of iztro (import *):", typeof iztro);
+  var _a;
+  if (typeof iztro === "object" && iztro !== null) {
+    const initialIztroKeys = Object.keys(iztro);
+    console.log("[ZiweiChart CE SCRIPT] Initial iztro object ACTUAL KEYS:", initialIztroKeys);
+    initialIztroKeys.forEach((key) => {
+      console.log(`[ZiweiChart CE SCRIPT]   Key: "${key}", Type: ${typeof iztro[key]}`);
+      if (key === "default" && typeof iztro[key] === "object" && iztro[key] !== null) {
+        console.log(`[ZiweiChart CE SCRIPT]     Properties of iztro.default:`, Object.keys(iztro[key]));
+        console.log(`[ZiweiChart CE SCRIPT]     Type of iztro.default.Astrolabe:`, typeof iztro[key].Astrolabe);
+      }
+      if (key === "Astrolabe") {
+        console.log('[ZiweiChart CE SCRIPT]   Found "Astrolabe" key directly on iztro object!');
+      }
+    });
+    console.log("[ZiweiChart CE SCRIPT] Checking iztro.Astrolabe directly (after logging keys):", typeof iztro.Astrolabe);
+    console.log("[ZiweiChart CE SCRIPT] Checking iztro.default?.Astrolabe (if default is an object):", typeof ((_a = iztro.default) == null ? void 0 : _a.Astrolabe));
+  } else {
+    console.warn("[ZiweiChart CE SCRIPT] Initial iztro object is not an object or is null.");
+  }
   var ZiweiChart = class extends HTMLElement {
-    static get observedAttributes() {
-      console.log("[ZiweiChart CLASS] static get observedAttributes CALLED");
-      return ["data-config"];
-    }
-    constructor() {
-      super();
-      console.log("[ZiweiChart INSTANCE] constructor CALLED");
-      this.attachShadow({ mode: "open" });
-      console.log("[ZiweiChart INSTANCE] constructor: Shadow DOM attached.");
-      this.shadowRoot.innerHTML = `
-            <style>
-                :host { display: block; width: 100%; min-height: 500px; border: 3px solid deeppink; padding: 5px; box-sizing: border-box; }
-                ${antdResetCSS}
-                ${reactIztroDefaultCSS}
-                .chart-wrapper-inside-shadow-dom { width: 100%; min-height: 580px; display: flex; flex-direction: column; justify-content: center; align-items: center; border: 2px dashed dodgerblue; padding: 10px; box-sizing: border-box; background-color: #f0f0f0; }
-                .message-display-in-shadow { font-size: 16px; padding: 20px; border-radius: 4px; text-align: center; }
-                .loading-message-in-shadow { background-color: #e9e9e9; color: #333; }
-                .error-message-in-shadow { background-color: #ffebee; color: #c62828; border: 1px solid #c62828; }
-            </style>
-            <div id="chart-render-target" class="chart-wrapper-inside-shadow-dom">
-                <div class="message-display-in-shadow loading-message-in-shadow">\u547D\u76E4\u7D44\u4EF6\u521D\u59CB\u5316 (Constructor)...</div>
-            </div>
-        `;
-      console.log("[ZiweiChart INSTANCE] constructor: Initial Shadow DOM HTML set.");
-      this._reactRoot = null;
-      this._currentConfigString = null;
-      this._isRendering = false;
-    }
-    connectedCallback() {
-      console.log("[ZiweiChart INSTANCE] connectedCallback CALLED.");
-      const renderTarget = this.shadowRoot.getElementById("chart-render-target");
-      if (!renderTarget) {
-        console.error("[ZiweiChart INSTANCE] connectedCallback: CRITICAL - #chart-render-target NOT FOUND.");
-        this.shadowRoot.innerHTML = `<div class="message-display-in-shadow error-message-in-shadow">\u5167\u90E8\u6E32\u67D3\u76EE\u6A19\u4E1F\u5931\uFF01</div>`;
-        return;
-      }
-      console.log("[ZiweiChart INSTANCE] connectedCallback: #chart-render-target found.");
-      if (import_client.default.createRoot) {
-        this._reactRoot = import_client.default.createRoot(renderTarget);
-        console.log("[ZiweiChart INSTANCE] connectedCallback: React root CREATED.");
-      } else {
-        console.error("[ZiweiChart INSTANCE] connectedCallback: ReactDOM.createRoot is UNDEFINED.");
-        renderTarget.innerHTML = `<div class="message-display-in-shadow error-message-in-shadow">React \u74B0\u5883\u932F\u8AA4 (createRoot)\u3002</div>`;
-        return;
-      }
-      const initialConfig = this.getAttribute("data-config");
-      if (initialConfig) {
-        console.log("[ZiweiChart INSTANCE] connectedCallback: Initial data-config FOUND, processing...");
-        this._parseAndRender(initialConfig);
-      } else {
-        this.renderPlaceholder("\u7B49\u5F85\u547D\u76E4\u6578\u64DA (connected)...");
-      }
-      console.log("[ZiweiChart INSTANCE] connectedCallback FINISHED.");
-    }
-    disconnectedCallback() {
-      console.log("[ZiweiChart INSTANCE] disconnectedCallback CALLED.");
-      if (this._reactRoot && typeof this._reactRoot.unmount === "function") {
-        try {
-          this._reactRoot.unmount();
-          console.log("[ZiweiChart INSTANCE] disconnectedCallback: React root unmounted.");
-        } catch (e) {
-          console.error("[ZiweiChart INSTANCE] disconnectedCallback: Error during unmount:", e);
-        }
-      }
-      this._reactRoot = null;
-    }
-    attributeChangedCallback(name, oldValue, newValue) {
-      console.log(`[ZiweiChart INSTANCE] attributeChangedCallback CALLED for attribute: ${name}`);
-      if (name === "data-config") {
-        if (newValue === null || newValue === void 0) {
-          this.renderPlaceholder("\u547D\u76E4\u914D\u7F6E\u5DF2\u79FB\u9664 (attrChanged).");
-          this._currentConfigString = null;
-        } else if (newValue !== this._currentConfigString) {
-          this._parseAndRender(newValue);
-        }
-      }
-      console.log("[ZiweiChart INSTANCE] attributeChangedCallback FINISHED.");
-    }
-    _parseAndRender(configString) {
-      console.log("[ZiweiChart INSTANCE] _parseAndRender CALLED.");
-      if (this._isRendering)
-        return;
-      this._isRendering = true;
-      this._currentConfigString = configString;
-      if (!configString) {
-        this.renderError("\u914D\u7F6E\u70BA\u7A7A\u3002");
-        this._isRendering = false;
-        return;
-      }
-      try {
-        const config = JSON.parse(configString);
-        console.log("[ZiweiChart INSTANCE] _parseAndRender: Parsed config:", config);
-        if (config && config.type === "RENDER_CHART" && config.payload) {
-          this._renderAstrolabeWithReact(config.payload);
-        } else {
-          this.renderError("\u914D\u7F6E\u683C\u5F0F\u7121\u6548\u3002");
-        }
-      } catch (error) {
-        this.renderError(`\u89E3\u6790\u914D\u7F6E\u932F\u8AA4: ${error.message}`);
-      }
-      this._isRendering = false;
-      console.log("[ZiweiChart INSTANCE] _parseAndRender FINISHED.");
-    }
+    // ... (static get observedAttributes, constructor, connectedCallback, disconnectedCallback, attributeChangedCallback, _parseAndRender, renderPlaceholder, renderError 保持與我上次提供的【完整帶日誌版本】一致)
+    // 只需要修改 _renderAstrolabeWithReact 函數，如下：
     _renderAstrolabeWithReact(payload) {
+      var _a2;
       console.log("[ZiweiChart INSTANCE] _renderAstrolabeWithReact CALLED. Payload:", JSON.stringify(payload));
-      console.log("[ZiweiChart INSTANCE] Type of Astrolabe in _renderAstrolabeWithReact:", typeof import_react_iztro.Astrolabe);
-      console.log("[ZiweiChart INSTANCE] Value of Astrolabe in _renderAstrolabeWithReact:", import_react_iztro.Astrolabe);
+      console.log("[ZiweiChart INSTANCE] Current iztro object in _renderAstrolabeWithReact:", iztro);
+      if (typeof iztro === "object" && iztro !== null) {
+        const runtimeIztroKeys = Object.keys(iztro);
+        console.log("[ZiweiChart INSTANCE] iztro object keys in _renderAstrolabeWithReact ARRAY:", runtimeIztroKeys);
+        runtimeIztroKeys.forEach((key) => {
+          console.log(`[ZiweiChart INSTANCE]   Runtime iztro key: "${key}", value type: ${typeof iztro[key]}`);
+          if (key === "default" && typeof iztro[key] === "object" && iztro[key] !== null) {
+            console.log(`[ZiweiChart INSTANCE]     Properties of iztro.default:`, Object.keys(iztro[key]));
+            console.log(`[ZiweiChart INSTANCE]     Type of iztro.default.Astrolabe:`, typeof iztro[key].Astrolabe);
+          }
+          if (key === "Astrolabe") {
+            console.log('[ZiweiChart INSTANCE]   Found "Astrolabe" key directly on iztro object during iteration!');
+          }
+        });
+        console.log("[ZiweiChart INSTANCE] iztro.Astrolabe type (direct access):", typeof iztro.Astrolabe);
+        console.log("[ZiweiChart INSTANCE] iztro.Astrolabe value (direct access):", iztro.Astrolabe);
+        console.log("[ZiweiChart INSTANCE] iztro.default?.Astrolabe type (optional chaining):", typeof ((_a2 = iztro.default) == null ? void 0 : _a2.Astrolabe));
+      } else {
+        console.error("[ZiweiChart INSTANCE] iztro is not an object or is null in _renderAstrolabeWithReact");
+      }
       if (!this._reactRoot) {
         console.error("[ZiweiChart INSTANCE] _renderAstrolabeWithReact: React root is NOT INITIALIZED!");
         this.renderError("\u6E32\u67D3\u5F15\u64CE\u932F\u8AA4 (React Root\u4E22\u5931)\u3002", true);
@@ -44905,13 +44706,24 @@ body {
         this.renderError("\u547D\u76E4\u6838\u5FC3\u6578\u64DA (payload) \u70BA\u7A7A\u3002");
         return;
       }
-      console.log("[ZiweiChart INSTANCE] _renderAstrolabeWithReact: Checking Astrolabe component availability...");
-      if (typeof import_react_iztro.Astrolabe === "undefined") {
-        console.error("[ZiweiChart INSTANCE] _renderAstrolabeWithReact: CRITICAL - Astrolabe component is UNDEFINED! (Direct import failed)");
-        this.renderError("\u547D\u76E4\u6838\u5FC3\u7D44\u4EF6 (Astrolabe) \u672A\u80FD\u52A0\u8F09\u3002");
+      let AstrolabeComponentToUse = void 0;
+      if (typeof iztro.Astrolabe !== "undefined") {
+        AstrolabeComponentToUse = iztro.Astrolabe;
+        console.log("[ZiweiChart INSTANCE] Using iztro.Astrolabe");
+      } else if (iztro.default && typeof iztro.default.Astrolabe !== "undefined") {
+        AstrolabeComponentToUse = iztro.default.Astrolabe;
+        console.log("[ZiweiChart INSTANCE] Using iztro.default.Astrolabe");
+      } else if (iztro.default && typeof iztro.default === "function" && iztro.default.name === "Astrolabe") {
+        AstrolabeComponentToUse = iztro.default;
+        console.log("[ZiweiChart INSTANCE] Using iztro.default as Astrolabe component");
+      }
+      console.log("[ZiweiChart INSTANCE] _renderAstrolabeWithReact: Checking determined AstrolabeComponentToUse availability...");
+      if (typeof AstrolabeComponentToUse === "undefined") {
+        console.error("[ZiweiChart INSTANCE] _renderAstrolabeWithReact: CRITICAL - Astrolabe component is STILL UNDEFINED after checking iztro and iztro.default!");
+        this.renderError("\u547D\u76E4\u6838\u5FC3\u7D44\u4EF6 (Astrolabe) \u672A\u80FD\u5F9Eiztro\u5EAB\u4E2D\u6B63\u78BA\u7372\u53D6\u3002");
         return;
       }
-      console.log("[ZiweiChart INSTANCE] _renderAstrolabeWithReact: Astrolabe component IS AVAILABLE.");
+      console.log("[ZiweiChart INSTANCE] _renderAstrolabeWithReact: AstrolabeComponentToUse IS AVAILABLE.");
       const { birthDate, birthTime, gender, solar, lang } = payload;
       const iztroBirthTimeNum = parseInt(birthTime, 10);
       if (isNaN(iztroBirthTimeNum)) {
@@ -44928,11 +44740,11 @@ body {
       };
       console.log("[ZiweiChart INSTANCE] _renderAstrolabeWithReact: Final options for Astrolabe:", JSON.stringify(iztroInputOptions));
       try {
-        console.log("[ZiweiChart INSTANCE] _renderAstrolabeWithReact: Attempting React.createElement(Astrolabe)...");
-        const astrolabeElement = import_react.default.createElement(import_react_iztro.Astrolabe, iztroInputOptions);
+        console.log("[ZiweiChart INSTANCE] _renderAstrolabeWithReact: Attempting React.createElement(AstrolabeComponentToUse)...");
+        const astrolabeElement = import_react.default.createElement(AstrolabeComponentToUse, iztroInputOptions);
         console.log("[ZiweiChart INSTANCE] _renderAstrolabeWithReact: React.createElement result:", astrolabeElement ? "Element created" : "Element creation FAILED");
         if (!astrolabeElement) {
-          console.error("[ZiweiChart INSTANCE] _renderAstrolabeWithReact: React.createElement(Astrolabe) returned null/undefined.");
+          console.error("[ZiweiChart INSTANCE] _renderAstrolabeWithReact: React.createElement(AstrolabeComponentToUse) returned null/undefined.");
           this.renderError("\u7121\u6CD5\u5275\u5EFA\u547D\u76E4\u5716\u8868\u5BE6\u4F8B\u3002");
           return;
         }
@@ -44941,10 +44753,16 @@ body {
         console.log("[ZiweiChart INSTANCE] _renderAstrolabeWithReact: React render() call executed.");
       } catch (error) {
         console.error("[ZiweiChart INSTANCE] _renderAstrolabeWithReact: >>> EXCEPTION during React rendering <<<", error);
+        console.error("  Error Name:", error.name);
+        console.error("  Error Message:", error.message);
+        if (error.stack) {
+          console.error("  Error Stack:", error.stack);
+        }
         this.renderError(`\u6E32\u67D3\u547D\u76E4\u6642\u767C\u751F\u5167\u90E8\u932F\u8AA4: ${error.message}.`);
       }
       console.log("[ZiweiChart INSTANCE] _renderAstrolabeWithReact FINISHED.");
     }
+    // renderPlaceholder 和 renderError 函數保持與我上次提供的【完整帶日誌版本】一致
     renderPlaceholder(message) {
       console.log(`[ZiweiChart INSTANCE] renderPlaceholder CALLED. Message: "${message}"`);
       const target = this.shadowRoot.getElementById("chart-render-target");
