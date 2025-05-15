@@ -44682,60 +44682,239 @@ var ZiweiChartCustomElementGlobal = (() => {
   var reactIztroDefaultCSS = `.iztro-astrolabe-theme-default { --iztro-star-font-size-big: 13px; --iztro-star-font-size-small: 12px; --iztro-color-major: #531dab; --iztro-color-focus: #000; --iztro-color-quan: #2f54eb; --iztro-color-tough: #612500; --iztro-color-awesome: #d4380d; --iztro-color-active: #1890ff; --iztro-color-happy: #c41d7f; --iztro-color-nice: #237804; --iztro-color-decorator-1: #90983c; --iztro-color-decorator-2: #813359; --iztro-color-text: #8c8c8c; --iztro-color-border: #00152912; --iztro-color-decadal: var(--iztro-color-active); --iztro-color-yearly: var(--iztro-color-decorator-2); --iztro-color-monthly: var(--iztro-color-nice); --iztro-color-daily: var(--iztro-color-decorator-1); --iztro-color-hourly: var(--iztro-color-text); } .iztro-astrolabe { text-align: left; } .iztro-palace { border: 1px solid var(--iztro-color-border); } .iztro-star-soft, .iztro-star-tough, .iztro-star-adjective, .iztro-star-flower, .iztro-star-helper, .iztro-palace-fate, .iztro-palace-horo-star, .iztro-palace-scope, .iztro-palace-dynamic-name, .iztro-palace-lft24, .iztro-palace-rgt24 { font-size: var(--iztro-star-font-size-small); font-weight: normal; text-wrap: nowrap; } .iztro-palace-scope-age { text-wrap: balance; } .iztro-palace-scope-age, .iztro-palace-scope-decadal { color: var(--iztro-color-text); } .iztro-palace-lft24 { color: var(--iztro-color-decorator-1); } .iztro-palace-rgt24 { color: var(--iztro-color-decorator-2); text-wrap: nowrap; } .iztro-star-major, .iztro-star-tianma, .iztro-star-lucun, .iztro-palace-name, .iztro-palace-gz { font-size: var(--iztro-star-font-size-big); font-weight: bold; } .iztro-star-tianma { color: var(--iztro-color-active); } .iztro-star-lucun { color: var(--iztro-color-awesome); } .iztro-palace-horo-star .iztro-star { opacity: 0.75; } .iztro-palace-horo-star .iztro-star-tianma, .iztro-palace-horo-star .iztro-star-lucun { font-weight: normal; font-size: var(--iztro-star-font-size-small); } .iztro-star-brightness, .iztro-star-adjective { font-style: normal; font-weight: normal; color: var(--iztro-color-text); } .iztro-star-brightness { opacity: 0.5; } .iztro-star-major, .iztro-star-soft, .iztro-palace-name { color: var(--iztro-color-major); } .iztro-star-tough { color: var(--iztro-color-tough); } .iztro-star-flower { color: var(--iztro-color-happy); } .iztro-star-helper, .iztro-palace-gz { color: var(--iztro-color-nice); } .iztro-star-mutagen.mutagen-0 { background-color: var(--iztro-color-awesome); } .iztro-star-mutagen.mutagen-1 { background-color: var(--iztro-color-quan); } .iztro-star-mutagen.mutagen-2 { background-color: var(--iztro-color-nice); } .iztro-star-mutagen.mutagen-3 { background-color: var(--iztro-color-focus); } .iztro-star-mutagen.mutagen-decadal { background-color: var(--iztro-color-decadal); opacity: 0.6; } .iztro-star-mutagen.mutagen-yearly { background-color: var(--iztro-color-yearly); opacity: 0.6; } .iztro-star-mutagen.mutagen-monthly { background-color: var(--iztro-color-monthly); opacity: 0.6; } .iztro-star-mutagen.mutagen-daily { background-color: var(--iztro-color-daily); opacity: 0.6; } .iztro-star-mutagen.mutagen-hourly { background-color: var(--iztro-color-hourly); opacity: 0.6; } .iztro-palace-gz .iztro-palace-gz-active { background-color: var(--iztro-color-nice); color: #fff; font-weight: normal; } .iztro-star-mutagen-0 { background-color: var(--iztro-color-awesome); color: #fff; font-weight: normal; } .iztro-star-mutagen-1 { background-color: var(--iztro-color-quan); color: #fff; font-weight: normal; } .iztro-star-mutagen-2 { background-color: var(--iztro-color-nice); color: #fff; font-weight: normal; } .iztro-star-mutagen-3 { background-color: var(--iztro-color-focus); color: #fff; font-weight: normal; } .iztro-star-self-mutagen-0::before { background-color: var(--iztro-color-awesome); } .iztro-star-self-mutagen-1::before { background-color: var(--iztro-color-quan); } .iztro-star-self-mutagen-2::before { background-color: var(--iztro-color-nice); } .iztro-star-self-mutagen-3::before { background-color: var(--iztro-color-focus); } .iztro-star-hover-mutagen-0::after { background-color: var(--iztro-color-awesome); } .iztro-star-hover-mutagen-1::after { background-color: var(--iztro-color-quan); } .iztro-star-hover-mutagen-2::after { background-color: var(--iztro-color-nice); } .iztro-star-hover-mutagen-3::after { background-color: var(--iztro-color-focus); } .iztro-palace-name-body { font-size: var(--iztro-star-font-size-small); font-weight: normal; position: absolute; margin-top: 2px; } .iztro-palace-fate span { display: block; padding: 0 3px; border-radius: 4px; color: #fff; background-color: var(--iztro-color-major); cursor: pointer; } .iztro-palace-center-item { font-size: var(--iztro-star-font-size-small); line-height: 22px; } .iztro-palace-center-item label { color: var(--iztro-color-text); } .iztro-palace-center-item span { color: var(--iztro-color-decorator-1); } .gender { display: inline-block; margin-right: 5px; } .gender.gender-male { color: var(--iztro-color-quan); } .gender.gender-female { color: var(--iztro-color-happy); }`;
   var customChartStyles = `
   :host {
-    font-family: "Noto Sans TC", "Microsoft JhengHei", "PingFang TC", "Heiti TC", sans-serif;
-    font-size: 12px;
-    line-height: 1.5;
+    font-family: "Noto Sans TC", "Microsoft JhengHei", "PingFang TC", "Heiti TC", "LiHei Pro", "\u5FAE\u8EDF\u6B63\u9ED1\u9AD4", "\u860B\u679C\u5137\u4E2D\u9ED1", sans-serif;
+    font-size: 12px; 
+    line-height: 1.3; 
     color: #333;
-    border: 2px solid red !important; 
-    display: block !important; 
-    padding: 5px !important; 
-    min-height: 300px; /* \u7D66 host \u4E00\u500B\u6700\u5C0F\u9AD8\u5EA6 */
+    display: block;
     width: 100%;
   }
 
   .iztro-astrolabe-theme-default {
     --iztro-star-font-size-big: 13px;
-    --iztro-star-font-size-small: 11px;
-    --iztro-color-major: #531dab;
-    --iztro-color-text: #333333;
-    --iztro-color-border: #cccccc;
-    border: 1px dashed blue !important; 
-    padding: 5px !important; 
-    min-height: 200px !important; 
-    background-color: #f0f0f0 !important; 
-    width: 100% !important; /* \u78BA\u4FDD\u5BB9\u5668\u5BEC\u5EA6 */
-    box-sizing: border-box !important;
+    --iztro-star-font-size-small: 10px;
+    --iztro-color-major: #673AB7;
+    --iztro-color-focus: #000000;
+    --iztro-color-quan: #0D47A1;
+    --iztro-color-tough: #5D4037;
+    --iztro-color-awesome: #C62828;
+    --iztro-color-active: #EF6C00;
+    --iztro-color-happy: #D81B60;
+    --iztro-color-nice: #2E7D32;
+    --iztro-color-decorator-1: #616161;
+    --iztro-color-decorator-2: #BDBDBD;
+    --iztro-color-text: #424242;
+    --iztro-color-border: #E0E0E0;
+    --iztro-color-decadal: #673AB7;
+    --iztro-color-yearly: #0277BD;
+    --iztro-color-monthly: #2E7D32;
+    --iztro-color-daily: #EF6C00;
+    --iztro-color-hourly: var(--iztro-color-text);
+  }
+
+  .iztro-astrolabe {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: auto auto 1fr auto auto; /* \u5047\u8A2D\u4E2D\u592E\u5340\u57DF\u5728\u7B2C3\u884C\u4E14\u53EF\u64F4\u5C55 */
+    width: 100%;
+    max-width: 900px; 
+    margin: 0 auto;
+    border: 1px solid var(--iztro-color-decorator-2);
+    background-color: #fff; 
   }
 
   .iztro-palace {
-    border: 1px solid green !important; 
-    padding: 3px !important; 
-    margin: 2px !important; 
-    min-height: 50px !important; 
-    background-color: #ffffff !important; 
-    display: block !important; /* \u6539\u70BA block\uFF0C\u8B93\u5B83\u5011\u5806\u758A */
-    width: auto !important; /* \u5BEC\u5EA6\u81EA\u52D5\uFF0C\u6216\u8A2D\u70BA 100% \u770B\u6548\u679C */
-    float: none !important; /* \u6E05\u9664\u53EF\u80FD\u7684\u6D6E\u52D5 */
+    border: 1px solid var(--iztro-color-border);
+    padding: 3px 5px; 
+    box-sizing: border-box;
+    min-height: 110px; 
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    overflow: hidden; 
+  }
+
+  /* \u5BAE\u4F4D\u5B9A\u4F4D - \u8ACB\u6839\u64DA react-iztro \u5BE6\u969B\u8F38\u51FA\u7684 class \u6216 data \u5C6C\u6027\u8ABF\u6574 */
+  /* \u512A\u5148\u4F7F\u7528 react-iztro \u53EF\u80FD\u63D0\u4F9B\u7684 data-palace-idx \u6216 data-palace-name */
+  .iztro-palace[data-palace-idx="0"], .iztro-palace[data-palace-name="\u547D\u5BAE"] { grid-area: 4 / 4 / 5 / 5; }
+  .iztro-palace[data-palace-idx="1"], .iztro-palace[data-palace-name="\u5144\u5F1F"] { grid-area: 4 / 3 / 5 / 4; }
+  .iztro-palace[data-palace-idx="2"], .iztro-palace[data-palace-name="\u592B\u59BB"] { grid-area: 4 / 2 / 5 / 3; }
+  .iztro-palace[data-palace-idx="3"], .iztro-palace[data-palace-name="\u5B50\u5973"] { grid-area: 4 / 1 / 5 / 2; }
+  .iztro-palace[data-palace-idx="4"], .iztro-palace[data-palace-name="\u8CA1\u5E1B"] { grid-area: 3 / 1 / 4 / 2; }
+  .iztro-palace[data-palace-idx="5"], .iztro-palace[data-palace-name="\u75BE\u5384"] { grid-area: 2 / 1 / 3 / 2; }
+  .iztro-palace[data-palace-idx="6"], .iztro-palace[data-palace-name="\u9077\u79FB"] { grid-area: 1 / 1 / 2 / 2; }
+  .iztro-palace[data-palace-idx="7"], .iztro-palace[data-palace-name="\u50D5\u5F79"], .iztro-palace[data-palace-name="\u4EA4\u53CB"] { grid-area: 1 / 2 / 2 / 3; }
+  .iztro-palace[data-palace-idx="8"], .iztro-palace[data-palace-name="\u5B98\u797F"], .iztro-palace[data-palace-name="\u4E8B\u696D"] { grid-area: 1 / 3 / 2 / 4; }
+  .iztro-palace[data-palace-idx="9"], .iztro-palace[data-palace-name="\u7530\u5B85"] { grid-area: 1 / 4 / 2 / 5; }
+  .iztro-palace[data-palace-idx="10"],.iztro-palace[data-palace-name="\u798F\u5FB7"] { grid-area: 2 / 4 / 3 / 5; }
+  .iztro-palace[data-palace-idx="11"],.iztro-palace[data-palace-name="\u7236\u6BCD"] { grid-area: 3 / 4 / 4 / 5; }
+  
+  /* \u4E2D\u592E\u5340\u57DF */
+  .iztro-palace-center, 
+  .iztro-astrolabe > div.iztro-palace-center-container /* \u5047\u8A2D react-iztro \u70BA\u4E2D\u592E\u5340\u57DF\u751F\u6210\u4E00\u500B\u7279\u5B9A\u5BB9\u5668 */ {
+    grid-area: 2 / 2 / 4 / 4; 
+    border: 1px solid var(--iztro-color-border);
+    padding: 8px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center; 
+    text-align: center;
+    background-color: #f9f9f9; 
+  }
+
+  .iztro-palace-name {
+    font-size: 14px; 
+    font-weight: bold;
+    color: var(--iztro-color-major);
+    text-align: right; 
+    width: 100%;
+    margin-bottom: 2px;
+  }
+  
+  .iztro-palace-gz { 
+    font-size: 10px;
+    color: var(--iztro-color-decorator-1);
+    text-align: right; 
+    width: 100%;
+    margin-top: auto; 
+  }
+  
+  .iztro-palace-stars-container { 
+    flex-grow: 1;
+    text-align: left; 
+    overflow-y: auto;
+    max-height: 60px; 
+    padding-top: 2px;
   }
 
   .iztro-star {
-    color: #000000 !important; 
-    display: inline !important; /* \u4FDD\u6301 inline\uFF0C\u4F46\u7236\u5BB9\u5668\u662F block */
-    margin-right: 3px !important;
-    font-size: 12px !important; /* \u5F37\u5236\u5B57\u865F */
+    display: inline; 
+    margin-right: 3px;
+    white-space: nowrap;
+    line-height: 1.4; 
   }
 
-  .iztro-palace-name,
-  .iztro-palace-gz,
-  .iztro-star-brightness,
-  .iztro-star-mutagen,
-  .iztro-palace-scope,
-  .iztro-palace-fate {
-    color: #111111 !important; 
-    display: block !important; 
-    background-color: #e9e9e9 !important; 
-    margin-bottom: 2px !important;
-    font-size: 10px !important; /* \u5F37\u5236\u5B57\u865F */
+  .iztro-star-major { color: var(--iztro-color-major); font-weight: bold; font-size:var(--iztro-star-font-size-big); }
+  .iztro-star-soft { color: var(--iztro-color-nice); font-size:var(--iztro-star-font-size-small); }
+  .iztro-star-tough { color: var(--iztro-color-tough); font-size:var(--iztro-star-font-size-small); }
+  .iztro-star-flower { color: var(--iztro-color-happy); font-size:var(--iztro-star-font-size-small); }
+  .iztro-star-helper { color: var(--iztro-color-nice); font-size:var(--iztro-star-font-size-small); }
+  .iztro-star-tianma { color: var(--iztro-color-active); font-weight:bold; font-size:var(--iztro-star-font-size-small); }
+  .iztro-star-lucun { color: var(--iztro-color-awesome); font-weight:bold; font-size:var(--iztro-star-font-size-small); }
+  .iztro-star-doctor, .iztro-star-academic, .iztro-star-authority { 
+    font-size: 9px;
+    color: #757575; 
+  }
+
+  .iztro-star-brightness {
+    font-size: 9px;
+    color: var(--iztro-color-text);
+    margin-left: 1px;
+    font-style: normal;
+    opacity: 0.7;
+  }
+
+  .iztro-star-mutagen { 
+    display: inline-block;
+    color: #fff !important;
+    font-size: 9px;
+    font-weight: normal;
+    padding: 0px 3px; 
+    border-radius: 3px;
+    margin-left: 2px;
+    line-height: 1.1; 
+    vertical-align: text-top; 
+    position: relative; 
+    top: -1px; 
+  }
+  .iztro-star-mutagen.mutagen-0 { background-color: var(--iztro-color-awesome); } 
+  .iztro-star-mutagen.mutagen-1 { background-color: var(--iztro-color-quan); }    
+  .iztro-star-mutagen.mutagen-2 { background-color: var(--iztro-color-nice); }    
+  .iztro-star-mutagen.mutagen-3 { background-color: var(--iztro-color-focus); }   
+
+  .iztro-palace-scope {
+    font-size: 10px;
+    text-align: left;
+    margin-top: 3px;
+    line-height: 1.2;
+  }
+  .iztro-palace-scope span {
+    display: block; 
+    margin-bottom: 1px;
+    white-space: nowrap;
+  }
+  .iztro-palace-scope .scope-decadal, .iztro-palace-scope [class*="decadal"] { color: var(--iztro-color-decadal) !important; font-weight: bold; }
+  .iztro-palace-scope .scope-yearly, .iztro-palace-scope [class*="yearly"] { color: var(--iztro-color-yearly) !important; }
+  .iztro-palace-scope .scope-monthly, .iztro-palace-scope [class*="monthly"] { color: var(--iztro-color-monthly) !important; }
+  .iztro-palace-scope .scope-daily, .iztro-palace-scope [class*="daily"] { color: var(--iztro-color-daily) !important; }
+  .iztro-palace-scope .scope-hourly, .iztro-palace-scope [class*="hourly"] { color: var(--iztro-color-hourly) !important; }
+  .iztro-palace-scope-age { color: var(--iztro-color-text) !important; }
+
+
+  .iztro-palace-fate { 
+    position: absolute;
+    top: 3px;
+    left: 3px;
+    font-size: 9px;
+    z-index: 1;
+  }
+  .iztro-palace-fate span {
+    display: inline-block;
+    padding: 1px 3px;
+    border-radius: 3px;
+    color: #fff;
+    background-color: var(--iztro-color-major);
+    margin-right: 2px;
+  }
+
+  .iztro-palace-center-item {
+    font-size: 11px;
+    line-height: 1.6;
+    margin-bottom: 3px;
+    text-align: left;
+  }
+  .iztro-palace-center-item label {
+    color: var(--iztro-color-text);
+    margin-right: 5px;
+    display: inline-block;
+    width: 70px; 
+  }
+  .iztro-palace-center-item span {
+    color: var(--iztro-color-major);
+  }
+
+  @media (max-width: 768px) {
+    .iztro-astrolabe {
+      display: flex; 
+      flex-direction: column; 
+      grid-template-columns: 1fr; 
+      grid-template-rows: auto;    
+      max-width: 100%; 
+    }
+    .iztro-palace {
+      min-height: auto; 
+      margin-bottom: 8px; 
+      width: 100% !important; 
+    }
+    .iztro-palace-stars-container {
+      max-height: none; 
+    }
+    .iztro-palace-name, .iztro-palace-gz {
+      text-align: left; 
+    }
+    .iztro-palace-center,
+    .iztro-astrolabe > div.iztro-palace-center-container {
+      order: -1; 
+      margin-bottom: 10px;
+      grid-area: auto; 
+    }
+    :host { font-size: 11px; }
+    .iztro-astrolabe-theme-default {
+        --iztro-star-font-size-big: 12px;
+        --iztro-star-font-size-small: 9px;
+    }
+    .iztro-palace-name { font-size: 13px; }
   }
 `;
   var ZiweiChart = class extends HTMLElement {
@@ -44751,26 +44930,24 @@ var ZiweiChartCustomElementGlobal = (() => {
       this.shadowRoot.innerHTML = `
             <style>
                 :host { 
-                    display: block; /* \u5DF2\u5728 customChartStyles \u4E2D\u8A2D\u5B9A */
+                    display: block; 
                     width: 100%; 
-                    /* padding: 0; */ /* \u5DF2\u5728 customChartStyles \u4E2D\u8A2D\u5B9A */
+                    padding: 0; 
                     box-sizing: border-box; 
                 }
                 ${antdResetCSS}
                 ${reactIztroDefaultCSS}
-                ${customChartStyles} /* \u4F7F\u7528\u6975\u7C21\u5316\u7684 CSS */
+                ${customChartStyles} 
 
                 .chart-wrapper-inside-shadow-dom { 
                     width: 100%; 
-                    min-height: 580px;
+                    min-height: 500px; 
                     display: flex; 
-                    flex-direction: column; 
-                    justify-content: flex-start; 
-                    align-items: stretch; 
-                    border: 2px dashed dodgerblue !important; 
+                    justify-content: center;
+                    align-items: flex-start; 
                     padding: 10px; 
                     box-sizing: border-box; 
-                    background-color: #fff; /* \u6539\u56DE\u767D\u8272\u80CC\u666F\uFF0C\u907F\u514D\u8207\u547D\u76E4\u80CC\u666F\u6DF7\u6DC6 */
+                    background-color: #f0f0f0; 
                 }
                 .message-display-in-shadow { font-size: 16px; padding: 20px; border-radius: 4px; text-align: center; }
                 .loading-message-in-shadow { background-color: #e9e9e9; color: #333; }
@@ -44925,7 +45102,7 @@ var ZiweiChartCustomElementGlobal = (() => {
           this.renderError("\u547D\u76E4\u6838\u5FC3\u7D44\u4EF6\u672A\u80FD\u6B63\u78BA\u7372\u53D6 (iztro.Iztrolabe undefined)\u3002");
         return;
       }
-      const { birthDate, birthTime, gender, solar, lang, fixLeap } = payload;
+      const { birthDate, birthTime, gender, solar, lang, fixLeap, palaces, options: payloadOptions } = payload;
       const iztroBirthTimeNum = parseInt(birthTime, 10);
       if (isNaN(iztroBirthTimeNum)) {
         console.error(`[ZiweiChart INSTANCE] _renderAstrolabeWithReact: birthTime "${birthTime}" is NaN.`);
@@ -44933,17 +45110,34 @@ var ZiweiChartCustomElementGlobal = (() => {
           this.renderError(`\u6642\u8FB0\u6578\u64DA\u932F\u8AA4: "${birthTime}".`);
         return;
       }
-      const finalProps = {
+      const chartDataProps = {
         birthday: birthDate,
         birthTime: iztroBirthTimeNum,
         gender: gender === "M" ? "male" : "female",
         birthdayType: solar ? "solar" : "lunar",
         language: lang === "zh" ? "zh-TW" : lang === "en" ? "en" : "zh-CN",
         fixLeap: fixLeap === true
-        // 確保是布林值
-        // theme: 'default', // 許多函式庫會直接接受 theme prop
+        // palaces: palaces, 
       };
-      console.log("[ZiweiChart INSTANCE] _renderAstrolabeWithReact: Final simplified props for Astrolabe:", JSON.stringify(finalProps));
+      const iztroComponentOptions = {
+        theme: "default",
+        showFullAstrolabe: true,
+        showPalaceName: true,
+        showPalaceGrid: true,
+        showStars: true,
+        showMutagens: true,
+        showBrightness: true,
+        showFiveElementsClass: true,
+        showChineseDate: true,
+        showDecadalScope: true,
+        showYearlyScope: true,
+        showMonthlyScope: true,
+        showDailyScope: true,
+        showHourlyScope: false,
+        ...payloadOptions || {}
+      };
+      const finalProps = { ...chartDataProps, options: iztroComponentOptions };
+      console.log("[ZiweiChart INSTANCE] _renderAstrolabeWithReact: Final props for Astrolabe:", JSON.stringify(finalProps));
       try {
         if (!this._reactRoot) {
           console.error("[ZiweiChart INSTANCE] _renderAstrolabeWithReact: _reactRoot became null before rendering!");
