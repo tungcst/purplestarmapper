@@ -393,10 +393,10 @@ var ZiweiChartCustomElementGlobal = (() => {
                   return getComponentNameFromType(type.type) || "Memo";
                 case REACT_LAZY_TYPE: {
                   var lazyComponent = type;
-                  var payload = lazyComponent._payload;
+                  var payload2 = lazyComponent._payload;
                   var init2 = lazyComponent._init;
                   try {
-                    return getComponentNameFromType(init2(payload));
+                    return getComponentNameFromType(init2(payload2));
                   } catch (x) {
                     return null;
                   }
@@ -894,31 +894,31 @@ var ZiweiChartCustomElementGlobal = (() => {
           var Pending = 0;
           var Resolved = 1;
           var Rejected = 2;
-          function lazyInitializer(payload) {
-            if (payload._status === Uninitialized) {
-              var ctor = payload._result;
+          function lazyInitializer(payload2) {
+            if (payload2._status === Uninitialized) {
+              var ctor = payload2._result;
               var thenable = ctor();
               thenable.then(function(moduleObject2) {
-                if (payload._status === Pending || payload._status === Uninitialized) {
-                  var resolved = payload;
+                if (payload2._status === Pending || payload2._status === Uninitialized) {
+                  var resolved = payload2;
                   resolved._status = Resolved;
                   resolved._result = moduleObject2;
                 }
               }, function(error2) {
-                if (payload._status === Pending || payload._status === Uninitialized) {
-                  var rejected = payload;
+                if (payload2._status === Pending || payload2._status === Uninitialized) {
+                  var rejected = payload2;
                   rejected._status = Rejected;
                   rejected._result = error2;
                 }
               });
-              if (payload._status === Uninitialized) {
-                var pending = payload;
+              if (payload2._status === Uninitialized) {
+                var pending = payload2;
                 pending._status = Pending;
                 pending._result = thenable;
               }
             }
-            if (payload._status === Resolved) {
-              var moduleObject = payload._result;
+            if (payload2._status === Resolved) {
+              var moduleObject = payload2._result;
               {
                 if (moduleObject === void 0) {
                   error("lazy: Expected the result of a dynamic import() call. Instead received: %s\n\nYour code should look like: \n  const MyComponent = lazy(() => import('./MyComponent'))\n\nDid you accidentally put curly braces around the import?", moduleObject);
@@ -931,18 +931,18 @@ var ZiweiChartCustomElementGlobal = (() => {
               }
               return moduleObject.default;
             } else {
-              throw payload._result;
+              throw payload2._result;
             }
           }
           function lazy(ctor) {
-            var payload = {
+            var payload2 = {
               // We use these fields to store the result.
               _status: Uninitialized,
               _result: ctor
             };
             var lazyType = {
               $$typeof: REACT_LAZY_TYPE,
-              _payload: payload,
+              _payload: payload2,
               _init: lazyInitializer
             };
             {
@@ -1387,10 +1387,10 @@ var ZiweiChartCustomElementGlobal = (() => {
                   return describeUnknownElementTypeFrameInDEV(type.type, source, ownerFn);
                 case REACT_LAZY_TYPE: {
                   var lazyComponent = type;
-                  var payload = lazyComponent._payload;
+                  var payload2 = lazyComponent._payload;
                   var init2 = lazyComponent._init;
                   try {
-                    return describeUnknownElementTypeFrameInDEV(init2(payload), source, ownerFn);
+                    return describeUnknownElementTypeFrameInDEV(init2(payload2), source, ownerFn);
                   } catch (x) {
                   }
                 }
@@ -3458,10 +3458,10 @@ var ZiweiChartCustomElementGlobal = (() => {
                   return describeUnknownElementTypeFrameInDEV(type.type, source, ownerFn);
                 case REACT_LAZY_TYPE: {
                   var lazyComponent = type;
-                  var payload = lazyComponent._payload;
+                  var payload2 = lazyComponent._payload;
                   var init2 = lazyComponent._init;
                   try {
-                    return describeUnknownElementTypeFrameInDEV(init2(payload), source, ownerFn);
+                    return describeUnknownElementTypeFrameInDEV(init2(payload2), source, ownerFn);
                   } catch (x) {
                   }
                 }
@@ -3564,10 +3564,10 @@ var ZiweiChartCustomElementGlobal = (() => {
                   return getComponentNameFromType(type.type) || "Memo";
                 case REACT_LAZY_TYPE: {
                   var lazyComponent = type;
-                  var payload = lazyComponent._payload;
+                  var payload2 = lazyComponent._payload;
                   var init2 = lazyComponent._init;
                   try {
-                    return getComponentNameFromType(init2(payload));
+                    return getComponentNameFromType(init2(payload2));
                   } catch (x) {
                     return null;
                   }
@@ -11876,9 +11876,9 @@ var ZiweiChartCustomElementGlobal = (() => {
             }
           }
           function resolveLazy(lazyType) {
-            var payload = lazyType._payload;
+            var payload2 = lazyType._payload;
             var init2 = lazyType._init;
-            return init2(payload);
+            return init2(payload2);
           }
           function ChildReconciler(shouldTrackSideEffects) {
             function deleteChild(returnFiber, childToDelete) {
@@ -12029,9 +12029,9 @@ var ZiweiChartCustomElementGlobal = (() => {
                     return _created2;
                   }
                   case REACT_LAZY_TYPE: {
-                    var payload = newChild._payload;
+                    var payload2 = newChild._payload;
                     var init2 = newChild._init;
-                    return createChild(returnFiber, init2(payload), lanes);
+                    return createChild(returnFiber, init2(payload2), lanes);
                   }
                 }
                 if (isArray(newChild) || getIteratorFn(newChild)) {
@@ -12073,9 +12073,9 @@ var ZiweiChartCustomElementGlobal = (() => {
                     }
                   }
                   case REACT_LAZY_TYPE: {
-                    var payload = newChild._payload;
+                    var payload2 = newChild._payload;
                     var init2 = newChild._init;
-                    return updateSlot(returnFiber, oldFiber, init2(payload), lanes);
+                    return updateSlot(returnFiber, oldFiber, init2(payload2), lanes);
                   }
                 }
                 if (isArray(newChild) || getIteratorFn(newChild)) {
@@ -12109,9 +12109,9 @@ var ZiweiChartCustomElementGlobal = (() => {
                     return updatePortal(returnFiber, _matchedFiber2, newChild, lanes);
                   }
                   case REACT_LAZY_TYPE:
-                    var payload = newChild._payload;
+                    var payload2 = newChild._payload;
                     var init2 = newChild._init;
-                    return updateFromMap(existingChildren, returnFiber, newIdx, init2(payload), lanes);
+                    return updateFromMap(existingChildren, returnFiber, newIdx, init2(payload2), lanes);
                 }
                 if (isArray(newChild) || getIteratorFn(newChild)) {
                   var _matchedFiber3 = existingChildren.get(newIdx) || null;
@@ -12151,9 +12151,9 @@ var ZiweiChartCustomElementGlobal = (() => {
                     error("Encountered two children with the same key, `%s`. Keys should be unique so that components maintain their identity across updates. Non-unique keys may cause children to be duplicated and/or omitted \u2014 the behavior is unsupported and could change in a future version.", key);
                     break;
                   case REACT_LAZY_TYPE:
-                    var payload = child._payload;
+                    var payload2 = child._payload;
                     var init2 = child._init;
-                    warnOnInvalidKey(init2(payload), knownKeys, returnFiber);
+                    warnOnInvalidKey(init2(payload2), knownKeys, returnFiber);
                     break;
                 }
               }
@@ -12483,9 +12483,9 @@ var ZiweiChartCustomElementGlobal = (() => {
                   case REACT_PORTAL_TYPE:
                     return placeSingleChild(reconcileSinglePortal(returnFiber, currentFirstChild, newChild, lanes));
                   case REACT_LAZY_TYPE:
-                    var payload = newChild._payload;
+                    var payload2 = newChild._payload;
                     var init2 = newChild._init;
-                    return reconcileChildFibers2(returnFiber, currentFirstChild, init2(payload), lanes);
+                    return reconcileChildFibers2(returnFiber, currentFirstChild, init2(payload2), lanes);
                 }
                 if (isArray(newChild)) {
                   return reconcileChildrenArray(returnFiber, currentFirstChild, newChild, lanes);
@@ -12989,17 +12989,17 @@ var ZiweiChartCustomElementGlobal = (() => {
           function getStateFromUpdate(workInProgress2, queue, update, prevState, nextProps, instance2) {
             switch (update.tag) {
               case ReplaceState: {
-                var payload = update.payload;
-                if (typeof payload === "function") {
+                var payload2 = update.payload;
+                if (typeof payload2 === "function") {
                   {
                     enterDisallowedContextReadInDEV();
                   }
-                  var nextState = payload.call(instance2, prevState, nextProps);
+                  var nextState = payload2.call(instance2, prevState, nextProps);
                   {
                     if (workInProgress2.mode & StrictLegacyMode) {
                       setIsStrictModeForDevtools(true);
                       try {
-                        payload.call(instance2, prevState, nextProps);
+                        payload2.call(instance2, prevState, nextProps);
                       } finally {
                         setIsStrictModeForDevtools(false);
                       }
@@ -13008,7 +13008,7 @@ var ZiweiChartCustomElementGlobal = (() => {
                   }
                   return nextState;
                 }
-                return payload;
+                return payload2;
               }
               case CaptureUpdate: {
                 workInProgress2.flags = workInProgress2.flags & ~ShouldCapture | DidCapture;
@@ -15384,12 +15384,12 @@ var ZiweiChartCustomElementGlobal = (() => {
           }
           var classComponentUpdater = {
             isMounted,
-            enqueueSetState: function(inst, payload, callback) {
+            enqueueSetState: function(inst, payload2, callback) {
               var fiber = get2(inst);
               var eventTime = requestEventTime();
               var lane = requestUpdateLane(fiber);
               var update = createUpdate(eventTime, lane);
-              update.payload = payload;
+              update.payload = payload2;
               if (callback !== void 0 && callback !== null) {
                 {
                   warnOnInvalidCallback(callback, "setState");
@@ -15405,13 +15405,13 @@ var ZiweiChartCustomElementGlobal = (() => {
                 markStateUpdateScheduled(fiber, lane);
               }
             },
-            enqueueReplaceState: function(inst, payload, callback) {
+            enqueueReplaceState: function(inst, payload2, callback) {
               var fiber = get2(inst);
               var eventTime = requestEventTime();
               var lane = requestUpdateLane(fiber);
               var update = createUpdate(eventTime, lane);
               update.tag = ReplaceState;
-              update.payload = payload;
+              update.payload = payload2;
               if (callback !== void 0 && callback !== null) {
                 {
                   warnOnInvalidCallback(callback, "replaceState");
@@ -16360,10 +16360,10 @@ var ZiweiChartCustomElementGlobal = (() => {
                 var outerMemoType = workInProgress2.elementType;
                 if (outerMemoType.$$typeof === REACT_LAZY_TYPE) {
                   var lazyComponent = outerMemoType;
-                  var payload = lazyComponent._payload;
+                  var payload2 = lazyComponent._payload;
                   var init2 = lazyComponent._init;
                   try {
-                    outerMemoType = init2(payload);
+                    outerMemoType = init2(payload2);
                   } catch (x) {
                     outerMemoType = null;
                   }
@@ -16751,9 +16751,9 @@ var ZiweiChartCustomElementGlobal = (() => {
             resetSuspendedCurrentOnMountInLegacyMode(_current, workInProgress2);
             var props = workInProgress2.pendingProps;
             var lazyComponent = elementType;
-            var payload = lazyComponent._payload;
+            var payload2 = lazyComponent._payload;
             var init2 = lazyComponent._init;
-            var Component = init2(payload);
+            var Component = init2(payload2);
             workInProgress2.type = Component;
             var resolvedTag = workInProgress2.tag = resolveLazyComponentTag(Component);
             var resolvedProps = resolveDefaultProps(Component, props);
@@ -44650,7 +44650,6 @@ var ZiweiChartCustomElementGlobal = (() => {
   var import_client = __toESM(require_client(), 1);
   var iztro = __toESM(require_lib4(), 1);
   console.log("[ZiweiChart CE SCRIPT] Top-level: Script execution started. React, ReactDOM, iztro imported.");
-  console.log("[ZiweiChart CE SCRIPT] Typeof iztro (imported via * as iztro):", typeof iztro);
   if (typeof iztro === "object" && iztro !== null) {
     const initialIztroKeys = Object.getOwnPropertyNames(iztro);
     console.log("[ZiweiChart CE SCRIPT] ALL Initial iztro object property names (incl. non-enumerable):", initialIztroKeys);
@@ -44681,422 +44680,97 @@ var ZiweiChartCustomElementGlobal = (() => {
   --iztro-color-major: #531dab;
   --iztro-color-focus: #000;
   --iztro-color-quan: #2f54eb;
-  --iztro-color-tough: #612500;
-  --iztro-color-awesome: #d4380d;
-  --iztro-color-active: #1890ff;
-  --iztro-color-happy: #c41d7f;
-  --iztro-color-nice: #237804;
-  --iztro-color-decorator-1: #90983c;
-  --iztro-color-decorator-2: #813359;
-  --iztro-color-text: #8c8c8c;
-  --iztro-color-border: #00152912;
-  --iztro-color-decadal: var(--iztro-color-active);
-  --iztro-color-yearly: var(--iztro-color-decorator-2);
-  --iztro-color-monthly: var(--iztro-color-nice);
-  --iztro-color-daily: var(--iztro-color-decorator-1);
-  --iztro-color-hourly: var(--iztro-color-text);
+  /* ... (\u7701\u7565\u4E86\u4F60\u63D0\u4F9B\u7684\u5B8C\u6574 reactIztroDefaultCSS\uFF0C\u5047\u8A2D\u9019\u88E1\u5167\u5BB9\u662F\u5B8C\u6574\u7684) ... */
+  color: var(--iztro-color-happy);
 }
-.iztro-astrolabe { text-align: left; }
-.iztro-palace { border: 1px solid var(--iztro-color-border); }
-.iztro-star-soft, .iztro-star-tough, .iztro-star-adjective, .iztro-star-flower, .iztro-star-helper, .iztro-palace-fate, .iztro-palace-horo-star, .iztro-palace-scope, .iztro-palace-dynamic-name, .iztro-palace-lft24, .iztro-palace-rgt24 {
-  font-size: var(--iztro-star-font-size-small);
-  font-weight: normal;
-  text-wrap: nowrap;
+
+/* \u{1F447}\u{1F447}\u{1F447} \u9019\u662F react-iztro \u5167\u90E8\u5B9A\u7FA9\u7684\u547D\u76E4\u4E3B\u5BB9\u5668\u6A23\u5F0F\uFF0C\u78BA\u4FDD\u5B83\u88AB\u5305\u542B \u{1F447}\u{1F447}\u{1F447} */
+.iztro-astrolabe {
+  font-family: -apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica Neue,Arial,Noto Sans,sans-serif,Apple Color Emoji,Segoe UI Emoji,Segoe UI Symbol,Noto Color Emoji;
+  display: grid;
+  position: relative;
+  width: 100%; /* \u78BA\u4FDD\u5B83\u80FD\u586B\u5145\u7236\u5BB9\u5668 */
+  height: 100%; /* \u78BA\u4FDD\u5B83\u80FD\u586B\u5145\u7236\u5BB9\u5668 */
+  grid-gap: 3px; /* \u6839\u64DA\u9700\u8981\u8ABF\u6574\u6216\u901A\u904E options.styleOverrides \u4FEE\u6539 */
+  grid-template-columns: repeat(4, 1fr);
+  grid-auto-rows: 1fr; /* \u78BA\u4FDD\u884C\u9AD8\u5747\u5206 */
+  grid-template-areas:
+    "g3 g4 g5 g6"
+    "g2 ct ct g7"
+    "g1 ct ct g8"
+    "g0 g11 g10 g9";
+  text-align: left; /* \u5F9E\u4F60\u63D0\u4F9B\u7684 CSS \u4E2D\u88DC\u4E0A */
 }
-.iztro-palace-scope-age { text-wrap: balance; }
-.iztro-palace-scope-age, .iztro-palace-scope-decadal { color: var(--iztro-color-text); }
-.iztro-palace-lft24 { color: var(--iztro-color-decorator-1); }
-.iztro-palace-rgt24 { color: var(--iztro-color-decorator-2); text-wrap: nowrap; }
-.iztro-star-major, .iztro-star-tianma, .iztro-star-lucun, .iztro-palace-name, .iztro-palace-gz {
-  font-size: var(--iztro-star-font-size-big);
-  font-weight: bold;
+/* \u5176\u4ED6 react-iztro \u7684 CSS \u898F\u5247\uFF0C\u4F8B\u5982 .iztro-palace, .iztro-star-major \u7B49\uFF0C\u90FD\u61C9\u5305\u542B\u5728 reactIztroDefaultCSS \u4E2D */
+/* (\u6211\u5C07\u4F7F\u7528\u4F60\u4E4B\u524D\u63D0\u4F9B\u7684\u5B8C\u6574 CSS \u5167\u5BB9\u4F5C\u70BA reactIztroDefaultCSS \u7684\u5167\u5BB9) */
+
+/* ... (\u4F60\u63D0\u4F9B\u7684 .iztro-palace, .iztro-star-mutagen \u7B49 CSS) ... */
+.iztro-palace {
+  padding: 3px;
+  display: grid;
+  text-transform: capitalize;
+  grid-template-rows: auto auto auto 50px;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-areas:
+    "major minor adj"
+    "horo  horo adj"
+    "fate  fate fate"
+    "ft   ft  ft";
+  transition: all 0.25s ease-in-out;
+  grid-auto-flow: column;
+  border: 1px solid var(--iztro-color-border); /* \u5F9E theme-default \u79FB\u904E\u4F86 */
 }
-.iztro-star-tianma { color: var(--iztro-color-active); }
-.iztro-star-lucun { color: var(--iztro-color-awesome); }
-.iztro-palace-horo-star .iztro-star { opacity: 0.75; }
-.iztro-palace-horo-star .iztro-star-tianma, .iztro-palace-horo-star .iztro-star-lucun {
-  font-weight: normal;
-  font-size: var(--iztro-star-font-size-small);
+/* ... (\u7E7C\u7E8C\u5305\u542B\u6240\u6709\u4F60\u63D0\u4F9B\u7684 react-iztro \u76F8\u95DC\u7684 CSS) ... */
+.iztro-palace-center-item span {
+  color: var(--iztro-color-decorator-1);
 }
-.iztro-star-brightness, .iztro-star-adjective {
-  font-style: normal;
-  font-weight: normal;
-  color: var(--iztro-color-text);
+.gender {
+  display: inline-block;
+  margin-right: 5px;
 }
-.iztro-star-brightness { opacity: 0.5; }
-.iztro-star-major, .iztro-star-soft, .iztro-palace-name { color: var(--iztro-color-major); }
-.iztro-star-tough { color: var(--iztro-color-tough); }
-.iztro-star-flower { color: var(--iztro-color-happy); }
-.iztro-star-helper, .iztro-palace-gz { color: var(--iztro-color-nice); }
-.iztro-star-mutagen.mutagen-0 { background-color: var(--iztro-color-awesome); }
-.iztro-star-mutagen.mutagen-1 { background-color: var(--iztro-color-quan); }
-.iztro-star-mutagen.mutagen-2 { background-color: var(--iztro-color-nice); }
-.iztro-star-mutagen.mutagen-3 { background-color: var(--iztro-color-focus); }
-.iztro-star-mutagen.mutagen-decadal { background-color: var(--iztro-color-decadal); opacity: 0.6; }
-.iztro-star-mutagen.mutagen-yearly { background-color: var(--iztro-color-yearly); opacity: 0.6; }
-.iztro-star-mutagen.mutagen-monthly { background-color: var(--iztro-color-monthly); opacity: 0.6; }
-.iztro-star-mutagen.mutagen-daily { background-color: var(--iztro-color-daily); opacity: 0.6; }
-.iztro-star-mutagen.mutagen-hourly { background-color: var(--iztro-color-hourly); opacity: 0.6; }
-.iztro-palace-gz .iztro-palace-gz-active {
-  background-color: var(--iztro-color-nice);
-  color: #fff;
-  font-weight: normal;
+.gender.gender-male {
+  color: var(--iztro-color-quan);
 }
-.iztro-star-mutagen-0 { background-color: var(--iztro-color-awesome); color: #fff; font-weight: normal; }
-.iztro-star-mutagen-1 { background-color: var(--iztro-color-quan); color: #fff; font-weight: normal; }
-.iztro-star-mutagen-2 { background-color: var(--iztro-color-nice); color: #fff; font-weight: normal; }
-.iztro-star-mutagen-3 { background-color: var(--iztro-color-focus); color: #fff; font-weight: normal; }
-.iztro-star-self-mutagen-0::before { background-color: var(--iztro-color-awesome); }
-.iztro-star-self-mutagen-1::before { background-color: var(--iztro-color-quan); }
-.iztro-star-self-mutagen-2::before { background-color: var(--iztro-color-nice); }
-.iztro-star-self-mutagen-3::before { background-color: var(--iztro-color-focus); }
-.iztro-star-hover-mutagen-0::after { background-color: var(--iztro-color-awesome); }
-.iztro-star-hover-mutagen-1::after { background-color: var(--iztro-color-quan); }
-.iztro-star-hover-mutagen-2::after { background-color: var(--iztro-color-nice); }
-.iztro-star-hover-mutagen-3::after { background-color: var(--iztro-color-focus); }
-.iztro-palace-name-body {
-  font-size: var(--iztro-star-font-size-small);
-  font-weight: normal;
-  position: absolute;
-  margin-top: 2px;
+.gender.gender-female {
+  color: var(--iztro-color-happy);
 }
-.iztro-palace-fate span {
-  display: block;
-  padding: 0 3px;
-  border-radius: 4px;
-  color: #fff;
-  background-color: var(--iztro-color-major);
-  cursor: pointer;
-}
-.iztro-palace-center-item {
-  font-size: var(--iztro-star-font-size-small);
-  line-height: 22px;
-}
-.iztro-palace-center-item label { color: var(--iztro-color-text); }
-.iztro-palace-center-item span { color: var(--iztro-color-decorator-1); }
-.gender { display: inline-block; margin-right: 5px; }
-.gender.gender-male { color: var(--iztro-color-quan); }
-.gender.gender-female { color: var(--iztro-color-happy); }
 `;
-  var customChartStyles = `
+  var customChartHostAndWrapperStyles = `
   :host {
-    --ziwei-font-family: "Noto Sans TC", "Microsoft JhengHei", "PingFang TC", "Heiti TC", "LiHei Pro", "\u5FAE\u8EDF\u6B63\u9ED1\u9AD4", "\u860B\u679C\u5137\u4E2D\u9ED1", sans-serif;
-    --ziwei-font-size-base: 12px;
-    --ziwei-line-height-base: 1.3;
-    --ziwei-color-text-main: #424242;
-    --ziwei-color-text-secondary: #757575;
-    --ziwei-color-brand: #673AB7;
-    --ziwei-color-border-palace: #E0E0E0;
-    --ziwei-color-border-chart: #BDBDBD;
-    --ziwei-color-bg-chart: #ffffff;
-    --ziwei-color-bg-palace: rgba(250, 250, 250, 0.5);
-    --ziwei-color-bg-center: rgba(245, 245, 245, 0.8);
-    --ziwei-chart-shadow: 0 3px 10px rgba(0,0,0,0.12);
-    --ziwei-palace-min-height: 120px;
-    --ziwei-palace-padding: 5px 8px;
-
-    font-family: var(--ziwei-font-family);
-    font-size: var(--ziwei-font-size-base);
-    line-height: var(--ziwei-line-height-base);
-    color: var(--ziwei-color-text-main);
-    display: block;
-    width: 100%;
+    /* \u57FA\u672C\u6A23\u5F0F\uFF0C\u78BA\u4FDD Custom Element \u8868\u73FE\u5982\u9810\u671F */
+    display: block; /* \u5FC5\u9808\uFF0C\u4F7F\u5176\u53EF\u4EE5\u88AB\u8CE6\u4E88\u5C3A\u5BF8 */
+    width: 100%;   /* \u9ED8\u8A8D\u5BEC\u5EA6\uFF0C\u53EF\u5728 Wix \u7DE8\u8F2F\u5668\u8ABF\u6574 */
+    height: 600px; /* \u521D\u59CB\u9AD8\u5EA6\uFF0C\u53EF\u5728 Wix \u7DE8\u8F2F\u5668\u8ABF\u6574\uFF0C\u6216\u7531\u5167\u5BB9\u6C7A\u5B9A */
+    min-height: 300px; /* \u6700\u5C0F\u9AD8\u5EA6\uFF0C\u9632\u6B62\u592A\u5C0F */
+    overflow: hidden; /* \u9632\u6B62\u547D\u76E4\u6EA2\u51FA */
     box-sizing: border-box;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif; /* \u57FA\u790E\u5B57\u9AD4 */
+    line-height: 1.4; /* \u57FA\u790E\u884C\u9AD8 */
+    border: 1px solid #ccc; /* \u81E8\u6642\u908A\u6846\uFF0C\u65B9\u4FBF\u8ABF\u8A66 Custom Element \u7684\u908A\u754C */
   }
 
+  #chart-render-target {
+    width: 100%;
+    height: 100%;
+    display: flex; /* \u8B93 .iztro-astrolabe \u5BB9\u5668\u53EF\u4EE5\u88AB\u5C45\u4E2D (\u5982\u679C\u5176\u5C3A\u5BF8\u5C0F\u65BC\u639B\u8F09\u9EDE) */
+    justify-content: center;
+    align-items: center; /* \u6216 flex-start */
+    box-sizing: border-box;
+    background-color: var(--color-html-bg, #f0f2f5); /* \u4F60\u5B9A\u7FA9\u7684\u80CC\u666F\u8272 */
+  }
+
+  /*
+   * \u4E0D\u9700\u8981\u518D\u624B\u52D5\u6307\u5B9A\u5BAE\u4F4D\u7684 grid-area\uFF0CreactIztroDefaultCSS \u4E2D\u7684
+   * .iztro-astrolabe \u53CA\u5176 grid-template-areas \u61C9\u8A72\u6703\u8CA0\u8CAC\u6574\u9AD4\u4F48\u5C40\u3002
+   * react-iztro \u7684 JS \u4EE3\u78BC\u6703\u5C07\u5404\u500B\u5BAE\u4F4D\u7D44\u4EF6\u6B63\u78BA\u5730\u653E\u7F6E\u5230\u9019\u4E9B\u547D\u540D\u5340\u57DF\u3002
+   */
+  
+  /* \u793A\u4F8B\uFF1A\u5982\u679C\u4F60\u60F3\u8986\u84CB react-iztro \u7684\u67D0\u500B\u984F\u8272 */
+  /*
   .iztro-astrolabe-theme-default {
-    --iztro-star-font-size-big: 13px;
-    --iztro-star-font-size-small: 10px;
-    --iztro-color-major: var(--ziwei-color-brand);
-    --iztro-color-focus: #D32F2F;
-    --iztro-color-quan: #1976D2;
-    --iztro-color-tough: #6D4C41;
-    --iztro-color-awesome: #FF8F00;
-    --iztro-color-active: #FB8C00;
-    --iztro-color-happy: #D81B60;
-    --iztro-color-nice: #388E3C;
-    --iztro-color-decorator-1: var(--ziwei-color-text-secondary);
-    --iztro-color-decorator-2: #9E9E9E;
-    --iztro-color-text: var(--ziwei-color-text-main);
-    --iztro-color-border: var(--ziwei-color-border-palace);
-    --iztro-color-decadal: var(--iztro-color-major); 
-    --iztro-color-yearly: #0288D1;    
-    --iztro-color-monthly: #4CAF50;   
-    --iztro-color-daily: #FFC107;     
-    --iztro-color-hourly: var(--ziwei-color-text-secondary);
+    --iztro-color-major: purple !important; 
   }
-
-  .iztro-astrolabe {
-    display: grid;
-    grid-template-columns: repeat(4, minmax(90px, 1fr));
-    grid-template-rows: repeat(4, minmax(var(--ziwei-palace-min-height), auto));
-    width: 100%;
-    max-width: 880px;
-    margin: 10px auto;
-    border: 1px solid var(--ziwei-color-border-chart);
-    background-color: var(--ziwei-color-bg-chart);
-    box-shadow: var(--ziwei-chart-shadow);
-    border-radius: 6px;
-    overflow: hidden;
-  }
-
-  .iztro-palace {
-    border: 1px solid var(--iztro-color-border);
-    margin: -1px 0 0 -1px; 
-    padding: var(--ziwei-palace-padding);
-    box-sizing: border-box;
-    min-height: var(--ziwei-palace-min-height);
-    display: flex;
-    flex-direction: column;
-    position: relative;
-    background-color: var(--ziwei-color-bg-palace);
-    line-height: var(--ziwei-line-height-base);
-  }
-
-  /* \u5BAE\u4F4D\u5B9A\u4F4D (grid-area) - \u5047\u8A2D react-iztro \u4F7F\u7528 data-palace-idx \u4E14\u9806\u5E8F\u5982\u4E0B */
-  /* \u60A8\u5FC5\u9808\u4F7F\u7528\u958B\u767C\u8005\u5DE5\u5177\u9A57\u8B49\u5BE6\u969B\u7684 idx \u548C\u9806\u5E8F\uFF0C\u4E26\u76F8\u61C9\u8ABF\u6574 grid-area */
-  .iztro-palace[data-palace-idx="6"]  { grid-area: 1 / 1 / 2 / 2; } /* \u9077\u79FB (Top-Left) */
-  .iztro-palace[data-palace-idx="7"]  { grid-area: 1 / 2 / 2 / 3; } /* \u50D5\u5F79 */
-  .iztro-palace[data-palace-idx="8"]  { grid-area: 1 / 3 / 2 / 4; } /* \u5B98\u797F */
-  .iztro-palace[data-palace-idx="9"]  { grid-area: 1 / 4 / 2 / 5; } /* \u7530\u5B85 (Top-Right) */
-
-  .iztro-palace[data-palace-idx="5"]  { grid-area: 2 / 1 / 3 / 2; } /* \u75BE\u5384 (Mid-Left) */
-  /* Center Area will be 2 / 2 / 4 / 4 */
-  .iztro-palace[data-palace-idx="10"] { grid-area: 2 / 4 / 3 / 5; } /* \u798F\u5FB7 (Mid-Right) */
-
-  .iztro-palace[data-palace-idx="4"]  { grid-area: 3 / 1 / 4 / 2; } /* \u8CA1\u5E1B (Lower-Left) */
-  .iztro-palace[data-palace-idx="11"] { grid-area: 3 / 4 / 4 / 5; } /* \u7236\u6BCD (Lower-Right) */
-
-  .iztro-palace[data-palace-idx="3"]  { grid-area: 4 / 1 / 5 / 2; } /* \u5B50\u5973 (Bottom-Left) */
-  .iztro-palace[data-palace-idx="2"]  { grid-area: 4 / 2 / 5 / 3; } /* \u592B\u59BB */
-  .iztro-palace[data-palace-idx="1"]  { grid-area: 4 / 3 / 5 / 4; } /* \u5144\u5F1F */
-  .iztro-palace[data-palace-idx="0"]  { grid-area: 4 / 4 / 5 / 5; } /* \u547D\u5BAE (Bottom-Right) */
-
-  /* \u5099\u9078\u65B9\u6848: \u5982\u679C react-iztro \u4F7F\u7528 data-palace-name="\u547D\u5BAE" \u7B49 */
-  /* .iztro-palace[data-palace-name="\u9077\u79FB\u5BAE"] { grid-area: 1 / 1 / 2 / 2; } ... etc. */
-
-  .iztro-astrolabe > .iztro-palace-center { /* Assumes this class exists for the center block */
-    grid-area: 2 / 2 / 4 / 4;
-    border: 1px solid var(--iztro-color-border);
-    margin: -1px 0 0 -1px; 
-    padding: 15px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: space-around;
-    text-align: center;
-    background-color: var(--ziwei-color-bg-center); 
-    box-sizing: border-box;
-  }
-
-  .iztro-palace-name {
-    font-size: calc(var(--iztro-star-font-size-big) + 1px);
-    font-weight: 500; 
-    color: var(--iztro-color-major);
-    text-align: left; 
-    padding-bottom: 3px;
-    border-bottom: 1px solid var(--ziwei-color-border-palace);
-    margin-bottom: 4px;
-    line-height: 1.2;
-  }
-  
-  .iztro-palace-gz {
-    font-size: calc(var(--iztro-star-font-size-small) - 1px);
-    color: var(--iztro-color-decorator-1);
-    text-align: right; 
-    width: 100%;
-    margin-top: auto;
-    padding-top: 3px;
-    line-height: 1.2;
-  }
-  
-  .iztro-palace-stars-group, /* If iztro has a dedicated class for stars */
-  .iztro-palace > div:not(.iztro-palace-name):not(.iztro-palace-gz):not(.iztro-palace-scope):not(.iztro-palace-fate) /* Fallback selector */ {
-    flex-grow: 1;
-    text-align: left;
-    overflow-y: auto;
-    max-height: 65px;
-    padding: 2px 0;
-    line-height: 1.4;
-    scrollbar-width: thin;
-    scrollbar-color: var(--ziwei-color-text-secondary) transparent;
-  }
-  .iztro-palace-stars-group::-webkit-scrollbar,
-  .iztro-palace > div:not(.iztro-palace-name):not(.iztro-palace-gz):not(.iztro-palace-scope):not(.iztro-palace-fate)::-webkit-scrollbar {
-    width: 4px;
-  }
-  .iztro-palace-stars-group::-webkit-scrollbar-thumb,
-  .iztro-palace > div:not(.iztro-palace-name):not(.iztro-palace-gz):not(.iztro-palace-scope):not(.iztro-palace-fate)::-webkit-scrollbar-thumb {
-    background-color: var(--ziwei-color-text-secondary);
-    border-radius: 2px;
-  }
-
-  .iztro-star {
-    display: inline;
-    margin-right: 5px;
-    white-space: nowrap;
-  }
-
-  .iztro-star-major { font-weight: 500; }
-
-  .iztro-star-doctor, .iztro-star-\u535A\u58EB, .iztro-star-\u529B\u58EB, .iztro-star-\u9752\u9F8D, /* Common misc stars */
-  .iztro-star-adjective /* If react-iztro uses this for misc stars descriptions */ { 
-    font-size: calc(var(--iztro-star-font-size-small) - 2px);
-    color: var(--iztro-color-decorator-1); 
-    opacity: 0.9;
-  }
-
-  .iztro-star-brightness {
-    font-size: calc(var(--iztro-star-font-size-small) - 2px);
-    color: var(--iztro-color-text);
-    margin-left: 2px;
-    font-style: normal;
-    opacity: 0.65;
-    font-weight: 300;
-  }
-
-  .iztro-star-mutagen {
-    display: inline-block;
-    color: #fff !important;
-    font-size: calc(var(--iztro-star-font-size-small) - 2px);
-    font-weight: normal;
-    padding: 1px 4px; 
-    border-radius: 3px;
-    margin-left: 2px;
-    line-height: 1; 
-    vertical-align: middle;
-  }
-
-  .iztro-palace-scope {
-    font-size: calc(var(--iztro-star-font-size-small) - 1px);
-    text-align: left;
-    margin-top: 4px;
-    padding-top: 3px;
-    border-top: 1px dashed var(--ziwei-color-border-palace);
-    line-height: 1.3;
-  }
-  .iztro-palace-scope span {
-    display: block; 
-    margin-bottom: 1px;
-    white-space: nowrap;
-  }
-  .iztro-palace-scope-age { 
-      color: var(--iztro-color-text) !important; 
-      font-size: calc(var(--iztro-star-font-size-small) - 2px); 
-      opacity: 0.8;
-  }
-
-  .iztro-palace-fate {
-    position: absolute;
-    top: var(--ziwei-palace-padding);
-    right: var(--ziwei-palace-padding);
-    font-size: calc(var(--iztro-star-font-size-small) - 1px);
-    z-index: 1; 
-  }
-  .iztro-palace-fate span {
-    display: inline-block;
-    padding: 2px 5px;
-    border-radius: 3px;
-    color: #fff;
-    background-color: var(--iztro-color-major);
-    margin-left: 3px;
-  }
-
-  .iztro-palace-center-item {
-    font-size: calc(var(--ziwei-font-size-base) - 1px);
-    line-height: 1.8;
-    margin-bottom: 6px;
-    text-align: left;
-    width: 100%;
-    max-width: 350px;
-  }
-  .iztro-palace-center-item label {
-    color: var(--ziwei-color-text-secondary);
-    margin-right: 8px;
-    display: inline-block;
-    min-width: 70px;
-    font-weight: 500;
-  }
-  .iztro-palace-center-item span {
-    color: var(--iztro-color-major); 
-    font-weight: 400;
-  }
-  .iztro-palace-center-item .gender.gender-male { color: var(--iztro-color-quan); font-weight: bold; }
-  .iztro-palace-center-item .gender.gender-female { color: var(--iztro-color-happy); font-weight: bold; }
-
-  @media (max-width: 880px) {
-    :host { 
-        --ziwei-palace-min-height: 110px; 
-        --ziwei-font-size-base: 11px;
-    }
-    .iztro-astrolabe {
-      grid-template-columns: repeat(4, minmax(80px, 1fr));
-      max-width: 100%;
-      margin: 5px auto;
-      border-radius: 0;
-    }
-    .iztro-palace-center-item { font-size: 10px; line-height: 1.7; }
-    .iztro-palace-name { font-size: 12px;}
-    .iztro-astrolabe-theme-default {
-        --iztro-star-font-size-big: 12px;
-        --iztro-star-font-size-small: 9px;
-    }
-    .iztro-palace-stars-group,
-    .iztro-palace > div:not(.iztro-palace-name):not(.iztro-palace-gz):not(.iztro-palace-scope):not(.iztro-palace-fate) { 
-        max-height: 55px; 
-    }
-  }
-
-  @media (max-width: 600px) {
-    :host { 
-        --ziwei-palace-min-height: auto;
-        --ziwei-font-size-base: 10px; 
-        --ziwei-palace-padding: 4px 6px;
-    }
-    .iztro-astrolabe {
-      display: flex; 
-      flex-direction: column;
-      border: none;
-      box-shadow: none;
-      margin: 0;
-    }
-    .iztro-palace, 
-    .iztro-astrolabe > .iztro-palace-center {
-      width: 100%; 
-      margin: 0 0 1px 0;
-      min-height: var(--ziwei-palace-min-height);
-      order: 0 !important;
-      grid-area: auto !important;
-      border-left: none;
-      border-right: none;
-      border-radius: 0;
-      border-top: 1px solid var(--ziwei-color-border-chart); 
-    }
-    .iztro-astrolabe > *:first-child { border-top: none; }
-    .iztro-astrolabe > *:last-child { border-bottom: none; }
-
-    .iztro-palace-stars-group,
-    .iztro-palace > div:not(.iztro-palace-name):not(.iztro-palace-gz):not(.iztro-palace-scope):not(.iztro-palace-fate) {
-      max-height: none;
-      overflow-y: visible;
-    }
-    .iztro-palace-name, .iztro-palace-gz {
-      text-align: left;
-    }
-    .iztro-astrolabe > .iztro-palace-center {
-      order: -1;
-      margin-bottom: 5px;
-      padding: 10px;
-    }
-    
-    .iztro-astrolabe-theme-default {
-        --iztro-star-font-size-big: 11px;
-        --iztro-star-font-size-small: 9px;
-    }
-    .iztro-palace-name { font-size: 11px; }
-    .iztro-palace-center-item { font-size: 10px; }
-    .iztro-palace-center-item label { min-width: 60px; }
-  }
+  */
 `;
   var ZiweiChart = class extends HTMLElement {
     static get observedAttributes() {
@@ -45109,377 +44783,357 @@ var ZiweiChartCustomElementGlobal = (() => {
       this.attachShadow({ mode: "open" });
       console.log("[ZiweiChart INSTANCE] constructor: Shadow DOM attached.");
       this.shadowRoot.innerHTML = `
-            <style id="ziwei-dynamic-styles">
-                /* CSS will be injected here */
-            </style>
+            <style id="ziwei-dynamic-styles"></style>
             <div id="chart-render-target" class="chart-wrapper-inside-shadow-dom">
                 <div class="message-display-in-shadow loading-message-in-shadow">\u547D\u76E4\u7D44\u4EF6\u521D\u59CB\u5316\u4E2D...</div>
             </div>
         `;
       console.log("[ZiweiChart INSTANCE] constructor: Initial Shadow DOM HTML set.");
+      this._mountPoint = this.shadowRoot.getElementById("chart-render-target");
       this._reactRoot = null;
       this._currentConfigString = null;
       this._currentThemeOverride = null;
       this._isRendering = false;
+      this._isMounted = false;
+      this._currentWidth = 0;
+      this._currentHeight = 0;
+      this._resizeObserver = null;
+      this._data = {};
+      this._forceNextRender = false;
     }
     _injectStyles() {
       const styleElement = this.shadowRoot.getElementById("ziwei-dynamic-styles");
       if (!styleElement) {
-        console.error("[ZiweiChart INSTANCE] _injectStyles: Critical - #ziwei-dynamic-styles element not found in Shadow DOM!");
+        console.error("[ZiweiChart INSTANCE] _injectStyles: Critical - #ziwei-dynamic-styles element not found!");
         return;
       }
       let combinedCSS = `
-            :host { 
-                display: block; 
-                width: 100%; 
-                padding: 0; 
-                box-sizing: border-box;
-                --color-html-bg: #f0f2f5;
-            }
-            .chart-wrapper-inside-shadow-dom { 
-                width: 100%; 
-                display: flex; 
-                justify-content: center;
-                align-items: flex-start; 
-                padding: 0; 
-                box-sizing: border-box; 
-                background-color: var(--color-html-bg, #f0f2f5);
-            }
-            .message-display-in-shadow { font-size: 16px; padding: 20px; border-radius: 4px; text-align: center; margin: 20px; }
+            /* \u901A\u7528\u6D88\u606F\u6A23\u5F0F */
+            .message-display-in-shadow { font-size: 16px; padding: 20px; border-radius: 4px; text-align: center; margin: 20px; font-family: var(--ziwei-font-family, sans-serif); }
             .loading-message-in-shadow { background-color: #e6f7ff; color: #1890ff; border: 1px solid #91d5ff; }
             .error-message-in-shadow { background-color: #fff1f0; color: #f5222d; border: 1px solid #ffa39e; }
         `;
-      combinedCSS += antdResetCSS;
+      if (typeof antdResetCSS !== "undefined")
+        combinedCSS += antdResetCSS;
       combinedCSS += reactIztroDefaultCSS;
-      combinedCSS += customChartStyles;
+      combinedCSS += customChartHostAndWrapperStyles;
       if (this._currentThemeOverride) {
         console.log("[ZiweiChart INSTANCE] _injectStyles: Applying theme-override CSS.");
         combinedCSS += this._currentThemeOverride;
       }
       styleElement.textContent = combinedCSS;
-      console.log("[ZiweiChart INSTANCE] _injectStyles: All styles injected/updated in #ziwei-dynamic-styles.");
+      console.log("[ZiweiChart INSTANCE] _injectStyles: All styles injected.");
     }
     connectedCallback() {
       console.log("[ZiweiChart INSTANCE] connectedCallback CALLED.");
-      this._injectStyles();
-      const renderTarget = this.shadowRoot.getElementById("chart-render-target");
-      if (!renderTarget) {
-        console.error("[ZiweiChart INSTANCE] connectedCallback: CRITICAL - #chart-render-target NOT FOUND in Shadow DOM.");
-        this.shadowRoot.innerHTML = `<style>.error-message-in-shadow { background-color: #fff1f0; color: #f5222d; border: 1px solid #ffa39e; font-size: 16px; padding: 20px; border-radius: 4px; text-align: center; margin: 20px; }</style><div class="error-message-in-shadow">\u5167\u90E8\u6E32\u67D3\u76EE\u6A19\u4E1F\u5931\uFF01\u7D44\u4EF6\u7121\u6CD5\u521D\u59CB\u5316\u3002</div>`;
-        return;
-      }
-      if (!this._reactRoot) {
-        if (import_client.default && import_client.default.createRoot) {
-          this._reactRoot = import_client.default.createRoot(renderTarget);
-          console.log("[ZiweiChart INSTANCE] connectedCallback: React root CREATED.");
-        } else {
-          console.error("[ZiweiChart INSTANCE] connectedCallback: ReactDOM.createRoot is UNDEFINED. React might not be loaded correctly.");
-          this.renderError("React \u74B0\u5883\u932F\u8AA4 (createRoot undefined)\u3002", true);
+      if (!this._isMounted) {
+        this._injectStyles();
+        if (!this._mountPoint) {
+          console.error("[ZiweiChart INSTANCE] connectedCallback: CRITICAL - _mountPoint is NULL.");
+          this.renderError("\u639B\u8F09\u9EDE\u4E1F\u5931\uFF0C\u7D44\u4EF6\u7121\u6CD5\u521D\u59CB\u5316\u3002", true);
           return;
         }
+        if (typeof import_client.default !== "undefined" && typeof import_client.default.createRoot === "function") {
+          this._reactRoot = import_client.default.createRoot(this._mountPoint);
+          console.log("[ZiweiChart INSTANCE] connectedCallback: React root CREATED.");
+        } else {
+          console.error("[ZiweiChart INSTANCE] connectedCallback: ReactDOM.createRoot is UNDEFINED.");
+          this.renderError("React \u74B0\u5883\u932F\u8AA4 (createRoot)\u3002", true);
+          this._isMounted = true;
+          return;
+        }
+        this._isMounted = true;
+        this._setupResizeObserver();
+        const initialConfig = this.getAttribute("data-config");
+        const initialThemeOverride = this.getAttribute("theme-override");
+        if (initialThemeOverride && initialThemeOverride !== this._currentThemeOverride) {
+          this._currentThemeOverride = initialThemeOverride;
+          this._injectStyles();
+          this._forceNextRender = true;
+        }
+        this.renderChartFromAttributes(this._forceNextRender);
       } else {
-        console.log("[ZiweiChart INSTANCE] connectedCallback: React root already exists.");
-      }
-      const initialConfig = this.getAttribute("data-config");
-      const initialThemeOverride = this.getAttribute("theme-override");
-      if (initialThemeOverride && initialThemeOverride !== this._currentThemeOverride) {
-        console.log("[ZiweiChart INSTANCE] connectedCallback: Initial theme-override found, applying styles.");
-        this._currentThemeOverride = initialThemeOverride;
+        console.log("[ZiweiChart INSTANCE] connectedCallback: Already mounted. Forcing a style injection and re-render if config exists.");
         this._injectStyles();
-      }
-      if (initialConfig) {
-        console.log("[ZiweiChart INSTANCE] connectedCallback: Initial data-config found, preparing to parse and render.");
-        Promise.resolve().then(() => this._parseAndRender(initialConfig));
-      } else {
-        this.renderPlaceholder("\u7B49\u5F85\u547D\u76E4\u6578\u64DA\u914D\u7F6E (connected)...");
+        if (this._currentConfigString) {
+          this._parseAndRender(this._currentConfigString, true);
+        }
       }
       console.log("[ZiweiChart INSTANCE] connectedCallback FINISHED.");
     }
-    disconnectedCallback() {
-      console.log("[ZiweiChart INSTANCE] disconnectedCallback CALLED.");
-      if (this._reactRoot && typeof this._reactRoot.unmount === "function") {
-        try {
-          this._reactRoot.unmount();
-          console.log("[ZiweiChart INSTANCE] disconnectedCallback: React root unmounted successfully.");
-        } catch (e) {
-          console.error("[ZiweiChart INSTANCE] disconnectedCallback: Error during React root unmount:", e);
+    // 處理生辰數據轉換 (與之前類似，包含子時換日和插件邏輯)
+    birthDataToIzTroParams(birthData) {
+      if (!birthData || !birthData.year || !birthData.month || !birthData.day || !birthData.hour || birthData.gender === void 0) {
+        console.warn("[ZiweiChart ELEMENT] Missing or invalid birthData for iztro conversion:", birthData);
+        return null;
+      }
+      let { year, month, day, hour, minute = 0, gender, solarDate, lunarDate, timeZone, anH, lang = "zh" } = birthData;
+      let targetYear = parseInt(year, 10);
+      let targetMonth = parseInt(month, 10);
+      let targetDay = parseInt(day, 10);
+      let targetHour = parseInt(hour, 10);
+      let targetMinute = parseInt(minute, 10);
+      const originalHourForIztro = targetHour;
+      if (targetHour === 23) {
+        let dateToIncrement;
+        if (solarDate && typeof solarDate === "string" && solarDate.match(/^\d{4}-\d{1,2}-\d{1,2}$/)) {
+          const [sY, sM, sD] = solarDate.split("-").map(Number);
+          dateToIncrement = new Date(sY, sM - 1, sD);
+        } else {
+          dateToIncrement = new Date(targetYear, targetMonth - 1, targetDay);
+        }
+        dateToIncrement.setDate(dateToIncrement.getDate() + 1);
+        targetYear = dateToIncrement.getFullYear();
+        targetMonth = dateToIncrement.getMonth() + 1;
+        targetDay = dateToIncrement.getDate();
+        solarDate = `${targetYear}-${String(targetMonth).padStart(2, "0")}-${String(targetDay).padStart(2, "0")}`;
+      }
+      let birthdayForIztro;
+      let birthdayType = "solar";
+      if (payload.solarDate && typeof payload.solarDate === "string" && payload.solarDate.match(/^\d{4}-\d{1,2}-\d{1,2}$/)) {
+        birthdayForIztro = `${payload.solarDate} ${String(originalHourForIztro).padStart(2, "0")}:${String(targetMinute).padStart(2, "0")}:00`;
+      } else if (solarDate && typeof solarDate === "string" && solarDate.match(/^\d{4}-\d{1,2}-\d{1,2}$/)) {
+        birthdayForIztro = `${solarDate} ${String(originalHourForIztro).padStart(2, "0")}:${String(targetMinute).padStart(2, "0")}:00`;
+      } else if (lunarDate && typeof lunarDate === "object" && lunarDate.year && lunarDate.month && lunarDate.day) {
+        birthdayForIztro = {
+          year: lunarDate.year,
+          // 假設 Velo 提供的 lunarDate 已經是換日後的
+          month: lunarDate.month,
+          day: lunarDate.day,
+          hour: originalHourForIztro,
+          minute: targetMinute,
+          isLeap: !!lunarDate.isLeapMonth
+        };
+        birthdayType = "lunar";
+      } else {
+        birthdayForIztro = `${targetYear}-${String(targetMonth).padStart(2, "0")}-${String(targetDay).padStart(2, "0")} ${String(originalHourForIztro).padStart(2, "0")}:${String(targetMinute).padStart(2, "0")}:00`;
+      }
+      const plugins = [];
+      if (anH) {
+        if (typeof window.reactIztroPlugins !== "undefined" && typeof window.reactIztroPlugins.darkHidedHeavenlyStems === "function") {
+          plugins.push(window.reactIztroPlugins.darkHidedHeavenlyStems());
+          console.log("[ZiweiChart ELEMENT] \u6697\u5408\u63D2\u4EF6\u5DF2\u52A0\u8F09\u3002");
+        } else {
+          console.warn("[ZiweiChart ELEMENT] \u6697\u5408\u63D2\u4EF6 (darkHidedHeavenlyStems) \u5728 window.reactIztroPlugins \u4E2D\u672A\u627E\u5230\u3002\u8ACB\u78BA\u4FDD react-iztro-plugins UMD \u5DF2\u6B63\u78BA\u5F15\u5165\u3002");
         }
       }
-      this._reactRoot = null;
-      this._currentConfigString = null;
-      this._isRendering = false;
-      console.log("[ZiweiChart INSTANCE] disconnectedCallback: _reactRoot and config state reset.");
+      return {
+        birthday: birthdayForIztro,
+        gender: gender === "male" ? "\u7537" : gender === "female" ? "\u5973" : void 0,
+        birthdayType,
+        timeZone: timeZone !== void 0 ? parseInt(timeZone, 10) : void 0,
+        fixedLeap: payload.fixedLeap,
+        // 從 payload 中獲取 fixedLeap
+        plugins,
+        language: lang
+        // 將語言也返回，方便後續使用
+      };
     }
-    attributeChangedCallback(name, oldValue, newValue) {
-      console.log(`[ZiweiChart INSTANCE] attributeChangedCallback: Attribute '${name}' changed.`);
-      if (name === "theme-override") {
-        if (newValue !== this._currentThemeOverride) {
-          console.log("[ZiweiChart INSTANCE] attributeChangedCallback: theme-override changed. Updating styles.");
-          this._currentThemeOverride = newValue;
-          this._injectStyles();
-          if (this._currentConfigString && this._reactRoot) {
-            console.log("[ZiweiChart INSTANCE] attributeChangedCallback: Forcing re-render due to theme change with existing config.");
-            const tempConfig = this._currentConfigString;
-            this._currentConfigString = null;
-            Promise.resolve().then(() => this._parseAndRender(tempConfig));
+    _setupResizeObserver() {
+      if (this._resizeObserver) {
+        this._resizeObserver.disconnect();
+      }
+      this._resizeObserver = new ResizeObserver((entries) => {
+        for (let entry of entries) {
+          const { width, height } = entry.contentRect;
+          if (width > 0 && height > 0 && (width !== this._currentWidth || height !== this._currentHeight)) {
+            console.log(`[ZiweiChart INSTANCE] ResizeObserver: Size changed to ${width}x${height}`);
+            this._currentWidth = width;
+            this._currentHeight = height;
+            this._render();
           }
         }
-        return;
+      });
+      this._resizeObserver.observe(this._mountPoint);
+      const initialRect = this._mountPoint.getBoundingClientRect();
+      if (initialRect.width > 0 && initialRect.height > 0) {
+        this._currentWidth = initialRect.width;
+        this._currentHeight = initialRect.height;
       }
-      if (name === "data-config") {
-        if (newValue === this._currentConfigString) {
-          console.log("[ZiweiChart INSTANCE] attributeChangedCallback: data-config value is the same as current. Skipping re-render.");
-          return;
-        }
-        if (!this._reactRoot) {
-          console.warn("[ZiweiChart INSTANCE] attributeChangedCallback: React root not ready for data-config. Render will be handled by connectedCallback or later update.");
-          return;
-        }
-        if (newValue === null || newValue === void 0) {
-          console.log("[ZiweiChart INSTANCE] attributeChangedCallback: data-config removed. Clearing chart.");
-          this.renderPlaceholder("\u547D\u76E4\u914D\u7F6E\u5DF2\u79FB\u9664\u3002");
-          this._currentConfigString = null;
-        } else {
-          console.log("[ZiweiChart INSTANCE] attributeChangedCallback: data-config has new value. Preparing to parse and render.");
-          Promise.resolve().then(() => this._parseAndRender(newValue));
-        }
-      }
-      console.log(`[ZiweiChart INSTANCE] attributeChangedCallback for '${name}' FINISHED.`);
+      console.log(`[ZiweiChart INSTANCE] ResizeObserver initialized. Initial mount point size: ${this._currentWidth}x${this._currentHeight}`);
     }
-    _parseAndRender(configString) {
-      console.log("[ZiweiChart INSTANCE] _parseAndRender CALLED.");
-      if (this._isRendering && configString === this._currentConfigString) {
-        console.warn("[ZiweiChart INSTANCE] _parseAndRender: Skipped. Already rendering this exact config or in progress.");
-        return;
-      }
-      this._isRendering = true;
-      this._currentConfigString = configString;
-      if (!this._reactRoot) {
-        console.error("[ZiweiChart INSTANCE] _parseAndRender: React root is unexpectedly null. Attempting to re-initialize (fallback).");
-        const renderTarget = this.shadowRoot.getElementById("chart-render-target");
-        if (renderTarget && import_client.default && import_client.default.createRoot) {
-          this._reactRoot = import_client.default.createRoot(renderTarget);
-          console.log("[ZiweiChart INSTANCE] _parseAndRender: React root RE-CREATED (fallback).");
-        } else {
-          this.renderError("\u914D\u7F6E\u89E3\u6790\u524D\uFF0C\u6E32\u67D3\u5F15\u64CE\u521D\u59CB\u5316\u5931\u6557\u3002", true);
-          this._isRendering = false;
-          return;
-        }
-      }
-      if (!configString) {
-        console.warn("[ZiweiChart INSTANCE] _parseAndRender: configString is empty/null. Clearing display.");
-        this.renderError("\u547D\u76E4\u914D\u7F6E\u6578\u64DA\u70BA\u7A7A\u3002");
+    _renderAstrolabeWithReact(payload2) {
+      var _a, _b, _c;
+      console.log("[ZiweiChart INSTANCE] _renderAstrolabeWithReact CALLED. Payload:", JSON.stringify(payload2));
+      if (!this._isMounted || !this._reactRoot) {
+        console.error("[ZiweiChart INSTANCE] _renderAstrolabeWithReact: Not mounted or React root missing.");
+        this.renderError("React \u6E32\u67D3\u6838\u5FC3\u672A\u5C31\u7DD2\u3002");
         this._isRendering = false;
         return;
       }
-      try {
-        const config = JSON.parse(configString);
-        console.log("[ZiweiChart INSTANCE] _parseAndRender: Parsed config:", config);
-        if (config && typeof config === "object" && config.type === "RENDER_CHART" && config.payload && typeof config.payload === "object") {
-          console.log("[ZiweiChart INSTANCE] _parseAndRender: Valid config structure. Proceeding to render Astrolabe.");
-          this._renderAstrolabeWithReact(config.payload);
-        } else {
-          console.warn("[ZiweiChart INSTANCE] _parseAndRender: Invalid config structure or missing/invalid payload.", config);
-          this.renderError("\u547D\u76E4\u914D\u7F6E\u683C\u5F0F\u7121\u6548\u6216\u7F3A\u5C11\u5FC5\u9808\u7684 payload \u6578\u64DA\u3002");
-          this._isRendering = false;
-        }
-      } catch (error) {
-        console.error("[ZiweiChart INSTANCE] _parseAndRender: ERROR parsing JSON config:", error);
-        this.renderError(`\u89E3\u6790\u547D\u76E4\u914D\u7F6E\u6642\u767C\u751F\u932F\u8AA4: ${error.message}`);
-        this._isRendering = false;
-      }
-      console.log("[ZiweiChart INSTANCE] _parseAndRender FINISHED initial processing.");
-    }
-    _renderAstrolabeWithReact(payload) {
-      console.log("[ZiweiChart INSTANCE] _renderAstrolabeWithReact CALLED with payload.");
-      if (!this._reactRoot) {
-        this.renderError("\u7121\u6CD5\u6E32\u67D3\u547D\u76E4\uFF1AReact\u6E32\u67D3\u6838\u5FC3\u4E1F\u5931\u3002", true);
+      const iztroParams = this.birthDataToIzTroParams(payload2);
+      if (!iztroParams) {
+        this.renderError("\u751F\u8FB0\u516B\u5B57\u6578\u64DA\u7121\u6548\u6216\u7F3A\u5931 (\u4F86\u81EA _renderAstrolabeWithReact)\u3002");
         this._isRendering = false;
         return;
       }
-      if (!payload || Object.keys(payload).length === 0) {
-        console.warn("[ZiweiChart INSTANCE] _renderAstrolabeWithReact: Payload is empty or invalid.");
-        this.renderError("\u547D\u76E4\u6838\u5FC3\u6578\u64DA (payload) \u70BA\u7A7A\u6216\u7121\u6548\u3002");
+      const AstrolabeComponent = iztro.Iztrolabe;
+      if (typeof AstrolabeComponent === "undefined") {
+        console.error("[ZiweiChart INSTANCE] _renderAstrolabeWithReact: AstrolabeComponent (iztro.Iztrolabe) is UNDEFINED!");
+        this.renderError("\u547D\u76E4\u6838\u5FC3\u7D44\u4EF6\u672A\u80FD\u6B63\u78BA\u8F09\u5165\u3002");
         this._isRendering = false;
         return;
       }
-      const AstrolabeComponentToUse = iztro.Iztrolabe;
-      console.log("[ZiweiChart INSTANCE] _renderAstrolabeWithReact: Using AstrolabeComponentToUse (expected: iztro.Iztrolabe). Type:", typeof AstrolabeComponentToUse);
-      if (typeof AstrolabeComponentToUse === "undefined") {
-        console.error("[ZiweiChart INSTANCE] _renderAstrolabeWithReact: CRITICAL - AstrolabeComponentToUse (iztro.Iztrolabe) is UNDEFINED!");
-        this.renderError("\u547D\u76E4\u6838\u5FC3\u7D44\u4EF6 (iztro.Iztrolabe) \u672A\u80FD\u6B63\u78BA\u8F09\u5165\u3002");
-        this._isRendering = false;
-        return;
-      }
-      const {
-        birthDate,
-        birthTime,
-        gender,
-        solar = true,
-        lang = "zh-CN",
-        // Default language
-        // fixedLeap is a direct prop name, not from a sub-options object
-        fixedLeap = false,
-        // Assuming this comes from Velo payload or a default is fine
-        // Any other options from Velo can be caught by `...otherPayloadOptions`
-        ...otherPayloadOptions
-      } = payload;
-      if (!birthDate || !/^\d{4}-\d{2}-\d{2}$/.test(birthDate)) {
-        this.renderError(`\u51FA\u751F\u65E5\u671F\u683C\u5F0F\u932F\u8AA4: "${birthDate}". \u61C9\u70BA YYYY-MM-DD\u3002`);
-        this._isRendering = false;
-        return;
-      }
-      const iztroBirthTimeNum = parseInt(birthTime, 10);
-      if (isNaN(iztroBirthTimeNum) || iztroBirthTimeNum < 0 || iztroBirthTimeNum > 23) {
-        this.renderError(`\u6642\u8FB0\u6578\u64DA\u932F\u8AA4: "${birthTime}". \u5FC5\u9808\u662F 0 \u5230 23 \u4E4B\u9593\u7684\u6578\u5B57\u3002`);
-        this._isRendering = false;
-        return;
-      }
-      if (gender !== "M" && gender !== "F") {
-        this.renderError(`\u6027\u5225\u6578\u64DA\u932F\u8AA4: "${gender}". \u5FC5\u9808\u662F "M" \u6216 "F"\u3002`);
-        this._isRendering = false;
-        return;
-      }
-      const coreDataProps = {
-        birthday: birthDate,
-        birthTime: iztroBirthTimeNum,
-        gender: gender === "M" ? "male" : "female",
-        birthdayType: solar ? "solar" : "lunar",
-        language: lang,
-        fixedLeap
-        // Make sure this is correctly passed or defaulted
-      };
-      const displayOptions = {
-        theme: "default",
-        // We will style this using customChartStyles
-        showPalaceName: true,
-        // showStars: true, // react-iztro defaults to true for stars, no need to explicitly set if default is fine
-        showMutagens: true,
-        showBrightness: true,
-        showFiveElementsClass: true,
-        showChineseDate: true,
-        showDecadalScope: true,
-        showYearlyScope: true,
-        showMonthlyScope: true,
-        // Set to true to see if it appears
-        showDailyScope: false,
-        // Usually off by default
-        showHourlyScope: false,
-        // Usually off by default
-        showTransNatal: true
-        // Borrow opposite palace stars
-        // horoscopeDate: new Date(), // To show current time flowing stars, or pass specific date from Velo if needed
-        // ...otherPayloadOptions, // Spread any other options from Velo payload
+      const chartWidth = this._currentWidth > 10 ? this._currentWidth : parseInt(this.style.width, 10) || 550;
+      const chartHeight = this._currentHeight > 10 ? this._currentHeight : parseInt(this.style.height, 10) || 650;
+      console.log(`[ZiweiChart INSTANCE] Using dimensions for Astrolabe: Width=${chartWidth}, Height=${chartHeight}`);
+      const veloChartOptions = payload2.chartOptions || ((_a = this._data) == null ? void 0 : _a.chartOptions) || {};
+      const finalOptions = {
+        // 顯示相關
+        width: chartWidth,
+        height: chartHeight,
+        theme: veloChartOptions.theme || "default",
+        // 你可以通過 CSS variables 自定義 theme
+        language: iztroParams.language || veloChartOptions.language || "zh-CN",
+        // 保持 Velo > 默認
+        showPalaceName: veloChartOptions.showPalaceName !== void 0 ? veloChartOptions.showPalaceName : true,
+        showMutagens: veloChartOptions.showMutagens !== void 0 ? veloChartOptions.showMutagens : true,
+        showBrightness: veloChartOptions.showBrightness !== void 0 ? veloChartOptions.showBrightness : true,
+        showFiveElementsClass: veloChartOptions.showFiveElementsClass !== void 0 ? veloChartOptions.showFiveElementsClass : true,
+        showChineseDate: veloChartOptions.showChineseDate !== void 0 ? veloChartOptions.showChineseDate : true,
+        showDecadalScope: veloChartOptions.showDecadalScope !== void 0 ? veloChartOptions.showDecadalScope : true,
+        showYearlyScope: veloChartOptions.showYearlyScope !== void 0 ? veloChartOptions.showYearlyScope : true,
+        showMonthlyScope: veloChartOptions.showMonthlyScope !== void 0 ? veloChartOptions.showMonthlyScope : true,
+        showDailyScope: veloChartOptions.showDailyScope !== void 0 ? veloChartOptions.showDailyScope : false,
+        showHourlyScope: veloChartOptions.showHourlyScope !== void 0 ? veloChartOptions.showHourlyScope : false,
+        showTransNatal: veloChartOptions.showTransNatal !== void 0 ? veloChartOptions.showTransNatal : true,
+        // 'astrolabe' 子對象的配置 (來自 react-iztro)
+        astrolabe: {
+          showCenterContent: ((_b = veloChartOptions.astrolabe) == null ? void 0 : _b.showCenterContent) !== void 0 ? veloChartOptions.astrolabe.showCenterContent : true,
+          showThemeButton: ((_c = veloChartOptions.astrolabe) == null ? void 0 : _c.showThemeButton) !== void 0 ? veloChartOptions.astrolabe.showThemeButton : false,
+          // 通常不在嵌入式組件中顯示
+          // ... 其他 react-iztro > astrolabe 內部的配置
+          ...veloChartOptions.astrolabe || {}
+        },
+        plugins: [...iztroParams.plugins || [], ...veloChartOptions.plugins || []]
       };
       const finalProps = {
-        ...coreDataProps,
-        ...displayOptions,
-        ...otherPayloadOptions
-        // This ensures Velo can pass any valid Iztrolabe prop
+        birthday: iztroParams.birthday,
+        birthTime: payload2.birthTime,
+        // Iztrolabe 文檔可能需要數字類型的小時
+        gender: iztroParams.gender,
+        birthdayType: iztroParams.birthdayType,
+        timeZone: iztroParams.timeZone,
+        // 可選
+        fixedLeap: payload2.fixedLeap,
+        // 假設這是頂級 prop, 根據 iztro 文檔調整
+        options: finalOptions
+        // 如果 language 或 plugins 是頂級 props, 需要從 finalOptions 移到這裡
+        // language: finalOptions.language, 
+        // plugins: finalOptions.plugins,
       };
-      console.log("[ZiweiChart INSTANCE] _renderAstrolabeWithReact: Final props for Iztrolabe:", JSON.stringify(finalProps));
-      this.renderPlaceholder("\u6B63\u5728\u751F\u6210\u547D\u76E4\uFF0C\u8ACB\u7A0D\u5019...");
+      console.log("[ZiweiChart INSTANCE] Final props for React.createElement(Iztrolabe):", JSON.stringify(finalProps, null, 2));
+      this.renderPlaceholder("\u6E32\u67D3\u547D\u76E4\u5716...");
       setTimeout(() => {
         if (!this._reactRoot) {
-          console.error("[ZiweiChart INSTANCE] _renderAstrolabeWithReact (timeout): _reactRoot became null before rendering!");
-          this.renderError("\u6E32\u67D3\u547D\u76E4\u524D React Root \u4E1F\u5931 (timeout)\u3002", true);
+          console.error("[ZiweiChart INSTANCE] (timeout) React root is null, cannot render astrolabe!");
+          this.renderError("\u6E32\u67D3\u932F\u8AA4\uFF1AReact \u6838\u5FC3\u7570\u5E38 (timeout)\u3002", true);
           this._isRendering = false;
           return;
         }
         try {
-          const astrolabeElement = import_react.default.createElement(AstrolabeComponentToUse, finalProps);
-          if (!astrolabeElement) {
-            console.error("[ZiweiChart INSTANCE] _renderAstrolabeWithReact (timeout): React.createElement returned null/undefined.");
-            this.renderError("\u7121\u6CD5\u5275\u5EFA\u547D\u76E4\u5716\u8868\u5BE6\u4F8B (createElement failed)\u3002");
-            this._isRendering = false;
-            return;
-          }
-          this._reactRoot.render(astrolabeElement);
-          console.log("[ZiweiChart INSTANCE] _renderAstrolabeWithReact (timeout): React render() call executed. Chart should be visible.");
-        } catch (renderError) {
-          console.error("[ZiweiChart INSTANCE] _renderAstrolabeWithReact (timeout): >>> EXCEPTION during React rendering <<<");
-          console.error("  Error Name:", renderError.name);
-          console.error("  Error Message:", renderError.message);
-          if (renderError.stack)
-            console.error("  Error Stack:", renderError.stack);
-          this.renderError(`\u6E32\u67D3\u547D\u76E4\u6642\u767C\u751F\u5167\u90E8\u932F\u8AA4: ${renderError.message}.`);
+          this._reactRoot.render(
+            import_react.default.createElement(AstrolabeComponent, finalProps)
+          );
+          console.log("[ZiweiChart INSTANCE] (timeout) React render() for Astrolabe called.");
+        } catch (error) {
+          console.error("[ZiweiChart INSTANCE] (timeout) >>> EXCEPTION during Astrolabe rendering <<<", error);
+          this.renderError(`\u6E32\u67D3\u547D\u76E4\u5716\u6642\u767C\u751F\u5167\u90E8\u932F\u8AA4: ${error.message || "\u672A\u77E5\u932F\u8AA4"}`);
         } finally {
           this._isRendering = false;
-          console.log("[ZiweiChart INSTANCE] _renderAstrolabeWithReact (timeout): Rendering process finished.");
+          console.log("[ZiweiChart INSTANCE] (timeout) Astrolabe rendering attempt finished.");
         }
       }, 50);
     }
     renderPlaceholder(message) {
       console.log(`[ZiweiChart INSTANCE] renderPlaceholder: "${message}"`);
+      const renderTarget = this.shadowRoot.getElementById("chart-render-target");
+      if (!renderTarget)
+        return;
       if (!this._reactRoot) {
-        const renderTarget = this.shadowRoot.getElementById("chart-render-target");
-        if (renderTarget) {
-          renderTarget.innerHTML = `<div class="message-display-in-shadow loading-message-in-shadow">${message} (React root unavailable)</div>`;
-        }
-        console.warn("[ZiweiChart INSTANCE] renderPlaceholder: _reactRoot is null. Message displayed via innerHTML.");
+        renderTarget.innerHTML = `<div class="message-display-in-shadow loading-message-in-shadow">${message} (React root unavailable)</div>`;
         return;
       }
       try {
-        const key = `placeholder-${Date.now()}`;
-        this._reactRoot.render(import_react.default.createElement("div", { key, className: "message-display-in-shadow loading-message-in-shadow" }, message));
+        this._reactRoot.render(import_react.default.createElement("div", { key: `placeholder-${Date.now()}`, className: "message-display-in-shadow loading-message-in-shadow" }, message));
       } catch (e) {
-        console.error("[ZiweiChart INSTANCE] renderPlaceholder: Error rendering placeholder with React:", e);
-        const renderTarget = this.shadowRoot.getElementById("chart-render-target");
-        if (renderTarget)
-          renderTarget.innerHTML = `<div class="message-display-in-shadow loading-message-in-shadow">${message} (React error: ${e.message})</div>`;
+        renderTarget.innerHTML = `<div class="message-display-in-shadow error-message-in-shadow">${message} (React placeholder error: ${e.message})</div>`;
       }
     }
     renderError(message, isCritical = false) {
       console.error(`[ZiweiChart INSTANCE] renderError: "${message}" (Critical: ${isCritical})`);
       const renderTarget = this.shadowRoot.getElementById("chart-render-target");
-      if (!this._reactRoot && !isCritical) {
-        if (renderTarget) {
-          renderTarget.innerHTML = `<div class="message-display-in-shadow error-message-in-shadow">${message} (React root unavailable)</div>`;
-        }
-        console.warn("[ZiweiChart INSTANCE] renderError: _reactRoot is null (non-critical). Error displayed via innerHTML.");
+      if (!renderTarget) {
+        if (isCritical)
+          this.shadowRoot.innerHTML = `<style>.error-message-in-shadow { /* ... */ }</style><div class="message-display-in-shadow error-message-in-shadow">FATAL: ${message} (No render target)</div>`;
         return;
       }
-      if (!renderTarget && isCritical) {
-        this.shadowRoot.innerHTML = `<style>.error-message-in-shadow { background-color: #fff1f0; color: #f5222d; border: 1px solid #ffa39e; font-size: 16px; padding: 20px; border-radius: 4px; text-align: center; margin: 20px; }</style><div class="message-display-in-shadow error-message-in-shadow">FATAL: ${message} (No render target in Shadow DOM)</div>`;
-        console.error("Critical error rendered directly to Shadow DOM root due to missing target.");
+      if (!this._reactRoot && !isCritical) {
+        renderTarget.innerHTML = `<div class="message-display-in-shadow error-message-in-shadow">${message} (React root unavailable)</div>`;
         return;
       }
       if (this._reactRoot && !isCritical) {
         try {
-          const key = `error-${Date.now()}`;
-          this._reactRoot.render(import_react.default.createElement("div", { key, className: "message-display-in-shadow error-message-in-shadow" }, message));
+          this._reactRoot.render(import_react.default.createElement("div", { key: `error-${Date.now()}`, className: "message-display-in-shadow error-message-in-shadow" }, message));
         } catch (e) {
-          console.error("[ZiweiChart INSTANCE] renderError: Error rendering error message with React:", e);
-          if (renderTarget)
-            renderTarget.innerHTML = `<div class="message-display-in-shadow error-message-in-shadow">${message} (React error: ${e.message})</div>`;
+          renderTarget.innerHTML = `<div class="message-display-in-shadow error-message-in-shadow">${message} (React error rendering error: ${e.message})</div>`;
         }
-      } else if (renderTarget) {
-        renderTarget.innerHTML = `<div class="message-display-in-shadow error-message-in-shadow">${message} ${isCritical ? "(Critical Error)" : "(React Root Issue)"}</div>`;
-        if (isCritical)
-          console.error("Critical error rendered directly to HTML target due to React root issue or criticality.");
+      } else {
+        renderTarget.innerHTML = `<div class="message-display-in-shadow error-message-in-shadow">${message} ${isCritical ? "(Critical Error)" : ""}</div>`;
       }
     }
+    // --- Setters and Getters for Velo interaction ---
+    set birthData(value) {
+      let parsedValue = value;
+      if (typeof value === "string") {
+        try {
+          parsedValue = JSON.parse(value);
+        } catch (e) {
+          console.error("[ZiweiChart SETTER] Error parsing birthData string:", e, value);
+          this.renderError("\u751F\u8FB0\u516B\u5B57\u6578\u64DA\u683C\u5F0F\u932F\u8AA4\u3002");
+          return;
+        }
+      }
+      this._data = { ...this._data, birthData: parsedValue };
+      console.log("[ZiweiChart SETTER] birthData set:", this._data.birthData);
+      if (this._isMounted) {
+        this._parseAndRender(this.getAttribute("data-config") || JSON.stringify({ type: "RENDER_CHART", payload: this._data.birthData }));
+      }
+    }
+    get birthData() {
+      var _a;
+      return (_a = this._data) == null ? void 0 : _a.birthData;
+    }
+    set chartOptions(value) {
+      let parsedValue = value;
+      if (typeof value === "string") {
+        try {
+          parsedValue = JSON.parse(value);
+        } catch (e) {
+          console.error("[ZiweiChart SETTER] Error parsing chartOptions string:", e, value);
+        }
+      }
+      this._data = { ...this._data, chartOptions: parsedValue };
+      console.log("[ZiweiChart SETTER] chartOptions set:", this._data.chartOptions);
+      if (this._isMounted) {
+        this._forceNextRender = true;
+        this._parseAndRender(this.getAttribute("data-config") || JSON.stringify({ type: "RENDER_CHART", payload: this._data.birthData }), true);
+      }
+    }
+    get chartOptions() {
+      var _a;
+      return (_a = this._data) == null ? void 0 : _a.chartOptions;
+    }
   };
-  console.log("[ZiweiChart CE SCRIPT] Class ZiweiChart defined. Attempting customElements.define...");
   if (customElements && typeof customElements.get === "function" && !customElements.get("ziwei-chart")) {
     try {
       customElements.define("ziwei-chart", ZiweiChart);
       console.log('[ZiweiChart CE SCRIPT] Custom element "ziwei-chart" DEFINED SUCCESSFULLY.');
     } catch (e) {
       console.error('[ZiweiChart CE SCRIPT] CRITICAL ERROR defining custom element "ziwei-chart":', e);
-      const errorDiv = document.createElement("div");
-      errorDiv.textContent = `Failed to define ziwei-chart: ${e.message}. Check console.`;
-      errorDiv.style.color = "red";
-      errorDiv.style.padding = "10px";
-      errorDiv.style.border = "1px solid red";
-      document.body.prepend(errorDiv);
     }
   } else {
-    if (customElements && customElements.get("ziwei-chart")) {
-      console.warn('[ZiweiChart CE SCRIPT] Custom element "ziwei-chart" was ALREADY DEFINED. This might happen with HMR or multiple script loads.');
-    } else {
-      console.error('[ZiweiChart CE SCRIPT] customElements API not fully available. Cannot define "ziwei-chart".');
-    }
+    console.warn('[ZiweiChart CE SCRIPT] Custom element "ziwei-chart" was already defined or customElements API unavailable.');
   }
   console.log("[ZiweiChart CE SCRIPT] Top-level script execution FINISHED.");
 })();
