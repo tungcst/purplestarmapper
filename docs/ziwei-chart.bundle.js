@@ -41710,16 +41710,16 @@ var ZiweiChartCustomElementGlobal = (() => {
         };
       };
       exports.getConfig = getConfig;
-      function astrolabeBySolarDate(solarDateStr, timeIndex, gender, fixLeap, language) {
-        if (fixLeap === void 0) {
-          fixLeap = true;
+      function astrolabeBySolarDate(solarDateStr, timeIndex, gender, fixLeap2, language) {
+        if (fixLeap2 === void 0) {
+          fixLeap2 = true;
         }
-        return bySolar(solarDateStr, timeIndex, gender, fixLeap, language);
+        return bySolar(solarDateStr, timeIndex, gender, fixLeap2, language);
       }
       exports.astrolabeBySolarDate = astrolabeBySolarDate;
-      function bySolar(solarDate, timeIndex, gender, fixLeap, language) {
-        if (fixLeap === void 0) {
-          fixLeap = true;
+      function bySolar(solarDate, timeIndex, gender, fixLeap2, language) {
+        if (fixLeap2 === void 0) {
+          fixLeap2 = true;
         }
         language && (0, i18n_1.setLanguage)(language);
         var palaces = [];
@@ -41731,26 +41731,26 @@ var ZiweiChartCustomElementGlobal = (() => {
         var _a = (0, palace_1.getSoulAndBody)({
           solarDate,
           timeIndex,
-          fixLeap
+          fixLeap: fixLeap2
         }), bodyIndex = _a.bodyIndex, soulIndex = _a.soulIndex, heavenlyStemOfSoul = _a.heavenlyStemOfSoul, earthlyBranchOfSoul = _a.earthlyBranchOfSoul;
         var palaceNames = (0, palace_1.getPalaceNames)(soulIndex);
-        var majorStars = (0, star_1.getMajorStar)({ solarDate, timeIndex, fixLeap });
-        var minorStars = (0, star_1.getMinorStar)(solarDate, timeIndex, fixLeap);
+        var majorStars = (0, star_1.getMajorStar)({ solarDate, timeIndex, fixLeap: fixLeap2 });
+        var minorStars = (0, star_1.getMinorStar)(solarDate, timeIndex, fixLeap2);
         var adjectiveStars = (0, star_1.getAdjectiveStar)({
           solarDate,
           timeIndex,
           gender,
-          fixLeap
+          fixLeap: fixLeap2
         });
         var changsheng12 = (0, star_1.getchangsheng12)({
           solarDate,
           timeIndex,
           gender,
-          fixLeap
+          fixLeap: fixLeap2
         });
         var boshi12 = (0, star_1.getBoShi12)(solarDate, gender);
         var _b = (0, star_1.getYearly12)(solarDate), jiangqian12 = _b.jiangqian12, suiqian12 = _b.suiqian12;
-        var _c = (0, palace_1.getHoroscope)({ solarDate, timeIndex, gender, fixLeap }), decadals = _c.decadals, ages = _c.ages;
+        var _c = (0, palace_1.getHoroscope)({ solarDate, timeIndex, gender, fixLeap: fixLeap2 }), decadals = _c.decadals, ages = _c.ages;
         for (var i = 0; i < 12; i++) {
           var heavenlyStemOfPalace = data_1.HEAVENLY_STEMS[(0, utils_1.fixIndex)(data_1.HEAVENLY_STEMS.indexOf((0, i18n_1.kot)(heavenlyStemOfSoul, "Heavenly")) - soulIndex + i, 10)];
           var earthlyBranchOfPalace = data_1.EARTHLY_BRANCHES[(0, utils_1.fixIndex)(2 + i)];
@@ -41802,45 +41802,45 @@ var ZiweiChartCustomElementGlobal = (() => {
         return result;
       }
       exports.bySolar = bySolar;
-      function astrolabeByLunarDate(lunarDateStr, timeIndex, gender, isLeapMonth, fixLeap, language) {
+      function astrolabeByLunarDate(lunarDateStr, timeIndex, gender, isLeapMonth, fixLeap2, language) {
         if (isLeapMonth === void 0) {
           isLeapMonth = false;
         }
-        if (fixLeap === void 0) {
-          fixLeap = true;
+        if (fixLeap2 === void 0) {
+          fixLeap2 = true;
         }
-        return byLunar(lunarDateStr, timeIndex, gender, isLeapMonth, fixLeap, language);
+        return byLunar(lunarDateStr, timeIndex, gender, isLeapMonth, fixLeap2, language);
       }
       exports.astrolabeByLunarDate = astrolabeByLunarDate;
-      function byLunar(lunarDateStr, timeIndex, gender, isLeapMonth, fixLeap, language) {
+      function byLunar(lunarDateStr, timeIndex, gender, isLeapMonth, fixLeap2, language) {
         if (isLeapMonth === void 0) {
           isLeapMonth = false;
         }
-        if (fixLeap === void 0) {
-          fixLeap = true;
+        if (fixLeap2 === void 0) {
+          fixLeap2 = true;
         }
         var solarDate = (0, lunar_lite_1.lunar2solar)(lunarDateStr, isLeapMonth);
-        return bySolar(solarDate.toString(), timeIndex, gender, fixLeap, language);
+        return bySolar(solarDate.toString(), timeIndex, gender, fixLeap2, language);
       }
       exports.byLunar = byLunar;
       function rearrangeAstrolable(_a) {
         var from = _a.from, astrolable = _a.astrolable, option = _a.option;
-        var timeIndex = option.timeIndex, fixLeap = option.fixLeap;
+        var timeIndex = option.timeIndex, fixLeap2 = option.fixLeap;
         var _b = (0, palace_1.getSoulAndBody)({
           solarDate: astrolable.solarDate,
           timeIndex,
-          fixLeap,
+          fixLeap: fixLeap2,
           from
         }), soulIndex = _b.soulIndex, bodyIndex = _b.bodyIndex;
         var fiveElementsClass = (0, palace_1.getFiveElementsClass)(from.heavenlyStem, from.earthlyBranch);
         var palaceNames = (0, palace_1.getPalaceNames)(soulIndex);
-        var majorStars = (0, star_1.getMajorStar)({ solarDate: astrolable.solarDate, timeIndex, fixLeap, from });
-        var changsheng12 = (0, star_1.getchangsheng12)({ solarDate: astrolable.solarDate, timeIndex, fixLeap, from });
+        var majorStars = (0, star_1.getMajorStar)({ solarDate: astrolable.solarDate, timeIndex, fixLeap: fixLeap2, from });
+        var changsheng12 = (0, star_1.getchangsheng12)({ solarDate: astrolable.solarDate, timeIndex, fixLeap: fixLeap2, from });
         var _c = (0, palace_1.getHoroscope)({
           solarDate: astrolable.solarDate,
           timeIndex,
           gender: astrolable.gender,
-          fixLeap,
+          fixLeap: fixLeap2,
           from
         }), decadals = _c.decadals, ages = _c.ages;
         astrolable.fiveElementsClass = fiveElementsClass;
@@ -41856,15 +41856,15 @@ var ZiweiChartCustomElementGlobal = (() => {
       }
       exports.rearrangeAstrolable = rearrangeAstrolable;
       function withOptions(option) {
-        var _a = option.type, type = _a === void 0 ? "solar" : _a, dateStr = option.dateStr, timeIndex = option.timeIndex, gender = option.gender, isLeapMonth = option.isLeapMonth, fixLeap = option.fixLeap, language = option.language, astroType = option.astroType, cfg = option.config;
+        var _a = option.type, type = _a === void 0 ? "solar" : _a, dateStr = option.dateStr, timeIndex = option.timeIndex, gender = option.gender, isLeapMonth = option.isLeapMonth, fixLeap2 = option.fixLeap, language = option.language, astroType = option.astroType, cfg = option.config;
         if (cfg) {
           (0, exports.config)(cfg);
         }
         var result;
         if (type === "solar") {
-          result = bySolar(dateStr, timeIndex, gender, fixLeap, language);
+          result = bySolar(dateStr, timeIndex, gender, fixLeap2, language);
         } else {
-          result = byLunar(dateStr, timeIndex, gender, isLeapMonth, fixLeap, language);
+          result = byLunar(dateStr, timeIndex, gender, isLeapMonth, fixLeap2, language);
         }
         switch (astroType) {
           case "earth": {
@@ -41902,13 +41902,13 @@ var ZiweiChartCustomElementGlobal = (() => {
         return (0, exports.getSignBySolarDate)(solarDate.toString(), language);
       };
       exports.getSignByLunarDate = getSignByLunarDate;
-      var getMajorStarBySolarDate = function(solarDateStr, timeIndex, fixLeap, language) {
-        if (fixLeap === void 0) {
-          fixLeap = true;
+      var getMajorStarBySolarDate = function(solarDateStr, timeIndex, fixLeap2, language) {
+        if (fixLeap2 === void 0) {
+          fixLeap2 = true;
         }
         language && (0, i18n_1.setLanguage)(language);
-        var bodyIndex = (0, palace_1.getSoulAndBody)({ solarDate: solarDateStr, timeIndex, fixLeap }).bodyIndex;
-        var majorStars = (0, star_1.getMajorStar)({ solarDate: solarDateStr, timeIndex, fixLeap });
+        var bodyIndex = (0, palace_1.getSoulAndBody)({ solarDate: solarDateStr, timeIndex, fixLeap: fixLeap2 }).bodyIndex;
+        var majorStars = (0, star_1.getMajorStar)({ solarDate: solarDateStr, timeIndex, fixLeap: fixLeap2 });
         var stars = majorStars[bodyIndex].filter(function(star) {
           return star.type === "major";
         });
@@ -41924,15 +41924,15 @@ var ZiweiChartCustomElementGlobal = (() => {
         }).join(",");
       };
       exports.getMajorStarBySolarDate = getMajorStarBySolarDate;
-      var getMajorStarByLunarDate = function(lunarDateStr, timeIndex, isLeapMonth, fixLeap, language) {
+      var getMajorStarByLunarDate = function(lunarDateStr, timeIndex, isLeapMonth, fixLeap2, language) {
         if (isLeapMonth === void 0) {
           isLeapMonth = false;
         }
-        if (fixLeap === void 0) {
-          fixLeap = true;
+        if (fixLeap2 === void 0) {
+          fixLeap2 = true;
         }
         var solarDate = (0, lunar_lite_1.lunar2solar)(lunarDateStr, isLeapMonth);
-        return (0, exports.getMajorStarBySolarDate)(solarDate.toString(), timeIndex, fixLeap, language);
+        return (0, exports.getMajorStarBySolarDate)(solarDate.toString(), timeIndex, fixLeap2, language);
       };
       exports.getMajorStarByLunarDate = getMajorStarByLunarDate;
     }
@@ -41950,14 +41950,14 @@ var ZiweiChartCustomElementGlobal = (() => {
       var utils_1 = require_utils();
       var astro_1 = require_astro();
       var getSoulAndBody = function(param) {
-        var solarDate = param.solarDate, timeIndex = param.timeIndex, fixLeap = param.fixLeap, from = param.from;
+        var solarDate = param.solarDate, timeIndex = param.timeIndex, fixLeap2 = param.fixLeap, from = param.from;
         var _a = (0, lunar_lite_1.getHeavenlyStemAndEarthlyBranchBySolarDate)(solarDate, timeIndex, {
           year: (0, astro_1.getConfig)().yearDivide
         }), yearly = _a.yearly, hourly = _a.hourly;
         var earthlyBranchOfTime = (0, i18n_1.kot)(hourly[1], "Earthly");
         var heavenlyStemOfYear = (0, i18n_1.kot)(yearly[0], "Heavenly");
         var firstIndex = data_1.EARTHLY_BRANCHES.indexOf("yinEarthly");
-        var monthIndex = (0, utils_1.fixLunarMonthIndex)(solarDate, timeIndex, fixLeap);
+        var monthIndex = (0, utils_1.fixLunarMonthIndex)(solarDate, timeIndex, fixLeap2);
         var soulIndex = (0, utils_1.fixIndex)(monthIndex - data_1.EARTHLY_BRANCHES.indexOf(earthlyBranchOfTime));
         var bodyIndex = (0, utils_1.fixIndex)(monthIndex + data_1.EARTHLY_BRANCHES.indexOf(earthlyBranchOfTime));
         if ((from === null || from === void 0 ? void 0 : from.heavenlyStem) && (from === null || from === void 0 ? void 0 : from.earthlyBranch)) {
@@ -42083,8 +42083,8 @@ var ZiweiChartCustomElementGlobal = (() => {
       var utils_1 = require_utils();
       var getStartIndex = function(param) {
         var _a, _b;
-        var solarDate = param.solarDate, timeIndex = param.timeIndex, fixLeap = param.fixLeap, from = param.from;
-        var _c = (0, astro_1.getSoulAndBody)({ solarDate, timeIndex, fixLeap }), heavenlyStemOfSoul = _c.heavenlyStemOfSoul, earthlyBranchOfSoul = _c.earthlyBranchOfSoul;
+        var solarDate = param.solarDate, timeIndex = param.timeIndex, fixLeap2 = param.fixLeap, from = param.from;
+        var _c = (0, astro_1.getSoulAndBody)({ solarDate, timeIndex, fixLeap: fixLeap2 }), heavenlyStemOfSoul = _c.heavenlyStemOfSoul, earthlyBranchOfSoul = _c.earthlyBranchOfSoul;
         var lunarDay = (0, lunar_lite_1.solar2lunar)(solarDate).lunarDay;
         var baseHeavenlyStem = (_a = from === null || from === void 0 ? void 0 : from.heavenlyStem) !== null && _a !== void 0 ? _a : heavenlyStemOfSoul;
         var baseEarthlyBranch = (_b = from === null || from === void 0 ? void 0 : from.earthlyBranch) !== null && _b !== void 0 ? _b : earthlyBranchOfSoul;
@@ -42233,9 +42233,9 @@ var ZiweiChartCustomElementGlobal = (() => {
         return { changIndex, quIndex };
       };
       exports.getChangQuIndex = getChangQuIndex;
-      var getDailyStarIndex = function(solarDateStr, timeIndex, fixLeap) {
+      var getDailyStarIndex = function(solarDateStr, timeIndex, fixLeap2) {
         var lunarDay = (0, lunar_lite_1.solar2lunar)(solarDateStr).lunarDay;
-        var monthIndex = (0, utils_1.fixLunarMonthIndex)(solarDateStr, timeIndex, fixLeap);
+        var monthIndex = (0, utils_1.fixLunarMonthIndex)(solarDateStr, timeIndex, fixLeap2);
         var _a = (0, exports.getZuoYouIndex)(monthIndex + 1), zuoIndex = _a.zuoIndex, youIndex = _a.youIndex;
         var _b = (0, exports.getChangQuIndex)(timeIndex), changIndex = _b.changIndex, quIndex = _b.quIndex;
         var dayIndex = (0, utils_1.fixLunarDayIndex)(lunarDay, timeIndex);
@@ -42429,13 +42429,13 @@ var ZiweiChartCustomElementGlobal = (() => {
       exports.getDahaoIndex = getDahaoIndex;
       var getYearlyStarIndex = function(param) {
         var _a;
-        var solarDate = param.solarDate, timeIndex = param.timeIndex, gender = param.gender, fixLeap = param.fixLeap;
+        var solarDate = param.solarDate, timeIndex = param.timeIndex, gender = param.gender, fixLeap2 = param.fixLeap;
         var _b = (0, astro_1.getConfig)(), horoscopeDivide = _b.horoscopeDivide, algorithm = _b.algorithm;
         var yearly = (0, lunar_lite_1.getHeavenlyStemAndEarthlyBranchBySolarDate)(solarDate, timeIndex, {
           // 流耀应该用立春为界，但为了满足不同流派的需求允许配置
           year: horoscopeDivide
         }).yearly;
-        var _c = (0, astro_1.getSoulAndBody)({ solarDate, timeIndex, fixLeap }), soulIndex = _c.soulIndex, bodyIndex = _c.bodyIndex;
+        var _c = (0, astro_1.getSoulAndBody)({ solarDate, timeIndex, fixLeap: fixLeap2 }), soulIndex = _c.soulIndex, bodyIndex = _c.bodyIndex;
         var heavenlyStem = (0, i18n_1.kot)(yearly[0], "Heavenly");
         var earthlyBranch = (0, i18n_1.kot)(yearly[1], "Earthly");
         var _d = (0, exports.getHuagaiXianchiIndex)(yearly[1]), huagaiIndex = _d.huagaiIndex, xianchiIndex = _d.xianchiIndex;
@@ -42508,8 +42508,8 @@ var ZiweiChartCustomElementGlobal = (() => {
         return (0, utils_1.fixIndex)((0, utils_1.fixEarthlyBranchIndex)(["xu", "you", "shen", "wei", "woo", "si", "chen", "mao", "yin", "chou", "zi", "hai"][data_1.EARTHLY_BRANCHES.indexOf(earthlyBranch)]));
       };
       exports.getNianjieIndex = getNianjieIndex;
-      var getMonthlyStarIndex = function(solarDate, timeIndex, fixLeap) {
-        var monthIndex = (0, utils_1.fixLunarMonthIndex)(solarDate, timeIndex, fixLeap);
+      var getMonthlyStarIndex = function(solarDate, timeIndex, fixLeap2) {
+        var monthIndex = (0, utils_1.fixLunarMonthIndex)(solarDate, timeIndex, fixLeap2);
         var jieshenIndex = (0, utils_1.fixIndex)((0, utils_1.fixEarthlyBranchIndex)(["shen", "xu", "zi", "yin", "chen", "woo"][Math.floor(monthIndex / 2)]));
         var tianyaoIndex = (0, utils_1.fixIndex)((0, utils_1.fixEarthlyBranchIndex)("chou") + monthIndex);
         var tianxingIndex = (0, utils_1.fixIndex)((0, utils_1.fixEarthlyBranchIndex)("you") + monthIndex);
@@ -42726,12 +42726,12 @@ var ZiweiChartCustomElementGlobal = (() => {
       var FunctionalStar_1 = __importDefault(require_FunctionalStar());
       var location_1 = require_location();
       var astro_1 = require_astro2();
-      var getMinorStar = function(solarDateStr, timeIndex, fixLeap) {
+      var getMinorStar = function(solarDateStr, timeIndex, fixLeap2) {
         var stars = (0, _1.initStars)();
         var yearly = (0, lunar_lite_1.getHeavenlyStemAndEarthlyBranchBySolarDate)(solarDateStr, timeIndex, {
           year: (0, astro_1.getConfig)().yearDivide
         }).yearly;
-        var monthIndex = (0, utils_1.fixLunarMonthIndex)(solarDateStr, timeIndex, fixLeap);
+        var monthIndex = (0, utils_1.fixLunarMonthIndex)(solarDateStr, timeIndex, fixLeap2);
         var _a = (0, location_1.getZuoYouIndex)(monthIndex + 1), zuoIndex = _a.zuoIndex, youIndex = _a.youIndex;
         var _b = (0, location_1.getChangQuIndex)(timeIndex), changIndex = _b.changIndex, quIndex = _b.quIndex;
         var _c = (0, location_1.getKuiYueIndex)(yearly[0]), kuiIndex = _c.kuiIndex, yueIndex = _c.yueIndex;
@@ -42848,15 +42848,15 @@ var ZiweiChartCustomElementGlobal = (() => {
       var location_1 = require_location();
       var astro_1 = require_astro2();
       var getAdjectiveStar = function(param) {
-        var solarDate = param.solarDate, timeIndex = param.timeIndex, fixLeap = param.fixLeap;
+        var solarDate = param.solarDate, timeIndex = param.timeIndex, fixLeap2 = param.fixLeap;
         var algorithm = (0, astro_1.getConfig)().algorithm;
         var stars = (0, _1.initStars)();
         var yearly = (0, lunar_lite_1.getHeavenlyStemAndEarthlyBranchBySolarDate)(solarDate, timeIndex, {
           year: (0, astro_1.getConfig)().yearDivide
         }).yearly;
         var yearlyIndex = (0, location_1.getYearlyStarIndex)(param);
-        var monthlyIndex = (0, location_1.getMonthlyStarIndex)(solarDate, timeIndex, fixLeap);
-        var dailyIndex = (0, location_1.getDailyStarIndex)(solarDate, timeIndex, fixLeap);
+        var monthlyIndex = (0, location_1.getMonthlyStarIndex)(solarDate, timeIndex, fixLeap2);
+        var dailyIndex = (0, location_1.getDailyStarIndex)(solarDate, timeIndex, fixLeap2);
         var timelyIndex = (0, location_1.getTimelyStarIndex)(timeIndex);
         var _a = (0, location_1.getLuanXiIndex)(yearly[1]), hongluanIndex = _a.hongluanIndex, tianxiIndex = _a.tianxiIndex;
         var suiqian12 = (0, _1.getYearly12)(solarDate).suiqian12;
@@ -43323,10 +43323,10 @@ var ZiweiChartCustomElementGlobal = (() => {
         return (0, exports.fixIndex)(data_1.EARTHLY_BRANCHES.indexOf(earthlyBranch) - data_1.EARTHLY_BRANCHES.indexOf("yinEarthly"));
       };
       exports.fixEarthlyBranchIndex = fixEarthlyBranchIndex;
-      var fixLunarMonthIndex = function(solarDateStr, timeIndex, fixLeap) {
+      var fixLunarMonthIndex = function(solarDateStr, timeIndex, fixLeap2) {
         var _a = (0, lunar_lite_1.solar2lunar)(solarDateStr), lunarMonth = _a.lunarMonth, lunarDay = _a.lunarDay, isLeap = _a.isLeap;
         var firstIndex = data_1.EARTHLY_BRANCHES.indexOf("yinEarthly");
-        var needToAdd = isLeap && fixLeap && lunarDay > 15 && timeIndex !== 12;
+        var needToAdd = isLeap && fixLeap2 && lunarDay > 15 && timeIndex !== 12;
         return (0, exports.fixIndex)(lunarMonth + 1 - firstIndex + (needToAdd ? 1 : 0));
       };
       exports.fixLunarMonthIndex = fixLunarMonthIndex;
@@ -44349,7 +44349,7 @@ var ZiweiChartCustomElementGlobal = (() => {
         var _b = (0, react_1.useState)(_currentDate), _horoscopeDate = _b[0], _setHoroscopeDate = _b[1];
         var _c = (0, react_1.useState)((0, utils_1.timeToIndex)(_currentHour)), _horoscopeHour = _c[0], _setHoroscopeHour = _c[1];
         var _d = (0, react_1.useState)(), horoscope = _d[0], _setHoroscope = _d[1];
-        var birthTime = input.birthTime, birthday = input.birthday, birthdayType = input.birthdayType, fixLeap = input.fixLeap, isLeapMonth = input.isLeapMonth, gender = input.gender, lang = input.lang, options = input.options;
+        var birthTime = input.birthTime, birthday = input.birthday, birthdayType = input.birthdayType, fixLeap2 = input.fixLeap, isLeapMonth = input.isLeapMonth, gender = input.gender, lang = input.lang, options = input.options;
         (0, react_1.useEffect)(function() {
           var date = new Date(birthday).toString().toLowerCase();
           if (!birthday || date === "invalid date") {
@@ -44361,12 +44361,12 @@ var ZiweiChartCustomElementGlobal = (() => {
             gender,
             type: birthdayType,
             isLeapMonth,
-            fixLeap,
+            fixLeap: fixLeap2,
             language: lang,
             config: options
           });
           _setAstrolabe(data);
-        }, [birthTime, birthday, birthdayType, fixLeap, isLeapMonth, gender, lang]);
+        }, [birthTime, birthday, birthdayType, fixLeap2, isLeapMonth, gender, lang]);
         (0, react_1.useEffect)(function() {
           if (astrolabe) {
             _setHoroscope(astrolabe.horoscope(_horoscopeDate, _horoscopeHour));
@@ -44654,16 +44654,50 @@ var ZiweiChartCustomElementGlobal = (() => {
   var import_react = __toESM(require_react(), 1);
   var import_client = __toESM(require_client(), 1);
   var iztro = __toESM(require_lib4(), 1);
-  console.log("[ZiweiChart CE SCRIPT] Top-level: Script execution started.");
+  console.log("[ZiweiChart CE SCRIPT] Top-level: Script execution started. React, ReactDOM, iztro imported.");
+  if (typeof iztro === "object" && iztro !== null) {
+    const initialIztroKeys = Object.getOwnPropertyNames(iztro);
+    console.log("[ZiweiChart CE SCRIPT] ALL Initial iztro object property names (incl. non-enumerable):", initialIztroKeys);
+    initialIztroKeys.forEach((key) => {
+      let valueType = typeof iztro[key];
+      let valuePreview = String(iztro[key]).substring(0, 70);
+      if (typeof iztro[key] === "function") {
+        valuePreview = `[Function: ${iztro[key].name || "anonymous"}]`;
+      } else if (typeof iztro[key] === "object" && iztro[key] !== null) {
+        try {
+          valuePreview = `[Object with keys: ${Object.keys(iztro[key]).join(", ")}]`;
+        } catch (e) {
+          valuePreview = "[Object - cannot get keys]";
+        }
+      }
+      console.log(`[ZiweiChart CE SCRIPT]   Key: "${key}", Type: ${valueType}, Value Preview: ${valuePreview}`);
+    });
+    console.log("[ZiweiChart CE SCRIPT] typeof iztro.Iztrolabe:", typeof iztro.Iztrolabe);
+    console.log("[ZiweiChart CE SCRIPT] typeof iztro.Astrolabe:", typeof iztro.Astrolabe);
+  } else {
+    console.warn('[ZiweiChart CE SCRIPT] "iztro" object is not an object or is null.');
+  }
   var antdResetCSS = `html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, b, u, i, center, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td, article, aside, canvas, details, embed, figure, figcaption, footer, header, hgroup, menu, nav, output, ruby, section, summary, time, mark, audio, video { margin: 0; padding: 0; border: 0; font-size: 100%; font: inherit; vertical-align: baseline; } article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, section { display: block; } body { line-height: 1; } ol, ul { list-style: none; } blockquote, q { quotes: none; } blockquote:before, blockquote:after, q:before, q:after { content: ''; content: none; } table { border-collapse: collapse; border-spacing: 0; } *, *::before, *::after { box-sizing: border-box; } html { font-family: sans-serif; line-height: 1.15; -webkit-text-size-adjust: 100%; } body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji"; font-size: 14px; line-height: 1.5715; color: rgba(0,0,0,.85); background-color: #fff; }`;
   var reactIztroDefaultCSS = `
-/* ... (\u7C98\u8CBC\u4F60\u4E4B\u524D\u63D0\u4F9B\u7684\u6240\u6709 .iztro-xxx \u898F\u5247\uFF0C\u5F9E .iztro-palace \u5F00\u59CB\uFF0C\u5305\u62EC .iztro-astrolabe \u7684 grid \u5B9A\u4E49) ... */
 .iztro-astrolabe-theme-default {
   --iztro-star-font-size-big: 13px;
   --iztro-star-font-size-small: 12px;
   --iztro-color-major: #531dab;
   --iztro-color-focus: #000;
-  /* ... (\u6240\u6709 theme-default \u8B8A\u91CF) ... */
+  --iztro-color-quan: #2f54eb;
+  --iztro-color-tough: #612500;
+  --iztro-color-awesome: #d4380d;
+  --iztro-color-active: #1890ff;
+  --iztro-color-happy: #c41d7f;
+  --iztro-color-nice: #237804;
+  --iztro-color-decorator-1: #90983c;
+  --iztro-color-decorator-2: #813359;
+  --iztro-color-text: #8c8c8c;
+  --iztro-color-border: rgba(0, 21, 41, 0.07);
+  --iztro-color-decadal: var(--iztro-color-active);
+  --iztro-color-yearly: var(--iztro-color-decorator-2);
+  --iztro-color-monthly: var(--iztro-color-nice);
+  --iztro-color-daily: var(--iztro-color-decorator-1);
   --iztro-color-hourly: var(--iztro-color-text);
 }
 .iztro-astrolabe {
@@ -44688,13 +44722,15 @@ var ZiweiChartCustomElementGlobal = (() => {
   padding: 3px 5px;
   display: grid;
   text-transform: capitalize;
-  grid-template-rows: auto auto 1fr auto;
+  grid-template-rows: auto auto 1fr auto; 
   grid-template-columns: repeat(3, 1fr);
   grid-template-areas:
     "major minor adj"
     "horo  horo adj"
     "fate  fate fate"
     "ft   ft  ft";
+  transition: all 0.25s ease-in-out;
+  grid-auto-flow: column;
   border: 1px solid var(--iztro-color-border);
   box-sizing: border-box;
   overflow: hidden; 
@@ -44704,39 +44740,100 @@ var ZiweiChartCustomElementGlobal = (() => {
 .iztro-astrolabe > .iztro-palace:nth-child(4n+1) { margin-left: 0; }
 .iztro-astrolabe > .iztro-palace:nth-child(-n+4) { margin-top: 0; }
 .iztro-astrolabe > .iztro-palace-center { margin: -1px 0 0 -1px; }
-
-/* ... (\u7E7C\u7E8C\u7C98\u8CBC\u6240\u6709\u4F86\u81EA\u4F60\u63D0\u4F9B\u7684 iztro CSS \u7684\u898F\u5247) ... */
-.gender.gender-female { color: var(--iztro-color-happy); }
+.iztro-palace.focused-palace { background-color: rgba(170, 184, 211, 0.18); }
+.iztro-palace.opposite-palace { background-color: rgba(147, 247, 61, 0.31); }
+.iztro-palace.surrounded-palace { background-color: rgba(175, 244, 111, 0.14); }
+.iztro-palace-major { grid-area: major; display: flex; flex-wrap: wrap; gap: 2px 4px; align-items: flex-start; }
+.iztro-palace-minor { grid-area: minor; justify-self: center; display: flex; flex-wrap: wrap; gap: 2px 4px; align-items: flex-start; }
+.iztro-palace-adj { grid-area: adj; display: flex; flex-direction: column; align-items: flex-end; gap: 2px; white-space: nowrap; text-align: right; }
+.iztro-palace-horo-star { grid-area: horo; align-self: stretch; overflow-y: auto; scrollbar-width: thin; padding-top: 2px;}
+.iztro-palace-horo-star .stars { display: flex; flex-wrap: wrap; gap: 2px 4px; }
+.iztro-palace-scope { white-space: nowrap; text-align: center; /* Will be part of footer */ }
+.iztro-palace-scope-decadal { font-weight: 700; }
+.iztro-palace-fate { grid-area: fate; align-self: center; white-space: nowrap; justify-content: center; display: flex; flex-wrap: wrap; gap: 2px 3px; height: auto; min-height: 17px; margin-top: 2px; }
+.iztro-palace-fate .iztro-palace-decadal-active { background-color: var(--iztro-color-decadal); }
+.iztro-palace-fate .iztro-palace-yearly-active { background-color: var(--iztro-color-yearly); }
+.iztro-palace-fate .iztro-palace-monthly-active { background-color: var(--iztro-color-monthly); }
+.iztro-palace-fate .iztro-palace-daily-active { background-color: var(--iztro-color-daily); }
+.iztro-palace-fate .iztro-palace-hourly-active { background-color: var(--iztro-color-hourly); }
+.iztro-palace-footer { grid-area: ft; display: grid; grid-template-columns: auto 1fr auto; align-items: flex-end; padding-top: 2px; font-size: calc(var(--iztro-star-font-size-small) - 2px); }
+.iztro-palace-lft24 { text-align: left; }
+.iztro-palace-rgt24 { text-align: right; }
+.iztro-palace-name { cursor: pointer; text-wrap: nowrap; align-self: flex-start; }
+.iztro-palace-name .iztro-palace-name-wrapper { position: relative; }
+.iztro-palace-name .iztro-palace-name-taichi { position: absolute; font-size: 10px; line-height: 1; background-color: var(--iztro-color-major); padding: 1px 3px; color: #fff; z-index: 2; border-radius: 0 4px 4px 0; font-weight: normal !important; bottom: 1px; left: 100%; margin-left: 2px;}
+.iztro-palace-gz { text-align: right; cursor: pointer; position: absolute; top: 3px; right: 3px; font-size: calc(var(--iztro-star-font-size-small) - 2px); color: var(--iztro-color-text); }
+.iztro-palace-gz span { display: inline-block; padding: 0 1px; text-wrap: nowrap; }
+.iztro-palace-dynamic-name { text-align: center; display: flex; white-space: nowrap; gap: 3px; justify-content: center; font-size: calc(var(--iztro-star-font-size-small) - 1px); position: absolute; bottom: 3px; left: 50%; transform: translateX(-50%); width: 100%; }
+.iztro-palace-dynamic-name .iztro-palace-dynamic-name-decadal { color: var(--iztro-color-decadal); }
+.iztro-palace-dynamic-name .iztro-palace-dynamic-name-yearly { color: var(--iztro-color-yearly); }
+.iztro-palace-dynamic-name .iztro-palace-dynamic-name-monthly { color: var(--iztro-color-monthly); }
+.iztro-palace-dynamic-name .iztro-palace-dynamic-name-daily { color: var(--iztro-color-daily); }
+.iztro-palace-dynamic-name .iztro-palace-dynamic-name-hourly { color: var(--iztro-color-hourly); }
+.iztro-center-palace { grid-area: ct; position: relative; width: 100%; height: 100%; display: flex; flex-direction: column; justify-content: space-around; /* Distribute space */ padding: 8px; box-sizing: border-box; border: 1px solid var(--iztro-color-border); background-color: #fdfdfd; }
+.iztro-center-palace-centralize { text-align: center; }
+.iztro-center-palace ul.basic-info { margin: 5px 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); column-gap: 10px; font-size: calc(var(--iztro-star-font-size-small) - 1px); }
+.iztro-center-palace ul.basic-info li { list-style: none; line-height: 1.6; }
+.iztro-center-palace .center-title { padding-bottom: 5px; margin-bottom: 8px; font-size: calc(var(--iztro-star-font-size-big) + 1px); font-weight: bold; text-align: center; border-bottom: 1px dashed var(--iztro-color-border); }
+.horo-buttons { margin: 8px 0; font-size: var(--iztro-star-font-size-small); display: flex; justify-content: center; flex-wrap: wrap; gap: 5px; }
+.horo-buttons .center-button { display: block; text-align: center; padding: 4px 8px; border: 1px solid var(--iztro-color-border); cursor: pointer; transition: all 0.25s ease-in-out; color: var(--iztro-color-text); user-select: none; border-radius: 4px; }
+.horo-buttons .center-button:not(.disabled):hover { color: var(--iztro-color-major); background-color: var(--iztro-color-border); }
+.horo-buttons .center-button.disabled { opacity: 0.5; cursor: not-allowed; }
+.horo-buttons .center-horo-hour { display: flex; align-items: center; }
+.iztro-copyright { /* position: absolute; */ display: block; text-align:center; margin-top: auto; /* Push to bottom */ bottom: 5px; /* right: 5px; */ font-size: 10px; color: rgba(0, 0, 0, 0.2); text-decoration: none; text-shadow: 1px 1px rgba(255, 255, 255, 0.3); padding-top: 5px; }
+#palace-line { stroke: var(--iztro-color-awesome); opacity: 0.6; transition: all 0.25s ease-in-out; }
+#palace-line.decadal { stroke: var(--iztro-color-decadal); }
+.solar-horoscope { display: flex; align-items: center; gap: 10px; margin-top: 8px; justify-content: center;}
+.solar-horoscope .today { display: inline-block; font-size: var(--iztro-star-font-size-small); cursor: pointer; border: 1px solid var(--iztro-color-border); padding: 2px 6px; transition: all 0.25s ease-in-out; border-radius: 4px; }
+.solar-horoscope .today:hover { color: var(--iztro-color-major); background-color: var(--iztro-color-border); }
+.iztro-star-soft, .iztro-star-tough, .iztro-star-adjective, .iztro-star-flower, .iztro-star-helper, .iztro-palace-horo-star .stars, .iztro-palace-scope, .iztro-palace-dynamic-name, .iztro-palace-lft24, .iztro-palace-rgt24 { font-size: var(--iztro-star-font-size-small); font-weight: normal; white-space: nowrap; }
+.iztro-palace-scope-age { white-space: normal; }
+.iztro-star-major, .iztro-star-tianma, .iztro-star-lucun, .iztro-palace-name, .iztro-palace-gz { font-size: var(--iztro-star-font-size-big); font-weight: bold; }
+.iztro-star-brightness, .iztro-star-adjective { font-style: normal; font-weight: normal; color: var(--iztro-color-text); }
+.iztro-star-major, .iztro-star-soft, .iztro-palace-name { color: var(--iztro-color-major); }
+.iztro-star-tough { color: var(--iztro-color-tough); }
+.iztro-star-flower { color: var(--iztro-color-happy); }
+.iztro-star-helper { color: var(--iztro-color-nice); }
+.iztro-star-mutagen { font-weight: normal; font-size: calc(var(--iztro-star-font-size-small) - 1px); border-radius: 3px; color: #fff !important; display: inline-block; margin-left: 2px; padding: 1px 3px; vertical-align: text-bottom; line-height: 1; }
+.star-with-mutagen { position: relative; padding-right: 1px; }
+.star-with-mutagen::before, .star-with-mutagen::after { display: none; }
+.iztro-palace-name-body { font-size: calc(var(--iztro-star-font-size-small) - 1px); font-weight: normal; position: absolute; margin-top: 1px; }
+.iztro-palace-fate span { display: inline-block; padding: 1px 3px; border-radius: 3px; color: #fff; background-color: var(--iztro-color-major); cursor: pointer; margin-left: 2px; font-size: calc(var(--iztro-star-font-size-small) - 2px); line-height: 1.2;}
+.iztro-palace-center-item label { margin-right: 5px; display: inline-block; min-width: auto; font-weight: 500; }
+.iztro-palace-center-item span { font-weight: normal; }
 `;
   var customChartHostAndWrapperStyles = `
   :host {
     display: block; 
     width: 100%;   
-    min-height: 500px; /* \u78BA\u4FDD Custom Element \u6709\u6700\u5C0F\u9AD8\u5EA6 */
-    height: auto; /* \u9AD8\u5EA6\u7531\u5167\u5BB9\u6216 Wix \u7DE8\u8F2F\u5668\u6C7A\u5B9A */
+    min-height: 580px; /* \u7D66\u4E00\u500B\u6700\u5C0F\u9AD8\u5EA6 */
+    height: auto; /* \u6216\u8005\u8A2D\u7F6E\u70BA\u5177\u9AD4\u503C\u5982 650px\uFF0C\u6839\u64DA\u4F60\u7684\u8A2D\u8A08 */
     overflow: hidden; 
     box-sizing: border-box;
     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
     line-height: 1.4;
-    /* border: 1px dashed blue;  */
+    border: 1px solid #e0e0e0; /* \u66F4\u6DE1\u7684\u8ABF\u8A66\u908A\u6846 */
   }
   #chart-render-target {
     width: 100%;
-    height: 100%; 
+    height: 100%; /* \u8B93\u5B83\u586B\u5145 :host \u7684\u9AD8\u5EA6 */
     display: flex; 
     justify-content: center;
     align-items: center; 
     box-sizing: border-box;
-    background-color: #f9f9f9;
-    padding: 5px;
+    background-color: #f9f9f9; 
+    padding: 10px;
   }
-  /* \u78BA\u4FDD .iztro-astrolabe \u5143\u7D20 (\u7531 react-iztro \u6E32\u67D3) \u5C3A\u5BF8\u6B63\u78BA */
+  /* \u78BA\u4FDD .iztro-astrolabe \u672C\u8EAB\u5C3A\u5BF8\u53D7\u63A7\uFF0C\u800C\u4E0D\u662F\u7121\u9650\u64F4\u5927 */
   #chart-render-target > .iztro-astrolabe {
-      width: 100%; /* \u5617\u8A66\u8B93\u5B83\u586B\u5145 */
-      height: 100%; /* \u5617\u8A66\u8B93\u5B83\u586B\u5145 */
-      max-width: 800px; 
-      max-height: 700px;
+      width: 100%; 
+      height: 100%;
+      max-width: 780px; /* \u8ABF\u6574\u9069\u5408\u7684\u6700\u5927\u5BEC\u5EA6 */
+      max-height: 780px; /* \u8ABF\u6574\u9069\u5408\u7684\u6700\u5927\u9AD8\u5EA6 */
+      min-width: 300px; /* \u78BA\u4FDD\u6709\u6700\u5C0F\u5BEC\u5EA6 */
+      min-height: 450px; /* \u78BA\u4FDD\u6709\u6700\u5C0F\u9AD8\u5EA6 */
       box-sizing: border-box;
+      overflow: auto; /* \u5982\u679C\u5167\u5BB9\u8D85\u51FA\uFF0C\u5141\u8A31\u6EFE\u52D5 */
   }
 `;
   var ZiweiChart = class extends HTMLElement {
@@ -44745,15 +44842,15 @@ var ZiweiChartCustomElementGlobal = (() => {
       __publicField(this, "_injectStyles", () => {
         const styleElement = this.shadowRoot.getElementById("ziwei-dynamic-styles");
         if (!styleElement) {
-          console.error("Style element not found in shadow DOM");
+          console.error("Style element not found!");
           return;
         }
         let combinedCSS = `
-            .message-display-in-shadow { /*...*/ }
-            .loading-message-in-shadow { /*...*/ }
-            .error-message-in-shadow { /*...*/ }
+            .message-display-in-shadow { font-size: 16px; padding: 20px; border-radius: 4px; text-align: center; margin: 20px auto; font-family: "Helvetica Neue", Helvetica, Arial, sans-serif; max-width: 80%; }
+            .loading-message-in-shadow { background-color: #e6f7ff; color: #1890ff; border: 1px solid #91d5ff; }
+            .error-message-in-shadow { background-color: #fff1f0; color: #f5222d; border: 1px solid #ffa39e; }
         `;
-        if (typeof antdResetCSS !== "undefined")
+        if (typeof antdResetCSS === "string")
           combinedCSS += antdResetCSS;
         combinedCSS += reactIztroDefaultCSS;
         combinedCSS += customChartHostAndWrapperStyles;
@@ -44762,7 +44859,7 @@ var ZiweiChartCustomElementGlobal = (() => {
         styleElement.textContent = combinedCSS;
       });
       __publicField(this, "connectedCallback", () => {
-        console.log("[ZiweiChart] connectedCallback");
+        var _a;
         if (!this._isMounted) {
           this._injectStyles();
           if (!this._mountPoint) {
@@ -44784,19 +44881,26 @@ var ZiweiChartCustomElementGlobal = (() => {
             this._injectStyles();
             this._forceNextRender = true;
           }
-          requestAnimationFrame(() => {
+          if (this._currentWidth === 0 && this._currentHeight === 0) {
+            this.renderPlaceholder("\u7372\u53D6\u5BB9\u5668\u5C3A\u5BF8...");
+          } else {
             this.renderChartFromAttributes(this._forceNextRender);
-          });
+          }
         } else {
           this._injectStyles();
+          if (this._resizeObserver && this._mountPoint && !((_a = this._resizeObserver.observationTargets) == null ? void 0 : _a.includes(this._mountPoint))) {
+            this._resizeObserver.observe(this._mountPoint);
+          }
           if (this._currentConfigString)
             this._parseAndRender(this._currentConfigString, true);
         }
       });
       __publicField(this, "disconnectedCallback", () => {
-        console.log("[ZiweiChart] disconnectedCallback");
         if (this._isMounted && this._reactRoot) {
-          this._reactRoot.unmount();
+          try {
+            this._reactRoot.unmount();
+          } catch (e) {
+          }
         }
         this._isMounted = false;
         this._reactRoot = null;
@@ -44807,7 +44911,6 @@ var ZiweiChartCustomElementGlobal = (() => {
         this._currentConfigString = null;
       });
       __publicField(this, "attributeChangedCallback", (name, oldValue, newValue) => {
-        console.log(`[ZiweiChart] attributeChangedCallback: ${name}`);
         if (name === "theme-override") {
           if (newValue !== this._currentThemeOverride) {
             this._currentThemeOverride = newValue;
@@ -44818,15 +44921,12 @@ var ZiweiChartCustomElementGlobal = (() => {
             }
           }
         } else if (name === "data-config") {
-          if (newValue === this._currentConfigString && !this._forceNextRender) {
-            console.log("[ZiweiChart] data-config no change, skipping unless forced.");
+          if (newValue === this._currentConfigString && !this._forceNextRender)
             return;
-          }
-          if (!this._isMounted) {
+          if (!this._isMounted)
             return;
-          }
           if (newValue === null || newValue === void 0) {
-            this.renderPlaceholder("Config removed.");
+            this.renderPlaceholder("\u914D\u7F6E\u5DF2\u79FB\u9664\u3002");
             this._currentConfigString = null;
           } else {
             this._parseAndRender(newValue);
@@ -44835,16 +44935,17 @@ var ZiweiChartCustomElementGlobal = (() => {
         }
       });
       __publicField(this, "renderChartFromAttributes", (forceRender = false) => {
-        if (!this._isMounted || !this._reactRoot)
+        if (!this._isMounted || !this._reactRoot) {
+          this.renderPlaceholder("\u7D44\u4EF6\u672A\u5C31\u7DD2...");
           return;
+        }
         const configAttr = this.getAttribute("data-config");
         if (configAttr && (forceRender || configAttr !== this._currentConfigString || !this._currentWidth || !this._currentHeight)) {
           this._parseAndRender(configAttr, forceRender);
-        } else if (!configAttr && this._currentConfigString !== null) {
-          this.renderPlaceholder("Waiting for config (attr removed)...");
-          this._currentConfigString = null;
         } else if (!configAttr) {
-          this.renderPlaceholder("Waiting for config (initial)...");
+          this.renderPlaceholder("\u7B49\u5F85\u547D\u76E4\u914D\u7F6E...");
+          if (this._currentConfigString !== null)
+            this._currentConfigString = null;
         }
       });
       __publicField(this, "_setupResizeObserver", () => {
@@ -44854,11 +44955,13 @@ var ZiweiChartCustomElementGlobal = (() => {
           for (let entry of entries) {
             const { width, height } = entry.contentRect;
             if (width > 10 && height > 10) {
-              if (Math.abs(width - this._currentWidth) > 5 || Math.abs(height - this._currentHeight) > 5) {
-                this._currentWidth = width;
-                this._currentHeight = height;
+              if (Math.abs(width - this._currentWidth) > 1 || Math.abs(height - this._currentHeight) > 1) {
+                this._currentWidth = Math.round(width);
+                this._currentHeight = Math.round(height);
                 if (this._currentConfigString) {
                   this._parseAndRender(this._currentConfigString, true);
+                } else {
+                  this.renderPlaceholder("\u5C3A\u5BF8\u66F4\u65B0\uFF0C\u7B49\u5F85\u6578\u64DA...");
                 }
               }
             }
@@ -44869,10 +44972,14 @@ var ZiweiChartCustomElementGlobal = (() => {
           requestAnimationFrame(() => {
             if (this._mountPoint && this._isMounted) {
               const initialRect = this._mountPoint.getBoundingClientRect();
-              this._currentWidth = initialRect.width;
-              this._currentHeight = initialRect.height;
+              this._currentWidth = Math.round(initialRect.width);
+              this._currentHeight = Math.round(initialRect.height);
               if (this._currentWidth > 0 && this._currentHeight > 0 && this.getAttribute("data-config")) {
-                this.renderChartFromAttributes(true);
+                if (!this._currentConfigString || this._forceNextRender) {
+                  this.renderChartFromAttributes(true);
+                }
+              } else if (!this.getAttribute("data-config")) {
+                this.renderPlaceholder("\u7372\u53D6\u5230\u5C3A\u5BF8\uFF0C\u7B49\u5F85\u914D\u7F6E...");
               }
             }
           });
@@ -44880,39 +44987,88 @@ var ZiweiChartCustomElementGlobal = (() => {
       });
       __publicField(this, "birthDataToIzTroParams", (payload) => {
         var _a;
-        if (!payload || !payload.year || !payload.month || !payload.day || !payload.hour || payload.gender === void 0) {
+        if (!payload || !payload.year || !payload.month || !payload.day || typeof payload.hour === "undefined" || typeof payload.gender === "undefined") {
+          console.warn("[ZiweiChart BPars] Invalid payload:", payload);
           return null;
         }
-        let { year, month, day, hour, minute = 0, gender, solarDate, lunarDate, timeZone, anH = false, lang = "zh-CN", fixedLeap = false } = payload;
-        let targetYear = parseInt(year, 10), targetMonth = parseInt(month, 10), targetDay = parseInt(day, 10), targetHour = parseInt(hour, 10), targetMinute = parseInt(minute, 10);
-        const originalHourForIztro = targetHour;
-        if (targetHour === 23) {
-          let dToInc;
-          if (solarDate && /^\d{4}-\d{1,2}-\d{1,2}$/.test(solarDate)) {
+        let { year, month, day, hour, minute = 0, gender, solarDate, lunarDate, timeZone, anH = false, lang = "zh-CN", fixedLeap = false, isLeapMonth = false } = payload;
+        let targetYear = parseInt(year, 10);
+        let targetMonth = parseInt(month, 10);
+        let targetDay = parseInt(day, 10);
+        let originalHour = parseInt(hour, 10);
+        let targetMinute = parseInt(minute, 10);
+        let iztroBirthTimeIndex;
+        if (originalHour >= 23 || originalHour < 1)
+          iztroBirthTimeIndex = 0;
+        else if (originalHour >= 1 && originalHour < 3)
+          iztroBirthTimeIndex = 1;
+        else if (originalHour >= 3 && originalHour < 5)
+          iztroBirthTimeIndex = 2;
+        else if (originalHour >= 5 && originalHour < 7)
+          iztroBirthTimeIndex = 3;
+        else if (originalHour >= 7 && originalHour < 9)
+          iztroBirthTimeIndex = 4;
+        else if (originalHour >= 9 && originalHour < 11)
+          iztroBirthTimeIndex = 5;
+        else if (originalHour >= 11 && originalHour < 13)
+          iztroBirthTimeIndex = 6;
+        else if (originalHour >= 13 && originalHour < 15)
+          iztroBirthTimeIndex = 7;
+        else if (originalHour >= 15 && originalHour < 17)
+          iztroBirthTimeIndex = 8;
+        else if (originalHour >= 17 && originalHour < 19)
+          iztroBirthTimeIndex = 9;
+        else if (originalHour >= 19 && originalHour < 21)
+          iztroBirthTimeIndex = 10;
+        else if (originalHour >= 21 && originalHour < 23)
+          iztroBirthTimeIndex = 11;
+        else
+          iztroBirthTimeIndex = 0;
+        if (originalHour === 23) {
+          let dateToIncrement;
+          if (solarDate && typeof solarDate === "string" && solarDate.match(/^\d{4}-\d{1,2}-\d{1,2}$/)) {
             const [sY, sM, sD] = solarDate.split("-").map(Number);
-            dToInc = new Date(sY, sM - 1, sD);
+            dateToIncrement = new Date(sY, sM - 1, sD);
           } else {
-            dToInc = new Date(targetYear, targetMonth - 1, targetDay);
+            dateToIncrement = new Date(targetYear, targetMonth - 1, targetDay);
           }
-          dToInc.setDate(dToInc.getDate() + 1);
-          targetYear = dToInc.getFullYear();
-          targetMonth = dToInc.getMonth() + 1;
-          targetDay = dToInc.getDate();
+          dateToIncrement.setDate(dateToIncrement.getDate() + 1);
+          targetYear = dateToIncrement.getFullYear();
+          targetMonth = dateToIncrement.getMonth() + 1;
+          targetDay = dateToIncrement.getDate();
           solarDate = `${targetYear}-${String(targetMonth).padStart(2, "0")}-${String(targetDay).padStart(2, "0")}`;
         }
-        let birthdayForIztro, birthdayType = "solar";
-        if (solarDate && /^\d{4}-\d{1,2}-\d{1,2}$/.test(solarDate)) {
-          birthdayForIztro = `${solarDate} ${String(originalHourForIztro).padStart(2, "0")}:${String(targetMinute).padStart(2, "0")}:00`;
-        } else if (lunarDate && typeof lunarDate === "object") {
-          birthdayForIztro = { ...lunarDate, hour: originalHourForIztro, minute: targetMinute };
-          birthdayType = "lunar";
+        let birthdayForIztro, birthdayType = payload.solar === false ? "lunar" : "solar";
+        if (birthdayType === "solar") {
+          birthdayForIztro = solarDate || `${targetYear}-${String(targetMonth).padStart(2, "0")}-${String(targetDay).padStart(2, "0")}`;
         } else {
-          birthdayForIztro = `${targetYear}-${String(targetMonth).padStart(2, "0")}-${String(targetDay).padStart(2, "0")} ${String(originalHourForIztro).padStart(2, "0")}:${String(targetMinute).padStart(2, "0")}:00`;
+          if (lunarDate && typeof lunarDate === "object") {
+            birthdayForIztro = { year: lunarDate.year, month: lunarDate.month, day: lunarDate.day, isLeap: !!isLeapMonth };
+          } else {
+            console.warn("Lunar date object not provided, attempting to use solar as base for lunar conversion (may be inaccurate).");
+            birthdayForIztro = { year: targetYear, month: targetMonth, day: targetDay, isLeap: !!isLeapMonth };
+          }
         }
         const plugins = [];
-        if (anH && ((_a = window.reactIztroPlugins) == null ? void 0 : _a.darkHidedHeavenlyStems))
+        if (anH && typeof ((_a = window.reactIztroPlugins) == null ? void 0 : _a.darkHidedHeavenlyStems) === "function") {
           plugins.push(window.reactIztroPlugins.darkHidedHeavenlyStems());
-        return { birthday: birthdayForIztro, gender: gender === "M" ? "male" : gender === "F" ? "female" : void 0, birthdayType, timeZone: parseInt(timeZone, 10) || void 0, fixedLeap, plugins, language: lang };
+        }
+        let iztroGender = void 0;
+        if (gender === "M" || gender === "male")
+          iztroGender = "male";
+        if (gender === "F" || gender === "female")
+          iztroGender = "female";
+        return {
+          birthday: birthdayForIztro,
+          birthTime: iztroBirthTimeIndex,
+          gender: iztroGender,
+          birthdayType,
+          timeZone: typeof timeZone === "number" ? timeZone : payload.timeZone !== void 0 ? parseInt(payload.timeZone, 10) : void 0,
+          isLeapMonth: birthdayType === "lunar" ? !!isLeapMonth : void 0,
+          fixLeap,
+          plugins,
+          language: lang
+        };
       });
       __publicField(this, "_parseAndRender", (configString, forceRender = false) => {
         if (!forceRender && this._isRendering && configString === this._currentConfigString)
@@ -44928,10 +45084,10 @@ var ZiweiChartCustomElementGlobal = (() => {
         }
         try {
           const config = JSON.parse(configString);
-          if ((config == null ? void 0 : config.type) === "RENDER_CHART" && config.payload)
+          if ((config == null ? void 0 : config.type) === "RENDER_CHART" && config.payload) {
             this._renderAstrolabeWithReact(config.payload);
-          else {
-            this.renderError("Invalid config structure.");
+          } else {
+            this.renderError("Invalid config.");
             this._isRendering = false;
           }
         } catch (error) {
@@ -44940,69 +45096,70 @@ var ZiweiChartCustomElementGlobal = (() => {
         }
       });
       __publicField(this, "_renderAstrolabeWithReact", (payload) => {
-        var _a;
+        var _a, _b, _c, _d;
         if (!this._isMounted || !this._reactRoot) {
           this._isRendering = false;
           return;
         }
-        const iztroParams = this.birthDataToIzTroParams(payload);
-        if (!iztroParams) {
-          this.renderError("Invalid birth data.");
+        const iztroData = this.birthDataToIzTroParams(payload);
+        if (!iztroData) {
+          this.renderError("\u751F\u8FB0\u6578\u64DA\u8655\u7406\u5931\u6557\u3002");
           this._isRendering = false;
           return;
         }
         const AstrolabeComponent = iztro.Iztrolabe;
         if (typeof AstrolabeComponent === "undefined") {
-          this.renderError("Iztrolabe component is undefined.");
+          this.renderError("Iztrolabe \u7D44\u4EF6\u672A\u52A0\u8F09\u3002");
           this._isRendering = false;
           return;
         }
-        const chartWidth = this._currentWidth > 10 ? this._currentWidth : 580;
-        const chartHeight = this._currentHeight > 10 ? this._currentHeight : 680;
+        const chartWidth = this._currentWidth > 50 ? this._currentWidth : 580;
         const veloChartOptions = payload.chartOptions || ((_a = this._data) == null ? void 0 : _a.chartOptions) || {};
         const finalProps = {
-          birthday: iztroParams.birthday,
-          birthTime: iztroParams.birthTime,
-          // birthTime 已經在 birthDataToIzTroParams 中處理為數字
-          gender: iztroParams.gender,
-          birthdayType: iztroParams.birthdayType,
-          isLeapMonth: iztroParams.birthdayType === "lunar" ? payload.isLeapMonth || false : void 0,
-          // 只在農曆時傳遞
-          fixLeap: iztroParams.fixedLeap,
-          // 從 iztroParams 獲取
-          lang: iztroParams.language,
-          plugins: iztroParams.plugins,
-          // 顯示/佈局相關的 props (根據 SylarLong/react-iztro 的 IztrolabeProps)
-          width: chartWidth,
-          // 頂級 prop
-          // height: chartHeight, // Iztrolabe 組件似乎不直接接受 height prop，高度由 CSS 和內容決定
-          horoscopeDate: veloChartOptions.horoscopeDate ? new Date(veloChartOptions.horoscopeDate) : void 0,
+          birthday: iztroData.birthday,
+          birthTime: iztroData.birthTime,
+          // 0-12
+          gender: iztroData.gender,
+          // 'male' or 'female'
+          birthdayType: iztroData.birthdayType,
+          isLeapMonth: iztroData.isLeapMonth,
+          fixLeap: iztroData.fixLeap,
+          lang: iztroData.language,
+          plugins: iztroData.plugins,
+          // plugins 是頂級 prop
+          // Iztrolabe 組件自身的頂級 props (基於 README 示例)
+          width: chartWidth.toString(),
+          // 傳遞計算的寬度
+          horoscopeDate: veloChartOptions.horoscopeDate ? new Date(veloChartOptions.horoscopeDate) : /* @__PURE__ */ new Date(),
           horoscopeHour: veloChartOptions.horoscopeHour,
           centerPalaceAlign: veloChartOptions.centerPalaceAlign || false,
+          // options prop (傳遞給底層 iztro 核心庫的配置)
           options: {
-            // 傳遞給底層 iztro.js 的選項
+            theme: veloChartOptions.theme || "default",
+            // 主題是 options 的一部分
+            // SylarLong/react-iztro 的 showXXX 選項由內部 state 控制
             ...veloChartOptions.iztroCoreOptions || {}
-            // 例如 { yearDivide: "exact" }
-            // 以下這些 showXXX 選項，react-iztro 的 React 組件層面可能不直接支持
-            // 它們的效果更可能通過 CSS 主題或底層 iztro 核心庫的 options 來實現
-            // 如果要控制顯示，可能需要修改 reactIztroDefaultCSS 或傳遞給 options 的特定鍵
-            // theme: veloChartOptions.theme || 'default', // theme 通常也是 options 的一部分
-            // showPalaceName: ..., 等等
-          }
+            // 例如：yearDivide: 'exact'
+          },
+          className: veloChartOptions.className || ""
         };
+        if ((_b = finalProps.options) == null ? void 0 : _b.lang)
+          delete finalProps.options.lang;
+        if ((_c = finalProps.options) == null ? void 0 : _c.plugins)
+          delete finalProps.options.plugins;
+        if ((_d = finalProps.options) == null ? void 0 : _d.width)
+          delete finalProps.options.width;
         console.log("[ZiweiChart] Final props for Iztrolabe:", JSON.stringify(finalProps, (k, v) => typeof v === "function" ? "Function" : v, 2));
-        this.renderPlaceholder("\u6B63\u5728\u7E6A\u88FD\u547D\u76E4...");
+        this.renderPlaceholder("\u6E32\u67D3\u547D\u76E4\u4E2D...");
         setTimeout(() => {
           if (!this._reactRoot) {
-            this.renderError("React Root null in timeout.", true);
+            this.renderError("React Root is null in timeout.", true);
             this._isRendering = false;
             return;
           }
           try {
             this._reactRoot.render(import_react.default.createElement(AstrolabeComponent, finalProps));
-            console.log("[ZiweiChart] React render() for Iztrolabe was called.");
           } catch (error) {
-            console.error("[ZiweiChart] EXCEPTION during Iztrolabe rendering:", error);
             this.renderError(`\u6E32\u67D3\u547D\u76E4\u6642\u767C\u751F\u932F\u8AA4: ${error.message}`);
           } finally {
             this._isRendering = false;
@@ -45016,27 +45173,27 @@ var ZiweiChartCustomElementGlobal = (() => {
           this._reactRoot.render(import_react.default.createElement("div", { className: "message-display-in-shadow loading-message-in-shadow" }, message));
         } catch (e) {
           if (this._mountPoint)
-            this._mountPoint.innerHTML = `<div class="message-display-in-shadow loading-message-in-shadow">${message} (React Err)</div>`;
+            this._mountPoint.innerHTML = `<div class="message-display-in-shadow loading-message-in-shadow">${message} (React Placeholder Err)</div>`;
         }
       });
       __publicField(this, "renderError", (message, isCritical = false) => {
         if (!this._reactRoot || !this._mountPoint) {
           if (this.shadowRoot)
-            this.shadowRoot.innerHTML = `<style>.error-message-in-shadow { /* ... */ }</style><div class="message-display-in-shadow error-message-in-shadow">${message}</div>`;
+            this.shadowRoot.innerHTML = `<style>.error-message-in-shadow{background-color: #fff1f0; color: #f5222d; border: 1px solid #ffa39e; font-size: 16px; padding: 20px; border-radius: 4px; text-align: center; margin: 20px; }</style><div class="message-display-in-shadow error-message-in-shadow">${message}</div>`;
           return;
         }
         try {
           this._reactRoot.render(import_react.default.createElement("div", { className: "message-display-in-shadow error-message-in-shadow" }, message));
         } catch (e) {
           if (this._mountPoint)
-            this._mountPoint.innerHTML = `<div class="message-display-in-shadow error-message-in-shadow">${message} (React Err)</div>`;
+            this._mountPoint.innerHTML = `<div class="message-display-in-shadow error-message-in-shadow">${message} (React Error Err)</div>`;
         }
       });
       this.attachShadow({ mode: "open" });
       this.shadowRoot.innerHTML = `
             <style id="ziwei-dynamic-styles"></style>
             <div id="chart-render-target" class="chart-wrapper-inside-shadow-dom">
-                <div class="message-display-in-shadow loading-message-in-shadow">\u521D\u59CB\u5316\u4E2D...</div>
+                <div class="message-display-in-shadow loading-message-in-shadow">\u547D\u76E4\u7D44\u4EF6\u521D\u59CB\u5316\u4E2D...</div>
             </div>
         `;
       this._mountPoint = this.shadowRoot.getElementById("chart-render-target");
@@ -45060,7 +45217,7 @@ var ZiweiChartCustomElementGlobal = (() => {
         try {
           parsedValue = JSON.parse(value);
         } catch (e) {
-          this.renderError("birthData \u683C\u5F0F\u932F\u8AA4.");
+          this.renderError("birthData \u683C\u5F0F\u932F\u8AA4\u3002");
           return;
         }
       }
@@ -45095,12 +45252,14 @@ var ZiweiChartCustomElementGlobal = (() => {
   if (customElements && typeof customElements.get === "function" && !customElements.get("ziwei-chart")) {
     try {
       customElements.define("ziwei-chart", ZiweiChart);
+      console.log('[ZiweiChart CE SCRIPT] Custom element "ziwei-chart" DEFINED SUCCESSFULLY.');
     } catch (e) {
-      console.error("[ZiweiChart CE SCRIPT] Error defining ziwei-chart:", e);
+      console.error('[ZiweiChart CE SCRIPT] CRITICAL ERROR defining custom element "ziwei-chart":', e);
     }
   } else {
-    console.warn("[ZiweiChart CE SCRIPT] ziwei-chart already defined or API issue.");
+    console.warn('[ZiweiChart CE SCRIPT] "ziwei-chart" already defined or customElements API issue.');
   }
+  console.log("[ZiweiChart CE SCRIPT] Top-level script execution FINISHED.");
 })();
 /*! Bundled license information:
 
