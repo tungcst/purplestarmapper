@@ -2,74 +2,45 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import * as iztro from 'react-iztro';
-// 假設 react-iztro-plugins 會掛載到全局 reactIztroPlugins (如果是通過 script 標籤引入)
-// 或者如果你的打包工具能處理，你可以嘗試 import { darkHidedHeavenlyStems } from 'react-iztro-plugins';
+// 假設 react-iztro-plugins 全局可用，或你已配置打包工具
+// import { darkHidedHeavenlyStems } from 'react-iztro-plugins';
+
 
 console.log('[ZiweiChart CE SCRIPT] Top-level: Script execution started. React, ReactDOM, iztro imported.');
-// ... (你原有的 iztro 對象檢查日誌，這些非常好，保留它們) ...
-if (typeof iztro === 'object' && iztro !== null) {
-    const initialIztroKeys = Object.getOwnPropertyNames(iztro);
-    console.log('[ZiweiChart CE SCRIPT] ALL Initial iztro object property names (incl. non-enumerable):', initialIztroKeys);
-    initialIztroKeys.forEach(key => {
-        let valueType = typeof iztro[key];
-        let valuePreview = String(iztro[key]).substring(0, 70);
-        if (typeof iztro[key] === 'function') {
-            valuePreview = `[Function: ${iztro[key].name || 'anonymous'}]`;
-        } else if (typeof iztro[key] === 'object' && iztro[key] !== null) {
-            try {
-                valuePreview = `[Object with keys: ${Object.keys(iztro[key]).join(', ')}]`;
-            } catch (e) { valuePreview = '[Object - cannot get keys]'; }
-        }
-        console.log(`[ZiweiChart CE SCRIPT]   Key: "${key}", Type: ${valueType}, Value Preview: ${valuePreview}`);
-    });
-    console.log('[ZiweiChart CE SCRIPT] Direct check - typeof iztro.Iztrolabe (I大寫):', typeof iztro.Iztrolabe);
-    console.log('[ZiweiChart CE SCRIPT] Direct check - typeof iztro.Astrolabe (A大寫):', typeof iztro.Astrolabe);
-} else {
-    console.warn('[ZiweiChart CE SCRIPT] Initial "iztro" object is not an object or is null.');
-}
-
+// ... (你的 iztro 對象檢查日誌) ...
 
 // --- CSS Definitions ---
 const antdResetCSS = `html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, b, u, i, center, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td, article, aside, canvas, details, embed, figure, figcaption, footer, header, hgroup, menu, nav, output, ruby, section, summary, time, mark, audio, video { margin: 0; padding: 0; border: 0; font-size: 100%; font: inherit; vertical-align: baseline; } article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, section { display: block; } body { line-height: 1; } ol, ul { list-style: none; } blockquote, q { quotes: none; } blockquote:before, blockquote:after, q:before, q:after { content: ''; content: none; } table { border-collapse: collapse; border-spacing: 0; } *, *::before, *::after { box-sizing: border-box; } html { font-family: sans-serif; line-height: 1.15; -webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; -ms-overflow-style: scrollbar; -webkit-tap-highlight-color: rgba(0, 0, 0, 0); } body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji"; font-size: 14px; line-height: 1.5715; color: rgba(0,0,0,.85); background-color: #fff; }`;
 
-// 這是 react-iztro 的核心 CSS，包含了命盤網格佈局，你已提供，保持原樣
 const reactIztroDefaultCSS = `
+/* 你之前提供的完整的 react-iztro CSS 內容應放在這裡 */
+/* 確保包含了 .iztro-astrolabe 的 grid-template-areas 定義 */
 .iztro-astrolabe-theme-default {
   --iztro-star-font-size-big: 13px;
   --iztro-star-font-size-small: 12px;
-  --iztro-color-major: #531dab;
-  --iztro-color-focus: #000;
-  --iztro-color-quan: #2f54eb;
-  /* ... (省略了你提供的完整 reactIztroDefaultCSS，假設這裡內容是完整的) ... */
-  color: var(--iztro-color-happy);
+  --iztro-color-major: #531dab; /* ... 等等 ... */
 }
-
-/* 👇👇👇 這是 react-iztro 內部定義的命盤主容器樣式，確保它被包含 👇👇👇 */
 .iztro-astrolabe {
   font-family: -apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica Neue,Arial,Noto Sans,sans-serif,Apple Color Emoji,Segoe UI Emoji,Segoe UI Symbol,Noto Color Emoji;
   display: grid;
   position: relative;
-  width: 100%; /* 確保它能填充父容器 */
-  height: 100%; /* 確保它能填充父容器 */
-  grid-gap: 3px; /* 根據需要調整或通過 options.styleOverrides 修改 */
+  width: 100%;
+  height: 100%; /* 新增，確保它填滿掛載點高度 */
+  grid-gap: 3px;
   grid-template-columns: repeat(4, 1fr);
-  grid-auto-rows: 1fr; /* 確保行高均分 */
+  grid-auto-rows: 1fr;
   grid-template-areas:
     "g3 g4 g5 g6"
     "g2 ct ct g7"
     "g1 ct ct g8"
     "g0 g11 g10 g9";
-  text-align: left; /* 從你提供的 CSS 中補上 */
+  text-align: left;
 }
-/* 其他 react-iztro 的 CSS 規則，例如 .iztro-palace, .iztro-star-major 等，都應包含在 reactIztroDefaultCSS 中 */
-/* (我將使用你之前提供的完整 CSS 內容作為 reactIztroDefaultCSS 的內容) */
-
-/* ... (你提供的 .iztro-palace, .iztro-star-mutagen 等 CSS) ... */
 .iztro-palace {
   padding: 3px;
   display: grid;
   text-transform: capitalize;
-  grid-template-rows: auto auto auto 50px;
+  grid-template-rows: auto auto auto 50px; /* 或者讓它更具彈性: auto auto 1fr auto; */
   grid-template-columns: repeat(3, 1fr);
   grid-template-areas:
     "major minor adj"
@@ -78,87 +49,57 @@ const reactIztroDefaultCSS = `
     "ft   ft  ft";
   transition: all 0.25s ease-in-out;
   grid-auto-flow: column;
-  border: 1px solid var(--iztro-color-border); /* 從 theme-default 移過來 */
+  border: 1px solid var(--iztro-color-border);
+  box-sizing: border-box; /* 確保 padding 和 border 不會撐大元素 */
+  overflow: hidden; /* 如果宮位內容過多，嘗試隱藏 */
 }
-/* ... (繼續包含所有你提供的 react-iztro 相關的 CSS) ... */
-.iztro-palace-center-item span {
-  color: var(--iztro-color-decorator-1);
-}
-.gender {
-  display: inline-block;
-  margin-right: 5px;
-}
-.gender.gender-male {
-  color: var(--iztro-color-quan);
-}
+/* ... (所有其他 .iztro-xxx 規則) ... */
 .gender.gender-female {
   color: var(--iztro-color-happy);
 }
 `;
 
-
-// 你的自定義樣式，用於調整 :host、掛載點，以及微調 react-iztro 外觀（如果需要）
 const customChartHostAndWrapperStyles = `
   :host {
-    /* 基本樣式，確保 Custom Element 表現如預期 */
-    display: block; /* 必須，使其可以被賦予尺寸 */
-    width: 100%;   /* 默認寬度，可在 Wix 編輯器調整 */
-    height: 600px; /* 初始高度，可在 Wix 編輯器調整，或由內容決定 */
-    min-height: 300px; /* 最小高度，防止太小 */
-    overflow: hidden; /* 防止命盤溢出 */
+    display: block;
+    width: 100%;
+    height: 600px; /* 給一個明確的初始高度，Wix 編輯器應可覆蓋 */
+    min-height: 450px; /* 最小高度，防止塌陷 */
+    overflow: hidden;
     box-sizing: border-box;
-    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif; /* 基礎字體 */
-    line-height: 1.4; /* 基礎行高 */
-    border: 1px solid #ccc; /* 臨時邊框，方便調試 Custom Element 的邊界 */
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    line-height: 1.4;
+    /* border: 1px dashed green; /* Debug border */ */
   }
-
   #chart-render-target {
     width: 100%;
     height: 100%;
-    display: flex; /* 讓 .iztro-astrolabe 容器可以被居中 (如果其尺寸小於掛載點) */
+    display: flex;
     justify-content: center;
-    align-items: center; /* 或 flex-start */
+    align-items: center; /* 或者 flex-start */
     box-sizing: border-box;
-    background-color: var(--color-html-bg, #f0f2f5); /* 你定義的背景色 */
+    background-color: var(--color-html-bg, #ffffff); /* 背景色 */
+    padding: 5px; /* 給一點內邊距 */
   }
-
-  /*
-   * 不需要再手動指定宮位的 grid-area，reactIztroDefaultCSS 中的
-   * .iztro-astrolabe 及其 grid-template-areas 應該會負責整體佈局。
-   * react-iztro 的 JS 代碼會將各個宮位組件正確地放置到這些命名區域。
-   */
-  
-  /* 示例：如果你想覆蓋 react-iztro 的某個顏色 */
-  /*
-  .iztro-astrolabe-theme-default {
-    --iztro-color-major: purple !important; 
-  }
-  */
+  /* 如果需要，可以微調 react-iztro 樣式，但避免修改核心佈局 */
 `;
 
-// --- ZiweiChart Custom Element Class ---
+
 class ZiweiChart extends HTMLElement {
     static get observedAttributes() {
-        console.log('[ZiweiChart CLASS] static get observedAttributes CALLED');
         return ['data-config', 'theme-override'];
     }
 
     constructor() {
         super();
-        console.log('[ZiweiChart INSTANCE] constructor CALLED');
         this.attachShadow({ mode: 'open' });
-        console.log('[ZiweiChart INSTANCE] constructor: Shadow DOM attached.');
-
-        // 初始化 Shadow DOM 基本結構
         this.shadowRoot.innerHTML = `
             <style id="ziwei-dynamic-styles"></style>
             <div id="chart-render-target" class="chart-wrapper-inside-shadow-dom">
                 <div class="message-display-in-shadow loading-message-in-shadow">命盤組件初始化中...</div>
             </div>
         `;
-        console.log('[ZiweiChart INSTANCE] constructor: Initial Shadow DOM HTML set.');
-        
-        this._mountPoint = this.shadowRoot.getElementById('chart-render-target'); // 獲取掛載點
+        this._mountPoint = this.shadowRoot.getElementById('chart-render-target');
         this._reactRoot = null;
         this._currentConfigString = null;
         this._currentThemeOverride = null;
@@ -167,99 +108,105 @@ class ZiweiChart extends HTMLElement {
         this._currentWidth = 0;
         this._currentHeight = 0;
         this._resizeObserver = null;
-        this._data = {}; // 初始化 _data
-        this._forceNextRender = false; // 新增標記，用於 theme-override 更新後強制渲染
+        this._data = {};
+        this._forceNextRender = false;
+
+        // 綁定需要在回調中使用的 'this'
+        this.renderChartFromAttributes = this.renderChartFromAttributes.bind(this);
+        this._parseAndRender = this._parseAndRender.bind(this);
+        this._renderAstrolabeWithReact = this._renderAstrolabeWithReact.bind(this);
+        this._setupResizeObserver = this._setupResizeObserver.bind(this);
+        this._injectStyles = this._injectStyles.bind(this);
+        this.renderError = this.renderError.bind(this);
+        this.renderPlaceholder = this.renderPlaceholder.bind(this);
     }
 
     _injectStyles() {
         const styleElement = this.shadowRoot.getElementById('ziwei-dynamic-styles');
         if (!styleElement) {
-            console.error("[ZiweiChart INSTANCE] _injectStyles: Critical - #ziwei-dynamic-styles element not found!");
+            console.error("[ZiweiChart INSTANCE] _injectStyles: #ziwei-dynamic-styles not found!");
             return;
         }
-
         let combinedCSS = `
-            /* 通用消息樣式 */
-            .message-display-in-shadow { font-size: 16px; padding: 20px; border-radius: 4px; text-align: center; margin: 20px; font-family: var(--ziwei-font-family, sans-serif); }
+            .message-display-in-shadow { font-size: 16px; padding: 20px; border-radius: 4px; text-align: center; margin: 20px; font-family: "Helvetica Neue", Helvetica, Arial, sans-serif; }
             .loading-message-in-shadow { background-color: #e6f7ff; color: #1890ff; border: 1px solid #91d5ff; }
             .error-message-in-shadow { background-color: #fff1f0; color: #f5222d; border: 1px solid #ffa39e; }
         `;
-        
-        // 順序很重要：Reset -> Library Defaults -> Your Overrides -> Theme Overrides
-        if(typeof antdResetCSS !== 'undefined') combinedCSS += antdResetCSS;
-        combinedCSS += reactIztroDefaultCSS; // react-iztro 核心樣式
-        combinedCSS += customChartHostAndWrapperStyles; // :host 和 wrapper 樣式
-
-        if (this._currentThemeOverride) {
-            console.log("[ZiweiChart INSTANCE] _injectStyles: Applying theme-override CSS.");
-            combinedCSS += this._currentThemeOverride;
-        }
-        
+        if (typeof antdResetCSS !== 'undefined') combinedCSS += antdResetCSS;
+        combinedCSS += reactIztroDefaultCSS;
+        combinedCSS += customChartHostAndWrapperStyles;
+        if (this._currentThemeOverride) combinedCSS += this._currentThemeOverride;
         styleElement.textContent = combinedCSS;
-        console.log("[ZiweiChart INSTANCE] _injectStyles: All styles injected.");
     }
     
     connectedCallback() {
         console.log('[ZiweiChart INSTANCE] connectedCallback CALLED.');
         if (!this._isMounted) {
-            this._injectStyles(); // 先注入樣式
+            this._injectStyles();
 
-            if (!this._mountPoint) { // 再次確認掛載點
-                 console.error('[ZiweiChart INSTANCE] connectedCallback: CRITICAL - _mountPoint is NULL.');
-                 this.renderError("掛載點丟失，組件無法初始化。", true);
-                 return;
+            if (!this._mountPoint) {
+                console.error('[ZiweiChart INSTANCE] connectedCallback: _mountPoint is NULL.');
+                this.shadowRoot.innerHTML = `<style>.error-message-in-shadow { background-color: #fff1f0; color: #f5222d; border: 1px solid #ffa39e; font-size: 16px; padding: 20px; border-radius: 4px; text-align: center; margin: 20px; }</style><div class="error-message-in-shadow">Mount point error.</div>`;
+                return;
             }
 
             if (typeof ReactDOM !== 'undefined' && typeof ReactDOM.createRoot === 'function') {
                 this._reactRoot = ReactDOM.createRoot(this._mountPoint);
-                console.log('[ZiweiChart INSTANCE] connectedCallback: React root CREATED.');
             } else {
-                console.error('[ZiweiChart INSTANCE] connectedCallback: ReactDOM.createRoot is UNDEFINED.');
                 this.renderError('React 環境錯誤 (createRoot)。', true);
-                this._isMounted = true; // 即使出錯也標記為 mounted，防止重複初始化
-                return;
+                this._isMounted = true; return;
             }
             
             this._isMounted = true;
-            this._setupResizeObserver();
+            this._setupResizeObserver(); // ResizeObserver 應在掛載後且 reactRoot 創建後
             
-            // 處理在 connectedCallback 之前可能已設置的 attributes
-            const initialConfig = this.getAttribute('data-config');
             const initialThemeOverride = this.getAttribute('theme-override');
-
-            if (initialThemeOverride && initialThemeOverride !== this._currentThemeOverride) {
+            if (initialThemeOverride) { // 如果有初始主題，先應用
                 this._currentThemeOverride = initialThemeOverride;
-                this._injectStyles(); // 如果主題變化，重新注入樣式
-                this._forceNextRender = true; // 主題變更後強制渲染
+                this._injectStyles();
+                this._forceNextRender = true;
             }
-
+            // 確保調用 renderChartFromAttributes
             this.renderChartFromAttributes(this._forceNextRender);
-            
-        } else {
-            console.log('[ZiweiChart INSTANCE] connectedCallback: Already mounted. Forcing a style injection and re-render if config exists.');
-            this._injectStyles(); // 確保樣式是最新的
-            if (this._currentConfigString) {
-                this._parseAndRender(this._currentConfigString, true); // 強制重新渲染
-            }
+
+        } else { // 如果已經掛載過 (例如元素被移動後重新連接)
+            this._injectStyles(); 
+            if (this._currentConfigString) this._parseAndRender(this._currentConfigString, true);
         }
-        console.log('[ZiweiChart INSTANCE] connectedCallback FINISHED.');
     }
 
-    // 處理生辰數據轉換 (與之前類似，包含子時換日和插件邏輯)
+    // ✅ renderChartFromAttributes 方法定義在類中
+    renderChartFromAttributes(forceRender = false) {
+        console.log(`[ZiweiChart INSTANCE] renderChartFromAttributes CALLED. Force: ${forceRender}`);
+        if(!this._isMounted || !this._reactRoot) {
+            console.warn("[ZiweiChart INSTANCE] renderChartFromAttributes: Not ready to render.");
+            return;
+        }
+        const configAttr = this.getAttribute('data-config');
+        if (configAttr && (forceRender || configAttr !== this._currentConfigString)) {
+            this._parseAndRender(configAttr, forceRender);
+        } else if (!configAttr && this._currentConfigString !== null) {
+            this.renderPlaceholder("等待配置 (attribute removed)...");
+            this._currentConfigString = null;
+        } else if (!configAttr) {
+            this.renderPlaceholder("等待配置 (initial)...");
+        }
+    }
+
     birthDataToIzTroParams(birthData) {
+        // ... (保持你原有的 birthDataToIzTroParams 邏輯，包括子時換日和插件)
+        // 確保 lang 屬性也從 birthData 中正確獲取或設置默認值
         if (!birthData || !birthData.year || !birthData.month || !birthData.day || !birthData.hour || birthData.gender === undefined) {
-            console.warn('[ZiweiChart ELEMENT] Missing or invalid birthData for iztro conversion:', birthData);
             return null;
         }
-
-        let { year, month, day, hour, minute = 0, gender, solarDate, lunarDate, timeZone, anH, lang = 'zh' } = birthData;
+        let { year, month, day, hour, minute = 0, gender, solarDate, lunarDate, timeZone, anH = false, lang = 'zh-CN', fixedLeap = false } = birthData;
 
         let targetYear = parseInt(year, 10);
         let targetMonth = parseInt(month, 10);
         let targetDay = parseInt(day, 10);
         let targetHour = parseInt(hour, 10);
         let targetMinute = parseInt(minute, 10);
-        const originalHourForIztro = targetHour; // 保存原始小時給 iztro 判斷子時類型
+        const originalHourForIztro = targetHour;
 
         if (targetHour === 23) {
             let dateToIncrement;
@@ -273,128 +220,148 @@ class ZiweiChart extends HTMLElement {
             targetYear = dateToIncrement.getFullYear();
             targetMonth = dateToIncrement.getMonth() + 1;
             targetDay = dateToIncrement.getDate();
-             // solarDate 應該反映換日後的日期
             solarDate = `${targetYear}-${String(targetMonth).padStart(2, '0')}-${String(targetDay).padStart(2, '0')}`;
         }
         
         let birthdayForIztro;
         let birthdayType = 'solar';
 
-        if (payload.solarDate && typeof payload.solarDate === 'string' && payload.solarDate.match(/^\d{4}-\d{1,2}-\d{1,2}$/)) {
-            // 如果 solarDate 來自 payload 且已經是換日後的，則使用它。
-            // 注意：這裡的 originalHourForIztro 很重要，iztro 會用它來區分早子時/晚子時
-            birthdayForIztro = `${payload.solarDate} ${String(originalHourForIztro).padStart(2, '0')}:${String(targetMinute).padStart(2, '0')}:00`;
-        } else if (solarDate && typeof solarDate === 'string' && solarDate.match(/^\d{4}-\d{1,2}-\d{1,2}$/)) {
-             // 如果 solarDate 是基於原始年月日計算並進位的
+        if (solarDate && typeof solarDate === 'string' && solarDate.match(/^\d{4}-\d{1,2}-\d{1,2}$/)) {
             birthdayForIztro = `${solarDate} ${String(originalHourForIztro).padStart(2, '0')}:${String(targetMinute).padStart(2, '0')}:00`;
-        }
-        else if (lunarDate && typeof lunarDate === 'object' && lunarDate.year && lunarDate.month && lunarDate.day) {
-            birthdayForIztro = {
-                year: lunarDate.year, // 假設 Velo 提供的 lunarDate 已經是換日後的
-                month: lunarDate.month,
-                day: lunarDate.day,
-                hour: originalHourForIztro,
-                minute: targetMinute,
-                isLeap: !!lunarDate.isLeapMonth
-            };
+        } else if (lunarDate && typeof lunarDate === 'object') { /* ... 農曆處理 ... */ 
+            birthdayForIztro = { year: lunarDate.year, month: lunarDate.month, day: lunarDate.day, hour: originalHourForIztro, minute: targetMinute, isLeap: !!lunarDate.isLeapMonth };
             birthdayType = 'lunar';
         } else {
-            // 都沒有，則基於原始輸入組裝公曆 (此時 targetYear, targetMonth, targetDay 可能是換日後的)
             birthdayForIztro = `${targetYear}-${String(targetMonth).padStart(2, '0')}-${String(targetDay).padStart(2, '0')} ${String(originalHourForIztro).padStart(2, '0')}:${String(targetMinute).padStart(2, '0')}:00`;
         }
         
         const plugins = [];
         if (anH) { 
-            // 假設 reactIztroPlugins 是全局可用的 (例如通過 script 標籤引入)
             if (typeof window.reactIztroPlugins !== 'undefined' && typeof window.reactIztroPlugins.darkHidedHeavenlyStems === 'function') {
                  plugins.push(window.reactIztroPlugins.darkHidedHeavenlyStems());
-                 console.log("[ZiweiChart ELEMENT] 暗合插件已加載。");
-            } else {
-                console.warn("[ZiweiChart ELEMENT] 暗合插件 (darkHidedHeavenlyStems) 在 window.reactIztroPlugins 中未找到。請確保 react-iztro-plugins UMD 已正確引入。");
-            }
+            } else { console.warn("暗合插件未找到。"); }
         }
-
         return {
             birthday: birthdayForIztro,
             gender: gender === 'male' ? '男' : (gender === 'female' ? '女' : undefined),
             birthdayType: birthdayType,
             timeZone: timeZone !== undefined ? parseInt(timeZone, 10) : undefined,
-            fixedLeap: payload.fixedLeap, // 從 payload 中獲取 fixedLeap
+            fixedLeap: fixedLeap,
             plugins: plugins,
-            language: lang // 將語言也返回，方便後續使用
+            language: lang
         };
     }
 
     _setupResizeObserver() {
-        if (this._resizeObserver) {
-            this._resizeObserver.disconnect();
-        }
+        // ... (保持 resize observer 邏輯)
+        if (this._resizeObserver) this._resizeObserver.disconnect();
         this._resizeObserver = new ResizeObserver(entries => {
             for (let entry of entries) {
                 const { width, height } = entry.contentRect;
                 if (width > 0 && height > 0 && (width !== this._currentWidth || height !== this._currentHeight)) {
-                    console.log(`[ZiweiChart INSTANCE] ResizeObserver: Size changed to ${width}x${height}`);
                     this._currentWidth = width;
                     this._currentHeight = height;
-                    this._render(); // 尺寸變化時重新渲染
+                    this._render();
                 }
             }
         });
-        this._resizeObserver.observe(this._mountPoint); // 監聽掛載點 div 的尺寸
-        // 同時觸發一次初始尺寸獲取
-        const initialRect = this._mountPoint.getBoundingClientRect();
-        if (initialRect.width > 0 && initialRect.height > 0) {
-            this._currentWidth = initialRect.width;
-            this._currentHeight = initialRect.height;
+        if (this._mountPoint) {
+            this._resizeObserver.observe(this._mountPoint);
+             // Force initial size detection
+            const initialRect = this._mountPoint.getBoundingClientRect();
+            if (initialRect.width > 0 && initialRect.height > 0) {
+                this._currentWidth = initialRect.width;
+                this._currentHeight = initialRect.height;
+            }
         }
-         console.log(`[ZiweiChart INSTANCE] ResizeObserver initialized. Initial mount point size: ${this._currentWidth}x${this._currentHeight}`);
+    }
+    
+    // attributeChangedCallback, _parseAndRender, _renderAstrolabeWithReact, 
+    // renderPlaceholder, renderError, setters/getters
+    // 請使用我上一個回覆中提供的這些方法的最新版本，它們包含了錯誤處理和更健壯的邏輯。
+    // 確保 _renderAstrolabeWithReact 中 finalProps 的構建正確。
+    disconnectedCallback() {
+        if (this._isMounted && this._reactRoot) {
+            this._reactRoot.unmount();
+        }
+        this._isMounted = false;
+        if (this._resizeObserver) {
+            this._resizeObserver.disconnect();
+        }
+    }
+
+    attributeChangedCallback(name, oldValue, newValue) {
+        // ... (使用我之前回覆中更新的 attributeChangedCallback 邏輯)
+        console.log(`[ZiweiChart INSTANCE] attributeChangedCallback: ${name} from '${oldValue}' to '${newValue}'`);
+        if (name === 'theme-override') {
+            if (newValue !== this._currentThemeOverride) {
+                this._currentThemeOverride = newValue;
+                this._injectStyles();
+                if (this._isMounted && this._currentConfigString) {
+                    this._forceNextRender = true;
+                    this._parseAndRender(this._currentConfigString, true);
+                }
+            }
+        } else if (name === 'data-config') {
+            if (newValue === this._currentConfigString && !this._forceNextRender) return;
+            if (!this._isMounted) { // 如果尚未掛載，讓 connectedCallback 處理
+                 console.log("[ZiweiChart] attributeChangedCallback: Not mounted, data-config will be handled by connectedCallback.");
+                 return;
+            }
+            if (newValue === null || newValue === undefined) {
+                this.renderPlaceholder("命盤配置已移除。");
+                this._currentConfigString = null;
+            } else {
+                this._parseAndRender(newValue);
+            }
+            this._forceNextRender = false;
+        }
+    }
+
+    _parseAndRender(configString, forceRender = false) {
+        // ... (使用我之前回覆中更新的 _parseAndRender 邏輯)
+        if (!forceRender && this._isRendering && configString === this._currentConfigString) return;
+        if (!this._isMounted || !this._reactRoot) return;
+
+        this._isRendering = true;
+        this._currentConfigString = configString;
+
+        if (!configString) {
+            this.renderError('命盤配置數據為空。');
+            this._isRendering = false; return;
+        }
+        try {
+            const config = JSON.parse(configString);
+            if (config?.type === 'RENDER_CHART' && config.payload) {
+                this._renderAstrolabeWithReact(config.payload);
+            } else {
+                this.renderError('命盤配置格式無效。');
+                this._isRendering = false;
+            }
+        } catch (error) {
+            this.renderError(`解析配置錯誤: ${error.message}`);
+            this._isRendering = false;
+        }
     }
     
     _renderAstrolabeWithReact(payload) {
-        console.log('[ZiweiChart INSTANCE] _renderAstrolabeWithReact CALLED. Payload:', JSON.stringify(payload));
-        if (!this._isMounted || !this._reactRoot) {
-            console.error('[ZiweiChart INSTANCE] _renderAstrolabeWithReact: Not mounted or React root missing.');
-            this.renderError('React 渲染核心未就緒。');
-            this._isRendering = false; return;
-        }
-
+        // ... (使用我之前回覆中更新的 _renderAstrolabeWithReact 邏輯，關鍵是 finalProps 的構建)
+        if (!this._isMounted || !this._reactRoot) { this._isRendering = false; return; }
         const iztroParams = this.birthDataToIzTroParams(payload);
+        if (!iztroParams) { this.renderError('生辰數據轉換失敗。'); this._isRendering = false; return; }
 
-        if (!iztroParams) {
-            this.renderError('生辰八字數據無效或缺失 (來自 _renderAstrolabeWithReact)。');
-            this._isRendering = false;
-            return;
-        }
-        
-        // *** 關鍵：確認 react-iztro 導出的組件名 ***
-        // 你確認是 iztro.Iztrolabe，所以這裡保持不變
-        const AstrolabeComponent = iztro.Iztrolabe; 
+        const AstrolabeComponent = iztro.Iztrolabe;
+        if (typeof AstrolabeComponent === 'undefined') { this.renderError('Iztrolabe 組件未定義。'); this._isRendering = false; return; }
 
-        if (typeof AstrolabeComponent === 'undefined') {
-            console.error('[ZiweiChart INSTANCE] _renderAstrolabeWithReact: AstrolabeComponent (iztro.Iztrolabe) is UNDEFINED!');
-            this.renderError('命盤核心組件未能正確載入。');
-            this._isRendering = false;
-            return;
-        }
-
-        // 使用由 ResizeObserver 更新的尺寸，或 custom element 的 CSS 尺寸
-        const chartWidth = this._currentWidth > 10 ? this._currentWidth : (parseInt(this.style.width, 10) || 550); 
-        const chartHeight = this._currentHeight > 10 ? this._currentHeight : (parseInt(this.style.height, 10) || 650);
-        
-        console.log(`[ZiweiChart INSTANCE] Using dimensions for Astrolabe: Width=${chartWidth}, Height=${chartHeight}`);
-
-        // --- Props for react-iztro's Iztrolabe component ---
-        // **你需要根據 react-iztro 的文檔來最終確定這個 props 結構**
-        // 以下是一個基於常見模式的猜測 + 你的代碼片段
-        
+        const chartWidth = this._currentWidth > 10 ? this._currentWidth : 550;
+        const chartHeight = this._currentHeight > 10 ? this._currentHeight : 650;
         const veloChartOptions = payload.chartOptions || this._data?.chartOptions || {};
 
         const finalOptions = {
-            // 顯示相關
             width: chartWidth,
             height: chartHeight,
-            theme: veloChartOptions.theme || 'default', // 你可以通過 CSS variables 自定義 theme
-            language: iztroParams.language || veloChartOptions.language || 'zh-CN', // 保持 Velo > 默認
+            theme: veloChartOptions.theme || 'default',
+            language: iztroParams.language || veloChartOptions.language || 'zh-CN',
             showPalaceName: veloChartOptions.showPalaceName !== undefined ? veloChartOptions.showPalaceName : true,
             showMutagens: veloChartOptions.showMutagens !== undefined ? veloChartOptions.showMutagens : true,
             showBrightness: veloChartOptions.showBrightness !== undefined ? veloChartOptions.showBrightness : true,
@@ -406,155 +373,84 @@ class ZiweiChart extends HTMLElement {
             showDailyScope: veloChartOptions.showDailyScope !== undefined ? veloChartOptions.showDailyScope : false,
             showHourlyScope: veloChartOptions.showHourlyScope !== undefined ? veloChartOptions.showHourlyScope : false,
             showTransNatal: veloChartOptions.showTransNatal !== undefined ? veloChartOptions.showTransNatal : true,
-
-            // 'astrolabe' 子對象的配置 (來自 react-iztro)
-            astrolabe: {
-                showCenterContent: veloChartOptions.astrolabe?.showCenterContent !== undefined ? veloChartOptions.astrolabe.showCenterContent : true,
-                showThemeButton: veloChartOptions.astrolabe?.showThemeButton !== undefined ? veloChartOptions.astrolabe.showThemeButton : false, // 通常不在嵌入式組件中顯示
-                // ... 其他 react-iztro > astrolabe 內部的配置
-                ...(veloChartOptions.astrolabe || {}) 
-            },
-            plugins: [...(iztroParams.plugins || []), ...(veloChartOptions.plugins || [])]
+            astrolabe: { ...(veloChartOptions.astrolabe || {}), showMutableSigns: veloChartOptions.astrolabe?.showMutableSigns !== undefined ? veloChartOptions.astrolabe.showMutableSigns : true },
+            plugins: [...(iztroParams.plugins || []), ...(veloChartOptions.plugins || [])],
+            ...(veloChartOptions.directOptions || {})
         };
-        
-        // 最終傳遞給 Iztrolabe 組件的 props
+
         const finalProps = {
             birthday: iztroParams.birthday,
-            birthTime: payload.birthTime, // Iztrolabe 文檔可能需要數字類型的小時
+            birthTime: parseInt(payload.birthTime, 10), // 確保 birthTime 是數字
             gender: iztroParams.gender,
             birthdayType: iztroParams.birthdayType,
-            timeZone: iztroParams.timeZone, // 可選
-            fixedLeap: payload.fixedLeap, // 假設這是頂級 prop, 根據 iztro 文檔調整
+            timeZone: iztroParams.timeZone,
+            fixedLeap: payload.fixedLeap,
             options: finalOptions,
-            // 如果 language 或 plugins 是頂級 props, 需要從 finalOptions 移到這裡
-            // language: finalOptions.language, 
-            // plugins: finalOptions.plugins,
         };
-
-        // 清理 options, 如果某些頂級 props 已經提取出來
-        // if (finalProps.language) delete finalOptions.language;
-        // if (finalProps.plugins) delete finalOptions.plugins;
-
-        console.log('[ZiweiChart INSTANCE] Final props for React.createElement(Iztrolabe):', JSON.stringify(finalProps, null, 2));
-        this.renderPlaceholder("渲染命盤圖...");
+        // 如果 language 或 plugins 是 Iztrolabe 的頂級 props，從 options 中移出
+        if (Object.prototype.hasOwnProperty.call(finalOptions, 'language') && finalProps.options.language === finalOptions.language) {
+             finalProps.language = finalOptions.language;
+             delete finalProps.options.language;
+        }
+        if (Object.prototype.hasOwnProperty.call(finalOptions, 'plugins') && finalProps.options.plugins === finalOptions.plugins) {
+            finalProps.plugins = finalOptions.plugins;
+            delete finalProps.options.plugins;
+        }
+        
+        console.log('[ZiweiChart FINAL PROPS]', JSON.stringify(finalProps, null, 2));
+        this.renderPlaceholder("渲染中...");
 
         setTimeout(() => {
-            if (!this._reactRoot) {
-                 console.error('[ZiweiChart INSTANCE] (timeout) React root is null, cannot render astrolabe!');
-                 this.renderError('渲染錯誤：React 核心異常 (timeout)。', true);
-                 this._isRendering = false;
-                 return;
-            }
+            if (!this._reactRoot) {this.renderError("React Root is null in timeout", true); this._isRendering = false; return; }
             try {
-                this._reactRoot.render(
-                    React.createElement(AstrolabeComponent, finalProps)
-                );
-                console.log('[ZiweiChart INSTANCE] (timeout) React render() for Astrolabe called.');
-            } catch (error) {
-                console.error('[ZiweiChart INSTANCE] (timeout) >>> EXCEPTION during Astrolabe rendering <<<', error);
-                this.renderError(`渲染命盤圖時發生內部錯誤: ${error.message || '未知錯誤'}`);
-            } finally {
-                this._isRendering = false;
-                console.log('[ZiweiChart INSTANCE] (timeout) Astrolabe rendering attempt finished.');
-            }
+                this._reactRoot.render(React.createElement(AstrolabeComponent, finalProps));
+            } catch (error) { this.renderError(`渲染異常: ${error.message}`); }
+            finally { this._isRendering = false; }
         }, 50);
     }
     
-    renderPlaceholder(message) { 
-        console.log(`[ZiweiChart INSTANCE] renderPlaceholder: "${message}"`);
-        const renderTarget = this.shadowRoot.getElementById('chart-render-target');
-        if (!renderTarget) return;
-
-        if (!this._reactRoot) {
-            renderTarget.innerHTML = `<div class="message-display-in-shadow loading-message-in-shadow">${message} (React root unavailable)</div>`;
+    renderPlaceholder(message) {
+        // ... (保持之前的 placeholder 邏輯)
+        if (!this._reactRoot || !this._mountPoint) return;
+        try { this._reactRoot.render(React.createElement('div', { className: 'message-display-in-shadow loading-message-in-shadow' }, message)); }
+        catch (e) { this._mountPoint.innerHTML = `<div class="message-display-in-shadow loading-message-in-shadow">${message} (React Err)</div>`; }
+    }
+    renderError(message, isCritical = false) {
+        // ... (保持之前的 error 邏輯)
+        if (!this._reactRoot || !this._mountPoint) {
+            if(this.shadowRoot) this.shadowRoot.innerHTML = `<style>.error-message-in-shadow{...}</style><div class="message-display-in-shadow error-message-in-shadow">${message}</div>`;
             return;
         }
-        try { 
-            this._reactRoot.render(React.createElement('div', { key: `placeholder-${Date.now()}`, className: 'message-display-in-shadow loading-message-in-shadow' }, message)); 
-        } catch (e) { 
-            renderTarget.innerHTML = `<div class="message-display-in-shadow error-message-in-shadow">${message} (React placeholder error: ${e.message})</div>`;
-        }
+        try { this._reactRoot.render(React.createElement('div', { className: 'message-display-in-shadow error-message-in-shadow' }, message)); }
+        catch (e) { this._mountPoint.innerHTML = `<div class="message-display-in-shadow error-message-in-shadow">${message} (React Err)</div>`; }
     }
 
-    renderError(message, isCritical = false) { 
-        console.error(`[ZiweiChart INSTANCE] renderError: "${message}" (Critical: ${isCritical})`);
-        const renderTarget = this.shadowRoot.getElementById('chart-render-target');
-        if (!renderTarget) {
-             if(isCritical) this.shadowRoot.innerHTML = `<style>.error-message-in-shadow { /* ... */ }</style><div class="message-display-in-shadow error-message-in-shadow">FATAL: ${message} (No render target)</div>`;
-            return;
-        }
-        
-        if (!this._reactRoot && !isCritical) {
-            renderTarget.innerHTML = `<div class="message-display-in-shadow error-message-in-shadow">${message} (React root unavailable)</div>`;
-            return;
-        }
-
-        if (this._reactRoot && !isCritical) { 
-            try { 
-                this._reactRoot.render(React.createElement('div', { key: `error-${Date.now()}`, className: 'message-display-in-shadow error-message-in-shadow' }, message)); 
-            } catch (e) { 
-                 renderTarget.innerHTML = `<div class="message-display-in-shadow error-message-in-shadow">${message} (React error rendering error: ${e.message})</div>`;
-            }
-        } else { // Critical error or React root truly gone
-            renderTarget.innerHTML = `<div class="message-display-in-shadow error-message-in-shadow">${message} ${isCritical ? '(Critical Error)' : ''}</div>`;
-        }
-    }
-
-    // --- Setters and Getters for Velo interaction ---
-    set birthData(value) {
+    set birthData(value) { /* ... 保持之前 set birthData 邏輯 ... */ 
         let parsedValue = value;
         if (typeof value === 'string') {
-            try {
-                parsedValue = JSON.parse(value);
-            } catch (e) {
-                console.error('[ZiweiChart SETTER] Error parsing birthData string:', e, value);
-                this.renderError('生辰八字數據格式錯誤。');
-                return;
-            }
+            try { parsedValue = JSON.parse(value); } catch (e) { this.renderError('birthData 格式錯誤。'); return; }
         }
         this._data = { ...this._data, birthData: parsedValue };
-        console.log('[ZiweiChart SETTER] birthData set:', this._data.birthData);
-        if (this._isMounted) {
-            this._parseAndRender(this.getAttribute('data-config') || JSON.stringify({type: "RENDER_CHART", payload: this._data.birthData }));
-        }
+        if (this._isMounted) { this.renderChartFromAttributes(true); } // 強制渲染
     }
-
-    get birthData() {
-        return this._data?.birthData;
-    }
-
-    set chartOptions(value) {
-         let parsedValue = value;
-         if (typeof value === 'string') {
-            try {
-                parsedValue = JSON.parse(value);
-            } catch (e) {
-                console.error('[ZiweiChart SETTER] Error parsing chartOptions string:', e, value);
-                // Don't necessarily error out, could be partial options
-            }
+    get birthData() { return this._data?.birthData; }
+    set chartOptions(value) { /* ... 保持之前 set chartOptions 邏輯 ... */ 
+        let parsedValue = value;
+        if (typeof value === 'string') {
+            try { parsedValue = JSON.parse(value); } catch (e) { console.warn('chartOptions 解析失敗'); }
         }
         this._data = { ...this._data, chartOptions: parsedValue };
-        console.log('[ZiweiChart SETTER] chartOptions set:', this._data.chartOptions);
-        if (this._isMounted) {
-            this._forceNextRender = true; // Options changed, force re-evaluation even if config string is same
-             this._parseAndRender(this.getAttribute('data-config') || JSON.stringify({type: "RENDER_CHART", payload: this._data.birthData }), true);
-        }
+        if (this._isMounted) { this.renderChartFromAttributes(true); } // 強制渲染
     }
-
-    get chartOptions() {
-        return this._data?.chartOptions;
-    }
+    get chartOptions() { return this._data?.chartOptions; }
 }
 
-// --- Define Custom Element ---
 if (customElements && typeof customElements.get === 'function' && !customElements.get('ziwei-chart')) {
     try {
         customElements.define('ziwei-chart', ZiweiChart);
-        console.log('[ZiweiChart CE SCRIPT] Custom element "ziwei-chart" DEFINED SUCCESSFULLY.');
     } catch (e) {
-        console.error('[ZiweiChart CE SCRIPT] CRITICAL ERROR defining custom element "ziwei-chart":', e);
+        console.error('[ZiweiChart CE SCRIPT] Error defining ziwei-chart:', e);
     }
 } else {
-     console.warn('[ZiweiChart CE SCRIPT] Custom element "ziwei-chart" was already defined or customElements API unavailable.');
+    console.warn('[ZiweiChart CE SCRIPT] ziwei-chart already defined or customElements API issue.');
 }
-console.log('[ZiweiChart CE SCRIPT] Top-level script execution FINISHED.');

@@ -393,10 +393,10 @@ var ZiweiChartCustomElementGlobal = (() => {
                   return getComponentNameFromType(type.type) || "Memo";
                 case REACT_LAZY_TYPE: {
                   var lazyComponent = type;
-                  var payload2 = lazyComponent._payload;
+                  var payload = lazyComponent._payload;
                   var init2 = lazyComponent._init;
                   try {
-                    return getComponentNameFromType(init2(payload2));
+                    return getComponentNameFromType(init2(payload));
                   } catch (x) {
                     return null;
                   }
@@ -894,31 +894,31 @@ var ZiweiChartCustomElementGlobal = (() => {
           var Pending = 0;
           var Resolved = 1;
           var Rejected = 2;
-          function lazyInitializer(payload2) {
-            if (payload2._status === Uninitialized) {
-              var ctor = payload2._result;
+          function lazyInitializer(payload) {
+            if (payload._status === Uninitialized) {
+              var ctor = payload._result;
               var thenable = ctor();
               thenable.then(function(moduleObject2) {
-                if (payload2._status === Pending || payload2._status === Uninitialized) {
-                  var resolved = payload2;
+                if (payload._status === Pending || payload._status === Uninitialized) {
+                  var resolved = payload;
                   resolved._status = Resolved;
                   resolved._result = moduleObject2;
                 }
               }, function(error2) {
-                if (payload2._status === Pending || payload2._status === Uninitialized) {
-                  var rejected = payload2;
+                if (payload._status === Pending || payload._status === Uninitialized) {
+                  var rejected = payload;
                   rejected._status = Rejected;
                   rejected._result = error2;
                 }
               });
-              if (payload2._status === Uninitialized) {
-                var pending = payload2;
+              if (payload._status === Uninitialized) {
+                var pending = payload;
                 pending._status = Pending;
                 pending._result = thenable;
               }
             }
-            if (payload2._status === Resolved) {
-              var moduleObject = payload2._result;
+            if (payload._status === Resolved) {
+              var moduleObject = payload._result;
               {
                 if (moduleObject === void 0) {
                   error("lazy: Expected the result of a dynamic import() call. Instead received: %s\n\nYour code should look like: \n  const MyComponent = lazy(() => import('./MyComponent'))\n\nDid you accidentally put curly braces around the import?", moduleObject);
@@ -931,18 +931,18 @@ var ZiweiChartCustomElementGlobal = (() => {
               }
               return moduleObject.default;
             } else {
-              throw payload2._result;
+              throw payload._result;
             }
           }
           function lazy(ctor) {
-            var payload2 = {
+            var payload = {
               // We use these fields to store the result.
               _status: Uninitialized,
               _result: ctor
             };
             var lazyType = {
               $$typeof: REACT_LAZY_TYPE,
-              _payload: payload2,
+              _payload: payload,
               _init: lazyInitializer
             };
             {
@@ -1387,10 +1387,10 @@ var ZiweiChartCustomElementGlobal = (() => {
                   return describeUnknownElementTypeFrameInDEV(type.type, source, ownerFn);
                 case REACT_LAZY_TYPE: {
                   var lazyComponent = type;
-                  var payload2 = lazyComponent._payload;
+                  var payload = lazyComponent._payload;
                   var init2 = lazyComponent._init;
                   try {
-                    return describeUnknownElementTypeFrameInDEV(init2(payload2), source, ownerFn);
+                    return describeUnknownElementTypeFrameInDEV(init2(payload), source, ownerFn);
                   } catch (x) {
                   }
                 }
@@ -3458,10 +3458,10 @@ var ZiweiChartCustomElementGlobal = (() => {
                   return describeUnknownElementTypeFrameInDEV(type.type, source, ownerFn);
                 case REACT_LAZY_TYPE: {
                   var lazyComponent = type;
-                  var payload2 = lazyComponent._payload;
+                  var payload = lazyComponent._payload;
                   var init2 = lazyComponent._init;
                   try {
-                    return describeUnknownElementTypeFrameInDEV(init2(payload2), source, ownerFn);
+                    return describeUnknownElementTypeFrameInDEV(init2(payload), source, ownerFn);
                   } catch (x) {
                   }
                 }
@@ -3564,10 +3564,10 @@ var ZiweiChartCustomElementGlobal = (() => {
                   return getComponentNameFromType(type.type) || "Memo";
                 case REACT_LAZY_TYPE: {
                   var lazyComponent = type;
-                  var payload2 = lazyComponent._payload;
+                  var payload = lazyComponent._payload;
                   var init2 = lazyComponent._init;
                   try {
-                    return getComponentNameFromType(init2(payload2));
+                    return getComponentNameFromType(init2(payload));
                   } catch (x) {
                     return null;
                   }
@@ -11876,9 +11876,9 @@ var ZiweiChartCustomElementGlobal = (() => {
             }
           }
           function resolveLazy(lazyType) {
-            var payload2 = lazyType._payload;
+            var payload = lazyType._payload;
             var init2 = lazyType._init;
-            return init2(payload2);
+            return init2(payload);
           }
           function ChildReconciler(shouldTrackSideEffects) {
             function deleteChild(returnFiber, childToDelete) {
@@ -12029,9 +12029,9 @@ var ZiweiChartCustomElementGlobal = (() => {
                     return _created2;
                   }
                   case REACT_LAZY_TYPE: {
-                    var payload2 = newChild._payload;
+                    var payload = newChild._payload;
                     var init2 = newChild._init;
-                    return createChild(returnFiber, init2(payload2), lanes);
+                    return createChild(returnFiber, init2(payload), lanes);
                   }
                 }
                 if (isArray(newChild) || getIteratorFn(newChild)) {
@@ -12073,9 +12073,9 @@ var ZiweiChartCustomElementGlobal = (() => {
                     }
                   }
                   case REACT_LAZY_TYPE: {
-                    var payload2 = newChild._payload;
+                    var payload = newChild._payload;
                     var init2 = newChild._init;
-                    return updateSlot(returnFiber, oldFiber, init2(payload2), lanes);
+                    return updateSlot(returnFiber, oldFiber, init2(payload), lanes);
                   }
                 }
                 if (isArray(newChild) || getIteratorFn(newChild)) {
@@ -12109,9 +12109,9 @@ var ZiweiChartCustomElementGlobal = (() => {
                     return updatePortal(returnFiber, _matchedFiber2, newChild, lanes);
                   }
                   case REACT_LAZY_TYPE:
-                    var payload2 = newChild._payload;
+                    var payload = newChild._payload;
                     var init2 = newChild._init;
-                    return updateFromMap(existingChildren, returnFiber, newIdx, init2(payload2), lanes);
+                    return updateFromMap(existingChildren, returnFiber, newIdx, init2(payload), lanes);
                 }
                 if (isArray(newChild) || getIteratorFn(newChild)) {
                   var _matchedFiber3 = existingChildren.get(newIdx) || null;
@@ -12151,9 +12151,9 @@ var ZiweiChartCustomElementGlobal = (() => {
                     error("Encountered two children with the same key, `%s`. Keys should be unique so that components maintain their identity across updates. Non-unique keys may cause children to be duplicated and/or omitted \u2014 the behavior is unsupported and could change in a future version.", key);
                     break;
                   case REACT_LAZY_TYPE:
-                    var payload2 = child._payload;
+                    var payload = child._payload;
                     var init2 = child._init;
-                    warnOnInvalidKey(init2(payload2), knownKeys, returnFiber);
+                    warnOnInvalidKey(init2(payload), knownKeys, returnFiber);
                     break;
                 }
               }
@@ -12483,9 +12483,9 @@ var ZiweiChartCustomElementGlobal = (() => {
                   case REACT_PORTAL_TYPE:
                     return placeSingleChild(reconcileSinglePortal(returnFiber, currentFirstChild, newChild, lanes));
                   case REACT_LAZY_TYPE:
-                    var payload2 = newChild._payload;
+                    var payload = newChild._payload;
                     var init2 = newChild._init;
-                    return reconcileChildFibers2(returnFiber, currentFirstChild, init2(payload2), lanes);
+                    return reconcileChildFibers2(returnFiber, currentFirstChild, init2(payload), lanes);
                 }
                 if (isArray(newChild)) {
                   return reconcileChildrenArray(returnFiber, currentFirstChild, newChild, lanes);
@@ -12989,17 +12989,17 @@ var ZiweiChartCustomElementGlobal = (() => {
           function getStateFromUpdate(workInProgress2, queue, update, prevState, nextProps, instance2) {
             switch (update.tag) {
               case ReplaceState: {
-                var payload2 = update.payload;
-                if (typeof payload2 === "function") {
+                var payload = update.payload;
+                if (typeof payload === "function") {
                   {
                     enterDisallowedContextReadInDEV();
                   }
-                  var nextState = payload2.call(instance2, prevState, nextProps);
+                  var nextState = payload.call(instance2, prevState, nextProps);
                   {
                     if (workInProgress2.mode & StrictLegacyMode) {
                       setIsStrictModeForDevtools(true);
                       try {
-                        payload2.call(instance2, prevState, nextProps);
+                        payload.call(instance2, prevState, nextProps);
                       } finally {
                         setIsStrictModeForDevtools(false);
                       }
@@ -13008,7 +13008,7 @@ var ZiweiChartCustomElementGlobal = (() => {
                   }
                   return nextState;
                 }
-                return payload2;
+                return payload;
               }
               case CaptureUpdate: {
                 workInProgress2.flags = workInProgress2.flags & ~ShouldCapture | DidCapture;
@@ -15384,12 +15384,12 @@ var ZiweiChartCustomElementGlobal = (() => {
           }
           var classComponentUpdater = {
             isMounted,
-            enqueueSetState: function(inst, payload2, callback) {
+            enqueueSetState: function(inst, payload, callback) {
               var fiber = get2(inst);
               var eventTime = requestEventTime();
               var lane = requestUpdateLane(fiber);
               var update = createUpdate(eventTime, lane);
-              update.payload = payload2;
+              update.payload = payload;
               if (callback !== void 0 && callback !== null) {
                 {
                   warnOnInvalidCallback(callback, "setState");
@@ -15405,13 +15405,13 @@ var ZiweiChartCustomElementGlobal = (() => {
                 markStateUpdateScheduled(fiber, lane);
               }
             },
-            enqueueReplaceState: function(inst, payload2, callback) {
+            enqueueReplaceState: function(inst, payload, callback) {
               var fiber = get2(inst);
               var eventTime = requestEventTime();
               var lane = requestUpdateLane(fiber);
               var update = createUpdate(eventTime, lane);
               update.tag = ReplaceState;
-              update.payload = payload2;
+              update.payload = payload;
               if (callback !== void 0 && callback !== null) {
                 {
                   warnOnInvalidCallback(callback, "replaceState");
@@ -16360,10 +16360,10 @@ var ZiweiChartCustomElementGlobal = (() => {
                 var outerMemoType = workInProgress2.elementType;
                 if (outerMemoType.$$typeof === REACT_LAZY_TYPE) {
                   var lazyComponent = outerMemoType;
-                  var payload2 = lazyComponent._payload;
+                  var payload = lazyComponent._payload;
                   var init2 = lazyComponent._init;
                   try {
-                    outerMemoType = init2(payload2);
+                    outerMemoType = init2(payload);
                   } catch (x) {
                     outerMemoType = null;
                   }
@@ -16751,9 +16751,9 @@ var ZiweiChartCustomElementGlobal = (() => {
             resetSuspendedCurrentOnMountInLegacyMode(_current, workInProgress2);
             var props = workInProgress2.pendingProps;
             var lazyComponent = elementType;
-            var payload2 = lazyComponent._payload;
+            var payload = lazyComponent._payload;
             var init2 = lazyComponent._init;
-            var Component = init2(payload2);
+            var Component = init2(payload);
             workInProgress2.type = Component;
             var resolvedTag = workInProgress2.tag = resolveLazyComponentTag(Component);
             var resolvedProps = resolveDefaultProps(Component, props);
@@ -44650,66 +44650,36 @@ var ZiweiChartCustomElementGlobal = (() => {
   var import_client = __toESM(require_client(), 1);
   var iztro = __toESM(require_lib4(), 1);
   console.log("[ZiweiChart CE SCRIPT] Top-level: Script execution started. React, ReactDOM, iztro imported.");
-  if (typeof iztro === "object" && iztro !== null) {
-    const initialIztroKeys = Object.getOwnPropertyNames(iztro);
-    console.log("[ZiweiChart CE SCRIPT] ALL Initial iztro object property names (incl. non-enumerable):", initialIztroKeys);
-    initialIztroKeys.forEach((key) => {
-      let valueType = typeof iztro[key];
-      let valuePreview = String(iztro[key]).substring(0, 70);
-      if (typeof iztro[key] === "function") {
-        valuePreview = `[Function: ${iztro[key].name || "anonymous"}]`;
-      } else if (typeof iztro[key] === "object" && iztro[key] !== null) {
-        try {
-          valuePreview = `[Object with keys: ${Object.keys(iztro[key]).join(", ")}]`;
-        } catch (e) {
-          valuePreview = "[Object - cannot get keys]";
-        }
-      }
-      console.log(`[ZiweiChart CE SCRIPT]   Key: "${key}", Type: ${valueType}, Value Preview: ${valuePreview}`);
-    });
-    console.log("[ZiweiChart CE SCRIPT] Direct check - typeof iztro.Iztrolabe (I\u5927\u5BEB):", typeof iztro.Iztrolabe);
-    console.log("[ZiweiChart CE SCRIPT] Direct check - typeof iztro.Astrolabe (A\u5927\u5BEB):", typeof iztro.Astrolabe);
-  } else {
-    console.warn('[ZiweiChart CE SCRIPT] Initial "iztro" object is not an object or is null.');
-  }
   var antdResetCSS = `html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, b, u, i, center, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td, article, aside, canvas, details, embed, figure, figcaption, footer, header, hgroup, menu, nav, output, ruby, section, summary, time, mark, audio, video { margin: 0; padding: 0; border: 0; font-size: 100%; font: inherit; vertical-align: baseline; } article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, section { display: block; } body { line-height: 1; } ol, ul { list-style: none; } blockquote, q { quotes: none; } blockquote:before, blockquote:after, q:before, q:after { content: ''; content: none; } table { border-collapse: collapse; border-spacing: 0; } *, *::before, *::after { box-sizing: border-box; } html { font-family: sans-serif; line-height: 1.15; -webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; -ms-overflow-style: scrollbar; -webkit-tap-highlight-color: rgba(0, 0, 0, 0); } body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji"; font-size: 14px; line-height: 1.5715; color: rgba(0,0,0,.85); background-color: #fff; }`;
   var reactIztroDefaultCSS = `
+/* \u4F60\u4E4B\u524D\u63D0\u4F9B\u7684\u5B8C\u6574\u7684 react-iztro CSS \u5167\u5BB9\u61C9\u653E\u5728\u9019\u88E1 */
+/* \u78BA\u4FDD\u5305\u542B\u4E86 .iztro-astrolabe \u7684 grid-template-areas \u5B9A\u7FA9 */
 .iztro-astrolabe-theme-default {
   --iztro-star-font-size-big: 13px;
   --iztro-star-font-size-small: 12px;
-  --iztro-color-major: #531dab;
-  --iztro-color-focus: #000;
-  --iztro-color-quan: #2f54eb;
-  /* ... (\u7701\u7565\u4E86\u4F60\u63D0\u4F9B\u7684\u5B8C\u6574 reactIztroDefaultCSS\uFF0C\u5047\u8A2D\u9019\u88E1\u5167\u5BB9\u662F\u5B8C\u6574\u7684) ... */
-  color: var(--iztro-color-happy);
+  --iztro-color-major: #531dab; /* ... \u7B49\u7B49 ... */
 }
-
-/* \u{1F447}\u{1F447}\u{1F447} \u9019\u662F react-iztro \u5167\u90E8\u5B9A\u7FA9\u7684\u547D\u76E4\u4E3B\u5BB9\u5668\u6A23\u5F0F\uFF0C\u78BA\u4FDD\u5B83\u88AB\u5305\u542B \u{1F447}\u{1F447}\u{1F447} */
 .iztro-astrolabe {
   font-family: -apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica Neue,Arial,Noto Sans,sans-serif,Apple Color Emoji,Segoe UI Emoji,Segoe UI Symbol,Noto Color Emoji;
   display: grid;
   position: relative;
-  width: 100%; /* \u78BA\u4FDD\u5B83\u80FD\u586B\u5145\u7236\u5BB9\u5668 */
-  height: 100%; /* \u78BA\u4FDD\u5B83\u80FD\u586B\u5145\u7236\u5BB9\u5668 */
-  grid-gap: 3px; /* \u6839\u64DA\u9700\u8981\u8ABF\u6574\u6216\u901A\u904E options.styleOverrides \u4FEE\u6539 */
+  width: 100%;
+  height: 100%; /* \u65B0\u589E\uFF0C\u78BA\u4FDD\u5B83\u586B\u6EFF\u639B\u8F09\u9EDE\u9AD8\u5EA6 */
+  grid-gap: 3px;
   grid-template-columns: repeat(4, 1fr);
-  grid-auto-rows: 1fr; /* \u78BA\u4FDD\u884C\u9AD8\u5747\u5206 */
+  grid-auto-rows: 1fr;
   grid-template-areas:
     "g3 g4 g5 g6"
     "g2 ct ct g7"
     "g1 ct ct g8"
     "g0 g11 g10 g9";
-  text-align: left; /* \u5F9E\u4F60\u63D0\u4F9B\u7684 CSS \u4E2D\u88DC\u4E0A */
+  text-align: left;
 }
-/* \u5176\u4ED6 react-iztro \u7684 CSS \u898F\u5247\uFF0C\u4F8B\u5982 .iztro-palace, .iztro-star-major \u7B49\uFF0C\u90FD\u61C9\u5305\u542B\u5728 reactIztroDefaultCSS \u4E2D */
-/* (\u6211\u5C07\u4F7F\u7528\u4F60\u4E4B\u524D\u63D0\u4F9B\u7684\u5B8C\u6574 CSS \u5167\u5BB9\u4F5C\u70BA reactIztroDefaultCSS \u7684\u5167\u5BB9) */
-
-/* ... (\u4F60\u63D0\u4F9B\u7684 .iztro-palace, .iztro-star-mutagen \u7B49 CSS) ... */
 .iztro-palace {
   padding: 3px;
   display: grid;
   text-transform: capitalize;
-  grid-template-rows: auto auto auto 50px;
+  grid-template-rows: auto auto auto 50px; /* \u6216\u8005\u8B93\u5B83\u66F4\u5177\u5F48\u6027: auto auto 1fr auto; */
   grid-template-columns: repeat(3, 1fr);
   grid-template-areas:
     "major minor adj"
@@ -44718,77 +44688,52 @@ var ZiweiChartCustomElementGlobal = (() => {
     "ft   ft  ft";
   transition: all 0.25s ease-in-out;
   grid-auto-flow: column;
-  border: 1px solid var(--iztro-color-border); /* \u5F9E theme-default \u79FB\u904E\u4F86 */
+  border: 1px solid var(--iztro-color-border);
+  box-sizing: border-box; /* \u78BA\u4FDD padding \u548C border \u4E0D\u6703\u6490\u5927\u5143\u7D20 */
+  overflow: hidden; /* \u5982\u679C\u5BAE\u4F4D\u5167\u5BB9\u904E\u591A\uFF0C\u5617\u8A66\u96B1\u85CF */
 }
-/* ... (\u7E7C\u7E8C\u5305\u542B\u6240\u6709\u4F60\u63D0\u4F9B\u7684 react-iztro \u76F8\u95DC\u7684 CSS) ... */
-.iztro-palace-center-item span {
-  color: var(--iztro-color-decorator-1);
-}
-.gender {
-  display: inline-block;
-  margin-right: 5px;
-}
-.gender.gender-male {
-  color: var(--iztro-color-quan);
-}
+/* ... (\u6240\u6709\u5176\u4ED6 .iztro-xxx \u898F\u5247) ... */
 .gender.gender-female {
   color: var(--iztro-color-happy);
 }
 `;
   var customChartHostAndWrapperStyles = `
   :host {
-    /* \u57FA\u672C\u6A23\u5F0F\uFF0C\u78BA\u4FDD Custom Element \u8868\u73FE\u5982\u9810\u671F */
-    display: block; /* \u5FC5\u9808\uFF0C\u4F7F\u5176\u53EF\u4EE5\u88AB\u8CE6\u4E88\u5C3A\u5BF8 */
-    width: 100%;   /* \u9ED8\u8A8D\u5BEC\u5EA6\uFF0C\u53EF\u5728 Wix \u7DE8\u8F2F\u5668\u8ABF\u6574 */
-    height: 600px; /* \u521D\u59CB\u9AD8\u5EA6\uFF0C\u53EF\u5728 Wix \u7DE8\u8F2F\u5668\u8ABF\u6574\uFF0C\u6216\u7531\u5167\u5BB9\u6C7A\u5B9A */
-    min-height: 300px; /* \u6700\u5C0F\u9AD8\u5EA6\uFF0C\u9632\u6B62\u592A\u5C0F */
-    overflow: hidden; /* \u9632\u6B62\u547D\u76E4\u6EA2\u51FA */
+    display: block;
+    width: 100%;
+    height: 600px; /* \u7D66\u4E00\u500B\u660E\u78BA\u7684\u521D\u59CB\u9AD8\u5EA6\uFF0CWix \u7DE8\u8F2F\u5668\u61C9\u53EF\u8986\u84CB */
+    min-height: 450px; /* \u6700\u5C0F\u9AD8\u5EA6\uFF0C\u9632\u6B62\u584C\u9677 */
+    overflow: hidden;
     box-sizing: border-box;
-    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif; /* \u57FA\u790E\u5B57\u9AD4 */
-    line-height: 1.4; /* \u57FA\u790E\u884C\u9AD8 */
-    border: 1px solid #ccc; /* \u81E8\u6642\u908A\u6846\uFF0C\u65B9\u4FBF\u8ABF\u8A66 Custom Element \u7684\u908A\u754C */
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    line-height: 1.4;
+    /* border: 1px dashed green; /* Debug border */ */
   }
-
   #chart-render-target {
     width: 100%;
     height: 100%;
-    display: flex; /* \u8B93 .iztro-astrolabe \u5BB9\u5668\u53EF\u4EE5\u88AB\u5C45\u4E2D (\u5982\u679C\u5176\u5C3A\u5BF8\u5C0F\u65BC\u639B\u8F09\u9EDE) */
+    display: flex;
     justify-content: center;
-    align-items: center; /* \u6216 flex-start */
+    align-items: center; /* \u6216\u8005 flex-start */
     box-sizing: border-box;
-    background-color: var(--color-html-bg, #f0f2f5); /* \u4F60\u5B9A\u7FA9\u7684\u80CC\u666F\u8272 */
+    background-color: var(--color-html-bg, #ffffff); /* \u80CC\u666F\u8272 */
+    padding: 5px; /* \u7D66\u4E00\u9EDE\u5167\u908A\u8DDD */
   }
-
-  /*
-   * \u4E0D\u9700\u8981\u518D\u624B\u52D5\u6307\u5B9A\u5BAE\u4F4D\u7684 grid-area\uFF0CreactIztroDefaultCSS \u4E2D\u7684
-   * .iztro-astrolabe \u53CA\u5176 grid-template-areas \u61C9\u8A72\u6703\u8CA0\u8CAC\u6574\u9AD4\u4F48\u5C40\u3002
-   * react-iztro \u7684 JS \u4EE3\u78BC\u6703\u5C07\u5404\u500B\u5BAE\u4F4D\u7D44\u4EF6\u6B63\u78BA\u5730\u653E\u7F6E\u5230\u9019\u4E9B\u547D\u540D\u5340\u57DF\u3002
-   */
-  
-  /* \u793A\u4F8B\uFF1A\u5982\u679C\u4F60\u60F3\u8986\u84CB react-iztro \u7684\u67D0\u500B\u984F\u8272 */
-  /*
-  .iztro-astrolabe-theme-default {
-    --iztro-color-major: purple !important; 
-  }
-  */
+  /* \u5982\u679C\u9700\u8981\uFF0C\u53EF\u4EE5\u5FAE\u8ABF react-iztro \u6A23\u5F0F\uFF0C\u4F46\u907F\u514D\u4FEE\u6539\u6838\u5FC3\u4F48\u5C40 */
 `;
   var ZiweiChart = class extends HTMLElement {
     static get observedAttributes() {
-      console.log("[ZiweiChart CLASS] static get observedAttributes CALLED");
       return ["data-config", "theme-override"];
     }
     constructor() {
       super();
-      console.log("[ZiweiChart INSTANCE] constructor CALLED");
       this.attachShadow({ mode: "open" });
-      console.log("[ZiweiChart INSTANCE] constructor: Shadow DOM attached.");
       this.shadowRoot.innerHTML = `
             <style id="ziwei-dynamic-styles"></style>
             <div id="chart-render-target" class="chart-wrapper-inside-shadow-dom">
                 <div class="message-display-in-shadow loading-message-in-shadow">\u547D\u76E4\u7D44\u4EF6\u521D\u59CB\u5316\u4E2D...</div>
             </div>
         `;
-      console.log("[ZiweiChart INSTANCE] constructor: Initial Shadow DOM HTML set.");
       this._mountPoint = this.shadowRoot.getElementById("chart-render-target");
       this._reactRoot = null;
       this._currentConfigString = null;
@@ -44800,16 +44745,22 @@ var ZiweiChartCustomElementGlobal = (() => {
       this._resizeObserver = null;
       this._data = {};
       this._forceNextRender = false;
+      this.renderChartFromAttributes = this.renderChartFromAttributes.bind(this);
+      this._parseAndRender = this._parseAndRender.bind(this);
+      this._renderAstrolabeWithReact = this._renderAstrolabeWithReact.bind(this);
+      this._setupResizeObserver = this._setupResizeObserver.bind(this);
+      this._injectStyles = this._injectStyles.bind(this);
+      this.renderError = this.renderError.bind(this);
+      this.renderPlaceholder = this.renderPlaceholder.bind(this);
     }
     _injectStyles() {
       const styleElement = this.shadowRoot.getElementById("ziwei-dynamic-styles");
       if (!styleElement) {
-        console.error("[ZiweiChart INSTANCE] _injectStyles: Critical - #ziwei-dynamic-styles element not found!");
+        console.error("[ZiweiChart INSTANCE] _injectStyles: #ziwei-dynamic-styles not found!");
         return;
       }
       let combinedCSS = `
-            /* \u901A\u7528\u6D88\u606F\u6A23\u5F0F */
-            .message-display-in-shadow { font-size: 16px; padding: 20px; border-radius: 4px; text-align: center; margin: 20px; font-family: var(--ziwei-font-family, sans-serif); }
+            .message-display-in-shadow { font-size: 16px; padding: 20px; border-radius: 4px; text-align: center; margin: 20px; font-family: "Helvetica Neue", Helvetica, Arial, sans-serif; }
             .loading-message-in-shadow { background-color: #e6f7ff; color: #1890ff; border: 1px solid #91d5ff; }
             .error-message-in-shadow { background-color: #fff1f0; color: #f5222d; border: 1px solid #ffa39e; }
         `;
@@ -44817,57 +44768,63 @@ var ZiweiChartCustomElementGlobal = (() => {
         combinedCSS += antdResetCSS;
       combinedCSS += reactIztroDefaultCSS;
       combinedCSS += customChartHostAndWrapperStyles;
-      if (this._currentThemeOverride) {
-        console.log("[ZiweiChart INSTANCE] _injectStyles: Applying theme-override CSS.");
+      if (this._currentThemeOverride)
         combinedCSS += this._currentThemeOverride;
-      }
       styleElement.textContent = combinedCSS;
-      console.log("[ZiweiChart INSTANCE] _injectStyles: All styles injected.");
     }
     connectedCallback() {
       console.log("[ZiweiChart INSTANCE] connectedCallback CALLED.");
       if (!this._isMounted) {
         this._injectStyles();
         if (!this._mountPoint) {
-          console.error("[ZiweiChart INSTANCE] connectedCallback: CRITICAL - _mountPoint is NULL.");
-          this.renderError("\u639B\u8F09\u9EDE\u4E1F\u5931\uFF0C\u7D44\u4EF6\u7121\u6CD5\u521D\u59CB\u5316\u3002", true);
+          console.error("[ZiweiChart INSTANCE] connectedCallback: _mountPoint is NULL.");
+          this.shadowRoot.innerHTML = `<style>.error-message-in-shadow { background-color: #fff1f0; color: #f5222d; border: 1px solid #ffa39e; font-size: 16px; padding: 20px; border-radius: 4px; text-align: center; margin: 20px; }</style><div class="error-message-in-shadow">Mount point error.</div>`;
           return;
         }
         if (typeof import_client.default !== "undefined" && typeof import_client.default.createRoot === "function") {
           this._reactRoot = import_client.default.createRoot(this._mountPoint);
-          console.log("[ZiweiChart INSTANCE] connectedCallback: React root CREATED.");
         } else {
-          console.error("[ZiweiChart INSTANCE] connectedCallback: ReactDOM.createRoot is UNDEFINED.");
           this.renderError("React \u74B0\u5883\u932F\u8AA4 (createRoot)\u3002", true);
           this._isMounted = true;
           return;
         }
         this._isMounted = true;
         this._setupResizeObserver();
-        const initialConfig = this.getAttribute("data-config");
         const initialThemeOverride = this.getAttribute("theme-override");
-        if (initialThemeOverride && initialThemeOverride !== this._currentThemeOverride) {
+        if (initialThemeOverride) {
           this._currentThemeOverride = initialThemeOverride;
           this._injectStyles();
           this._forceNextRender = true;
         }
         this.renderChartFromAttributes(this._forceNextRender);
       } else {
-        console.log("[ZiweiChart INSTANCE] connectedCallback: Already mounted. Forcing a style injection and re-render if config exists.");
         this._injectStyles();
-        if (this._currentConfigString) {
+        if (this._currentConfigString)
           this._parseAndRender(this._currentConfigString, true);
-        }
       }
-      console.log("[ZiweiChart INSTANCE] connectedCallback FINISHED.");
     }
-    // 處理生辰數據轉換 (與之前類似，包含子時換日和插件邏輯)
+    // ✅ renderChartFromAttributes 方法定義在類中
+    renderChartFromAttributes(forceRender = false) {
+      console.log(`[ZiweiChart INSTANCE] renderChartFromAttributes CALLED. Force: ${forceRender}`);
+      if (!this._isMounted || !this._reactRoot) {
+        console.warn("[ZiweiChart INSTANCE] renderChartFromAttributes: Not ready to render.");
+        return;
+      }
+      const configAttr = this.getAttribute("data-config");
+      if (configAttr && (forceRender || configAttr !== this._currentConfigString)) {
+        this._parseAndRender(configAttr, forceRender);
+      } else if (!configAttr && this._currentConfigString !== null) {
+        this.renderPlaceholder("\u7B49\u5F85\u914D\u7F6E (attribute removed)...");
+        this._currentConfigString = null;
+      } else if (!configAttr) {
+        this.renderPlaceholder("\u7B49\u5F85\u914D\u7F6E (initial)...");
+      }
+    }
     birthDataToIzTroParams(birthData) {
       if (!birthData || !birthData.year || !birthData.month || !birthData.day || !birthData.hour || birthData.gender === void 0) {
-        console.warn("[ZiweiChart ELEMENT] Missing or invalid birthData for iztro conversion:", birthData);
         return null;
       }
-      let { year, month, day, hour, minute = 0, gender, solarDate, lunarDate, timeZone, anH, lang = "zh" } = birthData;
+      let { year, month, day, hour, minute = 0, gender, solarDate, lunarDate, timeZone, anH = false, lang = "zh-CN", fixedLeap = false } = birthData;
       let targetYear = parseInt(year, 10);
       let targetMonth = parseInt(month, 10);
       let targetDay = parseInt(day, 10);
@@ -44890,20 +44847,10 @@ var ZiweiChartCustomElementGlobal = (() => {
       }
       let birthdayForIztro;
       let birthdayType = "solar";
-      if (payload.solarDate && typeof payload.solarDate === "string" && payload.solarDate.match(/^\d{4}-\d{1,2}-\d{1,2}$/)) {
-        birthdayForIztro = `${payload.solarDate} ${String(originalHourForIztro).padStart(2, "0")}:${String(targetMinute).padStart(2, "0")}:00`;
-      } else if (solarDate && typeof solarDate === "string" && solarDate.match(/^\d{4}-\d{1,2}-\d{1,2}$/)) {
+      if (solarDate && typeof solarDate === "string" && solarDate.match(/^\d{4}-\d{1,2}-\d{1,2}$/)) {
         birthdayForIztro = `${solarDate} ${String(originalHourForIztro).padStart(2, "0")}:${String(targetMinute).padStart(2, "0")}:00`;
-      } else if (lunarDate && typeof lunarDate === "object" && lunarDate.year && lunarDate.month && lunarDate.day) {
-        birthdayForIztro = {
-          year: lunarDate.year,
-          // 假設 Velo 提供的 lunarDate 已經是換日後的
-          month: lunarDate.month,
-          day: lunarDate.day,
-          hour: originalHourForIztro,
-          minute: targetMinute,
-          isLeap: !!lunarDate.isLeapMonth
-        };
+      } else if (lunarDate && typeof lunarDate === "object") {
+        birthdayForIztro = { year: lunarDate.year, month: lunarDate.month, day: lunarDate.day, hour: originalHourForIztro, minute: targetMinute, isLeap: !!lunarDate.isLeapMonth };
         birthdayType = "lunar";
       } else {
         birthdayForIztro = `${targetYear}-${String(targetMonth).padStart(2, "0")}-${String(targetDay).padStart(2, "0")} ${String(originalHourForIztro).padStart(2, "0")}:${String(targetMinute).padStart(2, "0")}:00`;
@@ -44912,9 +44859,8 @@ var ZiweiChartCustomElementGlobal = (() => {
       if (anH) {
         if (typeof window.reactIztroPlugins !== "undefined" && typeof window.reactIztroPlugins.darkHidedHeavenlyStems === "function") {
           plugins.push(window.reactIztroPlugins.darkHidedHeavenlyStems());
-          console.log("[ZiweiChart ELEMENT] \u6697\u5408\u63D2\u4EF6\u5DF2\u52A0\u8F09\u3002");
         } else {
-          console.warn("[ZiweiChart ELEMENT] \u6697\u5408\u63D2\u4EF6 (darkHidedHeavenlyStems) \u5728 window.reactIztroPlugins \u4E2D\u672A\u627E\u5230\u3002\u8ACB\u78BA\u4FDD react-iztro-plugins UMD \u5DF2\u6B63\u78BA\u5F15\u5165\u3002");
+          console.warn("\u6697\u5408\u63D2\u4EF6\u672A\u627E\u5230\u3002");
         }
       }
       return {
@@ -44922,70 +44868,124 @@ var ZiweiChartCustomElementGlobal = (() => {
         gender: gender === "male" ? "\u7537" : gender === "female" ? "\u5973" : void 0,
         birthdayType,
         timeZone: timeZone !== void 0 ? parseInt(timeZone, 10) : void 0,
-        fixedLeap: payload.fixedLeap,
-        // 從 payload 中獲取 fixedLeap
+        fixedLeap,
         plugins,
         language: lang
-        // 將語言也返回，方便後續使用
       };
     }
     _setupResizeObserver() {
-      if (this._resizeObserver) {
+      if (this._resizeObserver)
         this._resizeObserver.disconnect();
-      }
       this._resizeObserver = new ResizeObserver((entries) => {
         for (let entry of entries) {
           const { width, height } = entry.contentRect;
           if (width > 0 && height > 0 && (width !== this._currentWidth || height !== this._currentHeight)) {
-            console.log(`[ZiweiChart INSTANCE] ResizeObserver: Size changed to ${width}x${height}`);
             this._currentWidth = width;
             this._currentHeight = height;
             this._render();
           }
         }
       });
-      this._resizeObserver.observe(this._mountPoint);
-      const initialRect = this._mountPoint.getBoundingClientRect();
-      if (initialRect.width > 0 && initialRect.height > 0) {
-        this._currentWidth = initialRect.width;
-        this._currentHeight = initialRect.height;
+      if (this._mountPoint) {
+        this._resizeObserver.observe(this._mountPoint);
+        const initialRect = this._mountPoint.getBoundingClientRect();
+        if (initialRect.width > 0 && initialRect.height > 0) {
+          this._currentWidth = initialRect.width;
+          this._currentHeight = initialRect.height;
+        }
       }
-      console.log(`[ZiweiChart INSTANCE] ResizeObserver initialized. Initial mount point size: ${this._currentWidth}x${this._currentHeight}`);
     }
-    _renderAstrolabeWithReact(payload2) {
-      var _a, _b, _c;
-      console.log("[ZiweiChart INSTANCE] _renderAstrolabeWithReact CALLED. Payload:", JSON.stringify(payload2));
-      if (!this._isMounted || !this._reactRoot) {
-        console.error("[ZiweiChart INSTANCE] _renderAstrolabeWithReact: Not mounted or React root missing.");
-        this.renderError("React \u6E32\u67D3\u6838\u5FC3\u672A\u5C31\u7DD2\u3002");
+    // attributeChangedCallback, _parseAndRender, _renderAstrolabeWithReact, 
+    // renderPlaceholder, renderError, setters/getters
+    // 請使用我上一個回覆中提供的這些方法的最新版本，它們包含了錯誤處理和更健壯的邏輯。
+    // 確保 _renderAstrolabeWithReact 中 finalProps 的構建正確。
+    disconnectedCallback() {
+      if (this._isMounted && this._reactRoot) {
+        this._reactRoot.unmount();
+      }
+      this._isMounted = false;
+      if (this._resizeObserver) {
+        this._resizeObserver.disconnect();
+      }
+    }
+    attributeChangedCallback(name, oldValue, newValue) {
+      console.log(`[ZiweiChart INSTANCE] attributeChangedCallback: ${name} from '${oldValue}' to '${newValue}'`);
+      if (name === "theme-override") {
+        if (newValue !== this._currentThemeOverride) {
+          this._currentThemeOverride = newValue;
+          this._injectStyles();
+          if (this._isMounted && this._currentConfigString) {
+            this._forceNextRender = true;
+            this._parseAndRender(this._currentConfigString, true);
+          }
+        }
+      } else if (name === "data-config") {
+        if (newValue === this._currentConfigString && !this._forceNextRender)
+          return;
+        if (!this._isMounted) {
+          console.log("[ZiweiChart] attributeChangedCallback: Not mounted, data-config will be handled by connectedCallback.");
+          return;
+        }
+        if (newValue === null || newValue === void 0) {
+          this.renderPlaceholder("\u547D\u76E4\u914D\u7F6E\u5DF2\u79FB\u9664\u3002");
+          this._currentConfigString = null;
+        } else {
+          this._parseAndRender(newValue);
+        }
+        this._forceNextRender = false;
+      }
+    }
+    _parseAndRender(configString, forceRender = false) {
+      if (!forceRender && this._isRendering && configString === this._currentConfigString)
+        return;
+      if (!this._isMounted || !this._reactRoot)
+        return;
+      this._isRendering = true;
+      this._currentConfigString = configString;
+      if (!configString) {
+        this.renderError("\u547D\u76E4\u914D\u7F6E\u6578\u64DA\u70BA\u7A7A\u3002");
         this._isRendering = false;
         return;
       }
-      const iztroParams = this.birthDataToIzTroParams(payload2);
+      try {
+        const config = JSON.parse(configString);
+        if ((config == null ? void 0 : config.type) === "RENDER_CHART" && config.payload) {
+          this._renderAstrolabeWithReact(config.payload);
+        } else {
+          this.renderError("\u547D\u76E4\u914D\u7F6E\u683C\u5F0F\u7121\u6548\u3002");
+          this._isRendering = false;
+        }
+      } catch (error) {
+        this.renderError(`\u89E3\u6790\u914D\u7F6E\u932F\u8AA4: ${error.message}`);
+        this._isRendering = false;
+      }
+    }
+    _renderAstrolabeWithReact(payload) {
+      var _a, _b;
+      if (!this._isMounted || !this._reactRoot) {
+        this._isRendering = false;
+        return;
+      }
+      const iztroParams = this.birthDataToIzTroParams(payload);
       if (!iztroParams) {
-        this.renderError("\u751F\u8FB0\u516B\u5B57\u6578\u64DA\u7121\u6548\u6216\u7F3A\u5931 (\u4F86\u81EA _renderAstrolabeWithReact)\u3002");
+        this.renderError("\u751F\u8FB0\u6578\u64DA\u8F49\u63DB\u5931\u6557\u3002");
         this._isRendering = false;
         return;
       }
       const AstrolabeComponent = iztro.Iztrolabe;
       if (typeof AstrolabeComponent === "undefined") {
-        console.error("[ZiweiChart INSTANCE] _renderAstrolabeWithReact: AstrolabeComponent (iztro.Iztrolabe) is UNDEFINED!");
-        this.renderError("\u547D\u76E4\u6838\u5FC3\u7D44\u4EF6\u672A\u80FD\u6B63\u78BA\u8F09\u5165\u3002");
+        this.renderError("Iztrolabe \u7D44\u4EF6\u672A\u5B9A\u7FA9\u3002");
         this._isRendering = false;
         return;
       }
-      const chartWidth = this._currentWidth > 10 ? this._currentWidth : parseInt(this.style.width, 10) || 550;
-      const chartHeight = this._currentHeight > 10 ? this._currentHeight : parseInt(this.style.height, 10) || 650;
-      console.log(`[ZiweiChart INSTANCE] Using dimensions for Astrolabe: Width=${chartWidth}, Height=${chartHeight}`);
-      const veloChartOptions = payload2.chartOptions || ((_a = this._data) == null ? void 0 : _a.chartOptions) || {};
+      const chartWidth = this._currentWidth > 10 ? this._currentWidth : 550;
+      const chartHeight = this._currentHeight > 10 ? this._currentHeight : 650;
+      const veloChartOptions = payload.chartOptions || ((_a = this._data) == null ? void 0 : _a.chartOptions) || {};
       const finalOptions = {
-        // 顯示相關
         width: chartWidth,
         height: chartHeight,
         theme: veloChartOptions.theme || "default",
-        // 你可以通過 CSS variables 自定義 theme
         language: iztroParams.language || veloChartOptions.language || "zh-CN",
-        // 保持 Velo > 默認
         showPalaceName: veloChartOptions.showPalaceName !== void 0 ? veloChartOptions.showPalaceName : true,
         showMutagens: veloChartOptions.showMutagens !== void 0 ? veloChartOptions.showMutagens : true,
         showBrightness: veloChartOptions.showBrightness !== void 0 ? veloChartOptions.showBrightness : true,
@@ -44997,107 +44997,79 @@ var ZiweiChartCustomElementGlobal = (() => {
         showDailyScope: veloChartOptions.showDailyScope !== void 0 ? veloChartOptions.showDailyScope : false,
         showHourlyScope: veloChartOptions.showHourlyScope !== void 0 ? veloChartOptions.showHourlyScope : false,
         showTransNatal: veloChartOptions.showTransNatal !== void 0 ? veloChartOptions.showTransNatal : true,
-        // 'astrolabe' 子對象的配置 (來自 react-iztro)
-        astrolabe: {
-          showCenterContent: ((_b = veloChartOptions.astrolabe) == null ? void 0 : _b.showCenterContent) !== void 0 ? veloChartOptions.astrolabe.showCenterContent : true,
-          showThemeButton: ((_c = veloChartOptions.astrolabe) == null ? void 0 : _c.showThemeButton) !== void 0 ? veloChartOptions.astrolabe.showThemeButton : false,
-          // 通常不在嵌入式組件中顯示
-          // ... 其他 react-iztro > astrolabe 內部的配置
-          ...veloChartOptions.astrolabe || {}
-        },
-        plugins: [...iztroParams.plugins || [], ...veloChartOptions.plugins || []]
+        astrolabe: { ...veloChartOptions.astrolabe || {}, showMutableSigns: ((_b = veloChartOptions.astrolabe) == null ? void 0 : _b.showMutableSigns) !== void 0 ? veloChartOptions.astrolabe.showMutableSigns : true },
+        plugins: [...iztroParams.plugins || [], ...veloChartOptions.plugins || []],
+        ...veloChartOptions.directOptions || {}
       };
       const finalProps = {
         birthday: iztroParams.birthday,
-        birthTime: payload2.birthTime,
-        // Iztrolabe 文檔可能需要數字類型的小時
+        birthTime: parseInt(payload.birthTime, 10),
+        // 確保 birthTime 是數字
         gender: iztroParams.gender,
         birthdayType: iztroParams.birthdayType,
         timeZone: iztroParams.timeZone,
-        // 可選
-        fixedLeap: payload2.fixedLeap,
-        // 假設這是頂級 prop, 根據 iztro 文檔調整
+        fixedLeap: payload.fixedLeap,
         options: finalOptions
-        // 如果 language 或 plugins 是頂級 props, 需要從 finalOptions 移到這裡
-        // language: finalOptions.language, 
-        // plugins: finalOptions.plugins,
       };
-      console.log("[ZiweiChart INSTANCE] Final props for React.createElement(Iztrolabe):", JSON.stringify(finalProps, null, 2));
-      this.renderPlaceholder("\u6E32\u67D3\u547D\u76E4\u5716...");
+      if (Object.prototype.hasOwnProperty.call(finalOptions, "language") && finalProps.options.language === finalOptions.language) {
+        finalProps.language = finalOptions.language;
+        delete finalProps.options.language;
+      }
+      if (Object.prototype.hasOwnProperty.call(finalOptions, "plugins") && finalProps.options.plugins === finalOptions.plugins) {
+        finalProps.plugins = finalOptions.plugins;
+        delete finalProps.options.plugins;
+      }
+      console.log("[ZiweiChart FINAL PROPS]", JSON.stringify(finalProps, null, 2));
+      this.renderPlaceholder("\u6E32\u67D3\u4E2D...");
       setTimeout(() => {
         if (!this._reactRoot) {
-          console.error("[ZiweiChart INSTANCE] (timeout) React root is null, cannot render astrolabe!");
-          this.renderError("\u6E32\u67D3\u932F\u8AA4\uFF1AReact \u6838\u5FC3\u7570\u5E38 (timeout)\u3002", true);
+          this.renderError("React Root is null in timeout", true);
           this._isRendering = false;
           return;
         }
         try {
-          this._reactRoot.render(
-            import_react.default.createElement(AstrolabeComponent, finalProps)
-          );
-          console.log("[ZiweiChart INSTANCE] (timeout) React render() for Astrolabe called.");
+          this._reactRoot.render(import_react.default.createElement(AstrolabeComponent, finalProps));
         } catch (error) {
-          console.error("[ZiweiChart INSTANCE] (timeout) >>> EXCEPTION during Astrolabe rendering <<<", error);
-          this.renderError(`\u6E32\u67D3\u547D\u76E4\u5716\u6642\u767C\u751F\u5167\u90E8\u932F\u8AA4: ${error.message || "\u672A\u77E5\u932F\u8AA4"}`);
+          this.renderError(`\u6E32\u67D3\u7570\u5E38: ${error.message}`);
         } finally {
           this._isRendering = false;
-          console.log("[ZiweiChart INSTANCE] (timeout) Astrolabe rendering attempt finished.");
         }
       }, 50);
     }
     renderPlaceholder(message) {
-      console.log(`[ZiweiChart INSTANCE] renderPlaceholder: "${message}"`);
-      const renderTarget = this.shadowRoot.getElementById("chart-render-target");
-      if (!renderTarget)
+      if (!this._reactRoot || !this._mountPoint)
         return;
-      if (!this._reactRoot) {
-        renderTarget.innerHTML = `<div class="message-display-in-shadow loading-message-in-shadow">${message} (React root unavailable)</div>`;
-        return;
-      }
       try {
-        this._reactRoot.render(import_react.default.createElement("div", { key: `placeholder-${Date.now()}`, className: "message-display-in-shadow loading-message-in-shadow" }, message));
+        this._reactRoot.render(import_react.default.createElement("div", { className: "message-display-in-shadow loading-message-in-shadow" }, message));
       } catch (e) {
-        renderTarget.innerHTML = `<div class="message-display-in-shadow error-message-in-shadow">${message} (React placeholder error: ${e.message})</div>`;
+        this._mountPoint.innerHTML = `<div class="message-display-in-shadow loading-message-in-shadow">${message} (React Err)</div>`;
       }
     }
     renderError(message, isCritical = false) {
-      console.error(`[ZiweiChart INSTANCE] renderError: "${message}" (Critical: ${isCritical})`);
-      const renderTarget = this.shadowRoot.getElementById("chart-render-target");
-      if (!renderTarget) {
-        if (isCritical)
-          this.shadowRoot.innerHTML = `<style>.error-message-in-shadow { /* ... */ }</style><div class="message-display-in-shadow error-message-in-shadow">FATAL: ${message} (No render target)</div>`;
+      if (!this._reactRoot || !this._mountPoint) {
+        if (this.shadowRoot)
+          this.shadowRoot.innerHTML = `<style>.error-message-in-shadow{...}</style><div class="message-display-in-shadow error-message-in-shadow">${message}</div>`;
         return;
       }
-      if (!this._reactRoot && !isCritical) {
-        renderTarget.innerHTML = `<div class="message-display-in-shadow error-message-in-shadow">${message} (React root unavailable)</div>`;
-        return;
-      }
-      if (this._reactRoot && !isCritical) {
-        try {
-          this._reactRoot.render(import_react.default.createElement("div", { key: `error-${Date.now()}`, className: "message-display-in-shadow error-message-in-shadow" }, message));
-        } catch (e) {
-          renderTarget.innerHTML = `<div class="message-display-in-shadow error-message-in-shadow">${message} (React error rendering error: ${e.message})</div>`;
-        }
-      } else {
-        renderTarget.innerHTML = `<div class="message-display-in-shadow error-message-in-shadow">${message} ${isCritical ? "(Critical Error)" : ""}</div>`;
+      try {
+        this._reactRoot.render(import_react.default.createElement("div", { className: "message-display-in-shadow error-message-in-shadow" }, message));
+      } catch (e) {
+        this._mountPoint.innerHTML = `<div class="message-display-in-shadow error-message-in-shadow">${message} (React Err)</div>`;
       }
     }
-    // --- Setters and Getters for Velo interaction ---
     set birthData(value) {
       let parsedValue = value;
       if (typeof value === "string") {
         try {
           parsedValue = JSON.parse(value);
         } catch (e) {
-          console.error("[ZiweiChart SETTER] Error parsing birthData string:", e, value);
-          this.renderError("\u751F\u8FB0\u516B\u5B57\u6578\u64DA\u683C\u5F0F\u932F\u8AA4\u3002");
+          this.renderError("birthData \u683C\u5F0F\u932F\u8AA4\u3002");
           return;
         }
       }
       this._data = { ...this._data, birthData: parsedValue };
-      console.log("[ZiweiChart SETTER] birthData set:", this._data.birthData);
       if (this._isMounted) {
-        this._parseAndRender(this.getAttribute("data-config") || JSON.stringify({ type: "RENDER_CHART", payload: this._data.birthData }));
+        this.renderChartFromAttributes(true);
       }
     }
     get birthData() {
@@ -45110,14 +45082,12 @@ var ZiweiChartCustomElementGlobal = (() => {
         try {
           parsedValue = JSON.parse(value);
         } catch (e) {
-          console.error("[ZiweiChart SETTER] Error parsing chartOptions string:", e, value);
+          console.warn("chartOptions \u89E3\u6790\u5931\u6557");
         }
       }
       this._data = { ...this._data, chartOptions: parsedValue };
-      console.log("[ZiweiChart SETTER] chartOptions set:", this._data.chartOptions);
       if (this._isMounted) {
-        this._forceNextRender = true;
-        this._parseAndRender(this.getAttribute("data-config") || JSON.stringify({ type: "RENDER_CHART", payload: this._data.birthData }), true);
+        this.renderChartFromAttributes(true);
       }
     }
     get chartOptions() {
@@ -45128,14 +45098,12 @@ var ZiweiChartCustomElementGlobal = (() => {
   if (customElements && typeof customElements.get === "function" && !customElements.get("ziwei-chart")) {
     try {
       customElements.define("ziwei-chart", ZiweiChart);
-      console.log('[ZiweiChart CE SCRIPT] Custom element "ziwei-chart" DEFINED SUCCESSFULLY.');
     } catch (e) {
-      console.error('[ZiweiChart CE SCRIPT] CRITICAL ERROR defining custom element "ziwei-chart":', e);
+      console.error("[ZiweiChart CE SCRIPT] Error defining ziwei-chart:", e);
     }
   } else {
-    console.warn('[ZiweiChart CE SCRIPT] Custom element "ziwei-chart" was already defined or customElements API unavailable.');
+    console.warn("[ZiweiChart CE SCRIPT] ziwei-chart already defined or customElements API issue.");
   }
-  console.log("[ZiweiChart CE SCRIPT] Top-level script execution FINISHED.");
 })();
 /*! Bundled license information:
 
