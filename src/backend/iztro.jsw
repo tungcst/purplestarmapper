@@ -3,5 +3,35 @@ import * as react from 'react';
 import * as reactDom from 'react-dom/client';
 
 export function getIztro() {
-  return { iztro, react, reactDom };
+  try {
+    // Check if the imported modules and their critical parts (like createRoot) are available.
+    // Velo usually catches module import failures at a higher level, 
+    // but this explicit check ensures the expected exports are present when getIztro is called.
+    if (!iztro || !react || !reactDom || typeof reactDom.createRoot !== 'function') {
+      const missingParts = [];
+      if (!iztro) missingParts.push('react-iztro');
+      if (!react) missingParts.push('react');
+      if (!reactDom) {
+        missingParts.push('react-dom/client');
+      } else if (typeof reactDom.createRoot !== 'function') {
+        missingParts.push('react-dom/client (createRoot function is missing)');
+      }
+      
+      const errorMessage = `Iztro backend module (iztro.jsw): One or more dependencies or their key parts are not correctly loaded: ${missingParts.join(', ')}. This might be due to an issue with the npm packages or their versions.`;
+      console.error(errorMessage);
+      // Throwing an error here will be caught by the catch block below, 
+      // allowing for consistent error handling and re-throwing.
+      throw new Error(errorMessage);
+    }
+    return { iztro, react, reactDom };
+  } catch (error) {
+    // Log the detailed error for backend diagnostics.
+    // error.message will contain the message from the explicitly thrown error above if it occurred,
+    // or a message from any other unexpected error within the try block.
+    console.error('Error in iztro.jsw getIztro function:', error.message, error.stack ? error.stack : '(no stack trace available)');
+    
+    // Throw a new error that is more context-specific to the frontend caller.
+    // It's generally good practice not to expose raw internal error messages directly to the frontend.
+    throw new Error('Failed to load Iztro charting libraries from the backend (iztro.jsw). Please check server logs for more details. Original error context: ' + error.message);
+  }
 }

@@ -1,6 +1,7 @@
 class ZiweiChart extends HTMLElement {
   constructor() {
     super();
+    this.chartRendered = false; // Add this line
     this.attachShadow({ mode: 'open' });
     this.shadowRoot.innerHTML = `
       <style>
@@ -14,14 +15,14 @@ class ZiweiChart extends HTMLElement {
 
   connectedCallback() {
     window.addEventListener('message', (event) => {
-      if (event.data.trigger === 'parseQuery') {
+      if (event.data.trigger === 'parseQuery' && !this.chartRendered) { // Add !this.chartRendered
         const urlParams = new URLSearchParams(window.location.search);
         const params = {
           birthDate: urlParams.get('birthDate'),
           birthTime: urlParams.get('birthTime'),
           gender: urlParams.get('gender'),
           lang: urlParams.get('lang') || 'zh',
-          service: urlParams.get('service') || 'trial'
+          service: urlParams.get('service') || 'trial' // Currently unused, reserved for future features (e.g., 'premium' service)
         };
         this.renderChart(params);
       }
@@ -33,26 +34,31 @@ class ZiweiChart extends HTMLElement {
       birthTime: urlParams.get('birthTime'),
       gender: urlParams.get('gender'),
       lang: urlParams.get('lang') || 'zh',
-      service: urlParams.get('service') || 'trial'
+      service: urlParams.get('service') || 'trial' // Currently unused, reserved for future features (e.g., 'premium' service)
     };
-    if (params.birthDate && params.birthTime && params.gender) {
+    if (params.birthDate && params.birthTime && params.gender && !this.chartRendered) { // Add !this.chartRendered
       this.renderChart(params);
     }
   }
 
   renderChart(params) {
+    this.chartRendered = true; // Add this line
     const language = params.lang || 'zh';
     const messages = {
       zh: {
         loading: '載入命盤中...',
         missingParams: '請提供完整的出生資料（日期、時間、性別）！',
         invalidTime: '出生時間格式錯誤，請選擇有效時辰（子時到亥時）！',
+        invalidDate: '出生日期格式錯誤，請提供有效的日期！', // Added
+        invalidGender: '性別參數錯誤，請提供有效的性別（M 或 F）！', // Added
         generationError: '生成命盤失敗，請檢查輸入資料或稍後重試！'
       },
       en: {
         loading: 'Loading chart...',
         missingParams: 'Please provide complete birth details (date, time, gender)!',
         invalidTime: 'Invalid birth time, please select a valid hour (Zi to Hai)!',
+        invalidDate: 'Invalid birth date format, please provide a valid date!', // Added
+        invalidGender: 'Invalid gender parameter, please provide a valid gender (M or F)!', // Added
         generationError: 'Failed to generate chart, please check input data or try again later!'
       }
     };
@@ -64,13 +70,38 @@ class ZiweiChart extends HTMLElement {
       return;
     }
 
-    const dateStr = params.birthDate.split('T')[0];
+    // Validate birthDate
+    if (typeof params.birthDate !== 'string') {
+      this.shadowRoot.getElementById('ziwei-container').innerHTML = `<p style="color: red;">${messages[language].invalidDate}</p>`;
+      return;
+    }
+    
+    const dateObj = new Date(params.birthDate.split('T')[0]); // Ensure we only parse the date part
+    if (isNaN(dateObj.getTime())) {
+      this.shadowRoot.getElementById('ziwei-container').innerHTML = `<p style="color: red;">${messages[language].invalidDate}</p>`;
+      return;
+    }
+
+    // Format date to YYYY-MM-DD
+    const year = dateObj.getFullYear();
+    const month = String(dateObj.getMonth() + 1).padStart(2, '0'); // Months are 0-indexed
+    const day = String(dateObj.getDate()).padStart(2, '0');
+    const dateStr = `${year}-${month}-${day}`;
+
     const timeIndex = parseInt(params.birthTime, 10);
 
     if (isNaN(timeIndex) || timeIndex < 0 || timeIndex > 11) {
       this.shadowRoot.getElementById('ziwei-container').innerHTML = `<p style="color: red;">${messages[language].invalidTime}</p>`;
       return;
     }
+
+    // Validate gender
+    const genderUpper = typeof params.gender === 'string' ? params.gender.toUpperCase() : '';
+    if (genderUpper !== 'M' && genderUpper !== 'F') {
+      this.shadowRoot.getElementById('ziwei-container').innerHTML = `<p style="color: red;">${messages[language].invalidGender}</p>`;
+      return;
+    }
+    const iztrolabeGender = genderUpper === 'M' ? 'male' : 'female';
 
     $w.wixData.getIztro().then(({ iztro, react, reactDom }) => {
       const { Iztrolabe } = iztro;
@@ -85,8 +116,8 @@ class ZiweiChart extends HTMLElement {
             birthday: dateStr,
             birthTime: timeIndex,
             birthdayType: 'solar',
-            gender: params.gender === 'M' ? 'male' : 'female',
-            language: language === 'zh' ? 'zh-TW' : 'en',
+            gender: iztrolabeGender, // Use validated gender
+            language: language.startsWith('zh') ? 'zh-TW' : 'en', // Updated language handling
             horoscopeDate: new Date(),
             horoscopeHour: 1
           })
