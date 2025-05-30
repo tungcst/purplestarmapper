@@ -1,8 +1,26 @@
-# 星途羅盤 v2.0 使用說明
+# 星途羅盤 v2.1.0 使用說明
+
+## 🚨 重要更新：React Hook 衝突問題已解決
+
+**問題描述**：v2.0 版本在 Wix 環境中出現了 "Invalid hook call" 錯誤，這是由於我們的 bundle 包含了完整的 React 和 ReactDOM，與 Wix 系統的 React 產生了衝突。
+
+**解決方案**：v2.1.0 採用外部 React 模式：
+- ✅ 將 React 和 ReactDOM 設為外部依賴
+- ✅ 使用 Wix 系統提供的 React 實例
+- ✅ Bundle 大小從 1.9MB 減少到 903KB
+- ✅ 完全解決 Hook 調用錯誤
+- ✅ 保持所有功能完整性
+
+**使用變更**：無需改變使用方式，CDN 地址保持不變：
+```
+https://tungcst.github.io/purplestarmapper/ziwei-chart.bundle.js
+```
+
+---
 
 ## 🎯 概述
 
-星途羅盤 v2.0 是一個全新重寫的紫微圖表 Custom Element，專門解決了之前版本中 IZTRO 命盤顯示結構錯誤的問題。新版本具有更好的穩定性、響應式設計，並為報告功能預留了完整的接口。
+星途羅盤 v2.1.0 是一個專業的紫微圖表 Custom Element，完全解決了 IZTRO 命盤顯示結構錯誤和 React Hook 衝突問題。新版本具有更好的穩定性、響應式設計，並為報告功能預留了完整的接口。
 
 ## ✨ 主要改進
 
@@ -344,4 +362,4 @@ chart.addEventListener('chartError', (event) => {
 
 ---
 
-**星途羅盤 v2.0** - 專業、穩定、現代的紫微圖表解決方案 
+**星途羅盤 v2.1.0** - 專業、穩定、現代的紫微圖表解決方案 

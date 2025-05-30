@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>星途羅盤 v2.1.0 外部 React 測試</title>
+    <style>
+        body {
+            font-family: 'Inter', 'Noto Sans TC', sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: linear-gradient(135deg, #f5f3ff, #faf5ff, #f0f9ff);
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding: 20px;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(88, 28, 135, 0.1);
+        }
+        
+        .test-section {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 20px rgba(88, 28, 135, 0.1);
+        }
+        
+        .chart-container {
+            width: 100%;
+            height: 500px;
+            border: 2px solid rgba(230, 230, 250, 0.8);
+            border-radius: 12px;
+            margin: 20px 0;
+        }
+        
+        .btn {
+            background: linear-gradient(135deg, #581C87, #6B21A8);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        
+        .status {
+            padding: 10px;
+            border-radius: 8px;
+            margin: 10px 0;
+        }
+        
+        .success { background: #ECFDF5; color: #059669; }
+        .error { background: #FEF2F2; color: #DC2626; }
+        .info { background: #EFF6FF; color: #2563EB; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🌟 星途羅盤 v2.1.0 外部 React 測試</h1>
+            <p>測試修正 React Hook 衝突後的版本</p>
+        </div>
+
+        <div class="test-section">
+            <h3>📊 React 依賴檢查</h3>
+            <div id="reactStatus" class="status info">檢查中...</div>
+        </div>
+
+        <div class="test-section">
+            <h3>🎯 命盤測試</h3>
+            <button class="btn" onclick="loadTestChart()">載入測試命盤</button>
+            <button class="btn" onclick="clearChart()">清空命盤</button>
+            <div id="chartStatus" class="status info">準備就緒</div>
+            
+            <div class="chart-container">
+                <ziwei-chart 
+                    id="ziweiChart" 
+                    theme="purple" 
+                    language="zh-TW">
+                </ziwei-chart>
+            </div>
+        </div>
+    </div>
+
+    <!-- 載入外部 React - 模擬 Wix 環境 -->
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    
+    <!-- 載入新的 Bundle -->
+    <script src="https://tungcst.github.io/purplestarmapper/ziwei-chart.bundle.js"></script>
+    
+    <script>
+        // 檢查 React 依賴
+        function checkReactDependencies() {
+            const statusEl = document.getElementById('reactStatus');
+            
+            if (window.React && window.ReactDOM) {
+                statusEl.className = 'status success';
+                statusEl.textContent = `✅ React ${React.version} 和 ReactDOM 已載入`;
+                return true;
+            } else {
+                statusEl.className = 'status error';
+                statusEl.textContent = '❌ React 或 ReactDOM 未找到';
+                return false;
+            }
+        }
+
+        // 載入測試命盤
+        function loadTestChart() {
+            const chart = document.getElementById('ziweiChart');
+            const statusEl = document.getElementById('chartStatus');
+            
+            const testData = {
+                birthDate: '1990-01-15',
+                birthTime: '3',
+                gender: 'M',
+                solar: true
+            };
+            
+            try {
+                chart.setAttribute('birth-data', JSON.stringify(testData));
+                statusEl.className = 'status success';
+                statusEl.textContent = '✅ 測試數據已載入';
+            } catch (error) {
+                statusEl.className = 'status error';
+                statusEl.textContent = '❌ 載入失敗: ' + error.message;
+            }
+        }
+
+        // 清空命盤
+        function clearChart() {
+            const chart = document.getElementById('ziweiChart');
+            const statusEl = document.getElementById('chartStatus');
+            
+            chart.removeAttribute('birth-data');
+            statusEl.className = 'status info';
+            statusEl.textContent = '命盤已清空';
+        }
+
+        // 頁面載入後檢查
+        document.addEventListener('DOMContentLoaded', function() {
+            setTimeout(() => {
+                checkReactDependencies();
+            }, 1000);
+            
+            // 監聽 Custom Element 事件
+            const chart = document.getElementById('ziweiChart');
+            if (chart) {
+                chart.addEventListener('reportRequest', function(e) {
+                    console.log('收到報告請求:', e.detail);
+                });
+            }
+        });
+
+        // 監聽控制台錯誤
+        window.addEventListener('error', function(e) {
+            console.error('頁面錯誤:', e.message);
+        });
+    </script>
+</body>
+</html> 
