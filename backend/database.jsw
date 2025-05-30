@@ -1,0 +1,316 @@
+// 星途羅盤數據庫配置與管理
+// 用於存儲用戶生成的命理報告和相關數據
+
+import wixData from 'wix-data';
+
+// 數據集名稱定義
+export const COLLECTIONS = {
+    USER_REPORTS: 'UserReports',          // 用戶報告記錄
+    BIRTH_DATA: 'BirthData',             // 生辰數據
+    REPORT_TEMPLATES: 'ReportTemplates',  // 報告模板
+    USER_SESSIONS: 'UserSessions'         // 用戶會話記錄
+};
+
+// UserReports 數據結構
+export const USER_REPORTS_SCHEMA = {
+    _id: 'string',                    // 系統自動生成
+    userId: 'string',                 // 用戶ID (來自 Wix Members)
+    reportId: 'string',               // 報告唯一標識
+    reportType: 'string',             // 報告類型: 'ziwei', 'career', 'love'
+    birthDataId: 'string',            // 關聯的生辰數據ID
+    status: 'string',                 // 狀態: 'trial', 'paid', 'generated', 'error'
+    trialContent: 'text',             // 試閱內容 (JSON 格式)
+    fullContent: 'text',              // 完整報告內容 (JSON 格式)
+    generatedAt: 'datetime',          // 生成時間
+    paidAt: 'datetime',               // 付費時間
+    paymentAmount: 'number',          // 付費金額
+    paymentCurrency: 'string',        // 付費貨幣
+    isActive: 'boolean',              // 是否有效
+    metadata: 'text'                  // 額外元數據 (JSON 格式)
+};
+
+// BirthData 數據結構
+export const BIRTH_DATA_SCHEMA = {
+    _id: 'string',                    // 系統自動生成
+    userId: 'string',                 // 用戶ID
+    dataHash: 'string',               // 生辰數據哈希值（用於去重）
+    birthDate: 'string',              // 出生日期 YYYY-MM-DD
+    birthTime: 'string',              // 出生時辰 (0-11)
+    gender: 'string',                 // 性別 M/F
+    solar: 'boolean',                 // 是否公曆
+    birthLocation: 'text',            // 出生地點 (JSON 格式)
+    timezone: 'string',               // 時區
+    createdAt: 'datetime',            // 創建時間
+    isEncrypted: 'boolean',           // 是否加密存儲
+    usageCount: 'number'              // 使用次數
+};
+
+// 用戶報告管理函數
+export async function saveUserReport(reportData) {
+    try {
+        // 驗證必要字段
+        if (!reportData.userId || !reportData.reportType || !reportData.birthDataId) {
+            throw new Error('Missing required fields for user report');
+        }
+
+        // 生成唯一報告ID
+        const reportId = generateReportId(reportData.reportType);
+        
+        const reportRecord = {
+            reportId,
+            userId: reportData.userId,
+            reportType: reportData.reportType,
+            birthDataId: reportData.birthDataId,
+            status: reportData.status || 'trial',
+            trialContent: reportData.trialContent || '',
+            fullContent: reportData.fullContent || '',
+            generatedAt: new Date(),
+            isActive: true,
+            metadata: JSON.stringify(reportData.metadata || {})
+        };
+
+        const result = await wixData.insert(COLLECTIONS.USER_REPORTS, reportRecord);
+        console.log('✅ User report saved:', result._id);
+        return result;
+    } catch (error) {
+        console.error('❌ Error saving user report:', error);
+        throw error;
+    }
+}
+
+export async function getBirthDataByUserId(userId) {
+    try {
+        const results = await wixData.query(COLLECTIONS.BIRTH_DATA)
+            .eq('userId', userId)
+            .descending('createdAt')
+            .find();
+        
+        return results.items;
+    } catch (error) {
+        console.error('❌ Error fetching birth data:', error);
+        throw error;
+    }
+}
+
+export async function saveOrUpdateBirthData(birthData) {
+    try {
+        // 生成數據哈希值用於去重
+        const dataHash = generateBirthDataHash(birthData);
+        
+        // 檢查是否已存在相同的生辰數據
+        const existingData = await wixData.query(COLLECTIONS.BIRTH_DATA)
+            .eq('userId', birthData.userId)
+            .eq('dataHash', dataHash)
+            .find();
+
+        if (existingData.items.length > 0) {
+            // 更新使用次數
+            const existing = existingData.items[0];
+            existing.usageCount = (existing.usageCount || 0) + 1;
+            
+            const updated = await wixData.update(COLLECTIONS.BIRTH_DATA, existing);
+            console.log('📊 Birth data usage updated:', updated._id);
+            return updated;
+        } else {
+            // 創建新記錄
+            const birthRecord = {
+                userId: birthData.userId,
+                dataHash,
+                birthDate: birthData.birthDate,
+                birthTime: birthData.birthTime.toString(),
+                gender: birthData.gender,
+                solar: birthData.solar !== false,
+                birthLocation: JSON.stringify(birthData.birthLocation || {}),
+                timezone: birthData.timezone || 'UTC+8',
+                createdAt: new Date(),
+                isEncrypted: false,
+                usageCount: 1
+            };
+
+            const result = await wixData.insert(COLLECTIONS.BIRTH_DATA, birthRecord);
+            console.log('✅ Birth data saved:', result._id);
+            return result;
+        }
+    } catch (error) {
+        console.error('❌ Error saving birth data:', error);
+        throw error;
+    }
+}
+
+export async function getUserReports(userId, reportType = null) {
+    try {
+        let query = wixData.query(COLLECTIONS.USER_REPORTS)
+            .eq('userId', userId)
+            .eq('isActive', true)
+            .descending('generatedAt');
+
+        if (reportType) {
+            query = query.eq('reportType', reportType);
+        }
+
+        const results = await query.find();
+        return results.items;
+    } catch (error) {
+        console.error('❌ Error fetching user reports:', error);
+        throw error;
+    }
+}
+
+export async function updateReportStatus(reportId, status, additionalData = {}) {
+    try {
+        const report = await wixData.query(COLLECTIONS.USER_REPORTS)
+            .eq('reportId', reportId)
+            .find();
+
+        if (report.items.length === 0) {
+            throw new Error(`Report not found: ${reportId}`);
+        }
+
+        const updateData = {
+            _id: report.items[0]._id,
+            status,
+            ...additionalData
+        };
+
+        if (status === 'paid') {
+            updateData.paidAt = new Date();
+        }
+
+        const result = await wixData.update(COLLECTIONS.USER_REPORTS, updateData);
+        console.log('✅ Report status updated:', result._id);
+        return result;
+    } catch (error) {
+        console.error('❌ Error updating report status:', error);
+        throw error;
+    }
+}
+
+export async function getReportByReportId(reportId) {
+    try {
+        const results = await wixData.query(COLLECTIONS.USER_REPORTS)
+            .eq('reportId', reportId)
+            .eq('isActive', true)
+            .find();
+
+        if (results.items.length === 0) {
+            return null;
+        }
+
+        return results.items[0];
+    } catch (error) {
+        console.error('❌ Error fetching report by ID:', error);
+        throw error;
+    }
+}
+
+// 用戶會話管理
+export async function saveUserSession(sessionData) {
+    try {
+        const sessionRecord = {
+            userId: sessionData.userId || 'anonymous',
+            sessionId: sessionData.sessionId || generateSessionId(),
+            actionType: sessionData.actionType, // 'visit', 'generate_trial', 'purchase', etc.
+            pageUrl: sessionData.pageUrl || '',
+            userAgent: sessionData.userAgent || '',
+            ipAddress: sessionData.ipAddress || '',
+            referrer: sessionData.referrer || '',
+            timestamp: new Date(),
+            metadata: JSON.stringify(sessionData.metadata || {})
+        };
+
+        const result = await wixData.insert(COLLECTIONS.USER_SESSIONS, sessionRecord);
+        return result;
+    } catch (error) {
+        console.error('❌ Error saving user session:', error);
+        throw error;
+    }
+}
+
+// 輔助函數
+function generateReportId(reportType) {
+    const timestamp = Date.now();
+    const random = Math.random().toString(36).substring(2, 8);
+    return `${reportType}_${timestamp}_${random}`;
+}
+
+function generateBirthDataHash(birthData) {
+    const hashInput = [
+        birthData.birthDate,
+        birthData.birthTime,
+        birthData.gender,
+        birthData.solar ? 'solar' : 'lunar'
+    ].join('|');
+    
+    // 簡單哈希函數（實際應用中建議使用更安全的哈希算法）
+    let hash = 0;
+    for (let i = 0; i < hashInput.length; i++) {
+        const char = hashInput.charCodeAt(i);
+        hash = ((hash << 5) - hash) + char;
+        hash = hash & hash; // 轉換為32位整數
+    }
+    return hash.toString();
+}
+
+function generateSessionId() {
+    return Date.now().toString() + '_' + Math.random().toString(36).substring(2, 15);
+}
+
+// 數據清理和維護函數
+export async function cleanupOldSessions(daysOld = 30) {
+    try {
+        const cutoffDate = new Date();
+        cutoffDate.setDate(cutoffDate.getDate() - daysOld);
+
+        const oldSessions = await wixData.query(COLLECTIONS.USER_SESSIONS)
+            .lt('timestamp', cutoffDate)
+            .find();
+
+        if (oldSessions.items.length > 0) {
+            const idsToDelete = oldSessions.items.map(item => item._id);
+            await wixData.bulkRemove(COLLECTIONS.USER_SESSIONS, idsToDelete);
+            console.log(`🧹 Cleaned up ${idsToDelete.length} old sessions`);
+        }
+
+        return oldSessions.items.length;
+    } catch (error) {
+        console.error('❌ Error cleaning up old sessions:', error);
+        throw error;
+    }
+}
+
+// 統計函數
+export async function getReportStats(userId = null) {
+    try {
+        let query = wixData.query(COLLECTIONS.USER_REPORTS)
+            .eq('isActive', true);
+
+        if (userId) {
+            query = query.eq('userId', userId);
+        }
+
+        const allReports = await query.find();
+        const reports = allReports.items;
+
+        const stats = {
+            total: reports.length,
+            byType: {},
+            byStatus: {},
+            recentActivity: reports.filter(r => {
+                const dayAgo = new Date();
+                dayAgo.setDate(dayAgo.getDate() - 1);
+                return r.generatedAt > dayAgo;
+            }).length
+        };
+
+        // 按類型統計
+        reports.forEach(report => {
+            stats.byType[report.reportType] = (stats.byType[report.reportType] || 0) + 1;
+            stats.byStatus[report.status] = (stats.byStatus[report.status] || 0) + 1;
+        });
+
+        return stats;
+    } catch (error) {
+        console.error('❌ Error getting report stats:', error);
+        throw error;
+    }
+} 

@@ -1,0 +1,371 @@
+// 星途羅盤 LLM API 集成模塊
+// 用於與自研大型語言模型 API 通信，生成命理報告
+
+import { fetch } from 'wix-fetch';
+import { saveUserReport, saveOrUpdateBirthData } from 'backend/database';
+
+// LLM API 配置
+const LLM_CONFIG = {
+    baseUrl: process.env.LLM_API_BASE_URL || 'https://your-llm-api.com/api/v1',
+    apiKey: process.env.LLM_API_KEY || 'your-api-key-here',
+    timeout: 30000, // 30 seconds
+    maxRetries: 3
+};
+
+// 報告類型定義
+export const REPORT_TYPES = {
+    ZIWEI: 'ziwei',           // 紫微斗數全面分析
+    CAREER: 'career',         // 事業運勢分析
+    LOVE: 'love',             // 愛情關係分析
+    HEALTH: 'health',         // 健康運勢分析
+    WEALTH: 'wealth'          // 財運分析
+};
+
+// 生成報告的主函數
+export async function generateReport(userId, birthData, reportType, options = {}) {
+    try {
+        console.log(`🎯 Starting report generation for user ${userId}, type: ${reportType}`);
+        
+        // 驗證輸入數據
+        validateBirthData(birthData);
+        validateReportType(reportType);
+        
+        // 保存或更新生辰數據
+        const savedBirthData = await saveOrUpdateBirthData({
+            ...birthData,
+            userId
+        });
+        
+        // 準備 LLM API 請求
+        const prompt = buildPrompt(birthData, reportType, options);
+        
+        // 調用 LLM API
+        const llmResponse = await callLLMAPI(prompt, reportType);
+        
+        // 處理響應並分割為試閱版和完整版
+        const processedReport = processLLMResponse(llmResponse, reportType);
+        
+        // 保存報告到數據庫
+        const reportData = {
+            userId,
+            reportType,
+            birthDataId: savedBirthData._id,
+            status: 'trial',
+            trialContent: JSON.stringify(processedReport.trial),
+            fullContent: JSON.stringify(processedReport.full),
+            metadata: {
+                llmModel: llmResponse.model,
+                promptTokens: llmResponse.usage?.prompt_tokens,
+                completionTokens: llmResponse.usage?.completion_tokens,
+                generationTime: new Date().toISOString(),
+                options
+            }
+        };
+        
+        const savedReport = await saveUserReport(reportData);
+        
+        console.log('✅ Report generated successfully:', savedReport.reportId);
+        
+        return {
+            success: true,
+            reportId: savedReport.reportId,
+            trial: processedReport.trial,
+            full: null, // 完整版需要付費解鎖
+            metadata: reportData.metadata
+        };
+        
+    } catch (error) {
+        console.error('❌ Error generating report:', error);
+        throw new Error(`報告生成失敗: ${error.message}`);
+    }
+}
+
+// 驗證生辰數據
+function validateBirthData(birthData) {
+    const required = ['birthDate', 'birthTime', 'gender'];
+    const missing = required.filter(field => !birthData[field] && birthData[field] !== 0);
+    
+    if (missing.length > 0) {
+        throw new Error(`缺少必要的生辰信息: ${missing.join(', ')}`);
+    }
+    
+    // 驗證日期格式
+    if (!/^\d{4}-\d{2}-\d{2}$/.test(birthData.birthDate)) {
+        throw new Error('生辰日期格式錯誤，應為 YYYY-MM-DD');
+    }
+    
+    // 驗證時辰
+    const timeIndex = parseInt(birthData.birthTime);
+    if (isNaN(timeIndex) || timeIndex < 0 || timeIndex > 11) {
+        throw new Error('生辰時辰錯誤，應為 0-11');
+    }
+    
+    // 驗證性別
+    if (!['M', 'F', 'male', 'female'].includes(birthData.gender)) {
+        throw new Error('性別信息錯誤');
+    }
+}
+
+// 驗證報告類型
+function validateReportType(reportType) {
+    if (!Object.values(REPORT_TYPES).includes(reportType)) {
+        throw new Error(`不支持的報告類型: ${reportType}`);
+    }
+}
+
+// 構建 LLM 提示詞
+function buildPrompt(birthData, reportType, options) {
+    const basePrompt = `你是一位專業的紫微斗數命理師，擁有豐富的命理知識和經驗。請基於以下生辰信息生成專業的命理分析報告：
+
+生辰信息：
+- 出生日期：${birthData.birthDate}
+- 出生時辰：${getTimeHourName(birthData.birthTime)}
+- 性別：${birthData.gender === 'M' || birthData.gender === 'male' ? '男' : '女'}
+- 曆法：${birthData.solar !== false ? '公曆' : '農曆'}
+
+請生成${getReportTypeName(reportType)}報告，內容需要：
+1. 專業準確，符合紫微斗數理論
+2. 語言優美，易於理解
+3. 結構清晰，層次分明
+4. 包含具體的分析和建議
+
+請以 JSON 格式返回結果，包含以下結構：
+{
+  "title": "報告標題",
+  "summary": "簡要總結",
+  "sections": [
+    {
+      "title": "章節標題",
+      "content": "詳細內容",
+      "highlights": ["重點1", "重點2"]
+    }
+  ],
+  "recommendations": ["建議1", "建議2"],
+  "lucky_elements": {
+    "colors": ["顏色1", "顏色2"],
+    "numbers": [數字1, 數字2],
+    "directions": ["方位1", "方位2"]
+  }
+}`;
+
+    // 根據報告類型添加特定提示
+    const typeSpecificPrompts = {
+        [REPORT_TYPES.ZIWEI]: '重點分析命宮、財帛宮、事業宮、遷移宮等主要宮位，以及主星的影響。',
+        [REPORT_TYPES.CAREER]: '重點分析事業宮、官祿宮、財帛宮，以及影響事業發展的星曜組合。',
+        [REPORT_TYPES.LOVE]: '重點分析夫妻宮、福德宮、子女宮，以及感情運勢和婚姻狀況。',
+        [REPORT_TYPES.HEALTH]: '重點分析疾厄宮、父母宮，以及影響健康的星曜配置。',
+        [REPORT_TYPES.WEALTH]: '重點分析財帛宮、田宅宮，以及財運走勢和理財建議。'
+    };
+
+    return basePrompt + '\n\n' + typeSpecificPrompts[reportType];
+}
+
+// 時辰名稱對照
+function getTimeHourName(timeIndex) {
+    const timeNames = [
+        '子時 (23:00-01:00)', '丑時 (01:00-03:00)', '寅時 (03:00-05:00)',
+        '卯時 (05:00-07:00)', '辰時 (07:00-09:00)', '巳時 (09:00-11:00)',
+        '午時 (11:00-13:00)', '未時 (13:00-15:00)', '申時 (15:00-17:00)',
+        '酉時 (17:00-19:00)', '戌時 (19:00-21:00)', '亥時 (21:00-23:00)'
+    ];
+    return timeNames[parseInt(timeIndex)] || '未知時辰';
+}
+
+// 報告類型名稱對照
+function getReportTypeName(reportType) {
+    const typeNames = {
+        [REPORT_TYPES.ZIWEI]: '紫微斗數全面分析',
+        [REPORT_TYPES.CAREER]: '事業運勢分析',
+        [REPORT_TYPES.LOVE]: '愛情關係分析',
+        [REPORT_TYPES.HEALTH]: '健康運勢分析',
+        [REPORT_TYPES.WEALTH]: '財運分析'
+    };
+    return typeNames[reportType] || '命理分析';
+}
+
+// 調用 LLM API
+async function callLLMAPI(prompt, reportType, retryCount = 0) {
+    try {
+        const requestBody = {
+            model: 'gpt-4o-mini', // 或您的模型名稱
+            messages: [
+                {
+                    role: 'system',
+                    content: '你是一位專業的紫微斗數命理師，請基於用戶提供的生辰信息生成準確、專業的命理分析報告。'
+                },
+                {
+                    role: 'user',
+                    content: prompt
+                }
+            ],
+            temperature: 0.7,
+            max_tokens: 2000,
+            response_format: { type: "json_object" }
+        };
+
+        const response = await fetch(`${LLM_CONFIG.baseUrl}/chat/completions`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${LLM_CONFIG.apiKey}`
+            },
+            body: JSON.stringify(requestBody)
+        });
+
+        if (!response.ok) {
+            throw new Error(`LLM API 請求失敗: ${response.status} ${response.statusText}`);
+        }
+
+        const data = await response.json();
+        
+        if (!data.choices || !data.choices[0] || !data.choices[0].message) {
+            throw new Error('LLM API 返回數據格式錯誤');
+        }
+
+        return {
+            content: data.choices[0].message.content,
+            model: data.model,
+            usage: data.usage
+        };
+
+    } catch (error) {
+        if (retryCount < LLM_CONFIG.maxRetries) {
+            console.log(`🔄 Retrying LLM API call (${retryCount + 1}/${LLM_CONFIG.maxRetries})`);
+            await new Promise(resolve => setTimeout(resolve, 1000 * (retryCount + 1)));
+            return callLLMAPI(prompt, reportType, retryCount + 1);
+        }
+        
+        console.error('❌ LLM API call failed after retries:', error);
+        throw error;
+    }
+}
+
+// 處理 LLM 響應
+function processLLMResponse(llmResponse, reportType) {
+    try {
+        const report = JSON.parse(llmResponse.content);
+        
+        // 創建試閱版（限制內容長度）
+        const trial = {
+            title: report.title,
+            summary: report.summary,
+            sections: report.sections ? report.sections.slice(0, 2).map(section => ({
+                ...section,
+                content: section.content ? section.content.substring(0, 200) + '...' : ''
+            })) : [],
+            preview_note: '這是試閱版本，完整報告包含更多詳細分析和建議。'
+        };
+
+        // 完整版包含所有內容
+        const full = {
+            ...report,
+            generation_time: new Date().toISOString(),
+            report_type: reportType
+        };
+
+        return { trial, full };
+
+    } catch (error) {
+        console.error('❌ Error processing LLM response:', error);
+        
+        // 如果解析失敗，返回基本結構
+        return {
+            trial: {
+                title: `${getReportTypeName(reportType)}報告`,
+                summary: '報告生成中遇到問題，請稍後重試。',
+                sections: [],
+                preview_note: '這是試閱版本，完整報告包含更多詳細分析和建議。'
+            },
+            full: {
+                title: `${getReportTypeName(reportType)}報告`,
+                error: '報告內容解析失敗',
+                raw_response: llmResponse.content
+            }
+        };
+    }
+}
+
+// 獲取試閱報告（不需要付費）
+export async function getTrialReport(reportId) {
+    try {
+        const report = await getReportByReportId(reportId);
+        
+        if (!report) {
+            throw new Error('報告不存在');
+        }
+
+        const trialContent = JSON.parse(report.trialContent);
+        
+        return {
+            success: true,
+            reportId: report.reportId,
+            reportType: report.reportType,
+            content: trialContent,
+            status: report.status,
+            generatedAt: report.generatedAt
+        };
+
+    } catch (error) {
+        console.error('❌ Error getting trial report:', error);
+        throw new Error(`獲取試閱報告失敗: ${error.message}`);
+    }
+}
+
+// 獲取完整報告（需要付費）
+export async function getFullReport(reportId, userId) {
+    try {
+        const report = await getReportByReportId(reportId);
+        
+        if (!report) {
+            throw new Error('報告不存在');
+        }
+
+        if (report.userId !== userId) {
+            throw new Error('無權限訪問此報告');
+        }
+
+        if (report.status !== 'paid') {
+            throw new Error('請先完成付費才能查看完整報告');
+        }
+
+        const fullContent = JSON.parse(report.fullContent);
+        
+        return {
+            success: true,
+            reportId: report.reportId,
+            reportType: report.reportType,
+            content: fullContent,
+            status: report.status,
+            generatedAt: report.generatedAt,
+            paidAt: report.paidAt
+        };
+
+    } catch (error) {
+        console.error('❌ Error getting full report:', error);
+        throw new Error(`獲取完整報告失敗: ${error.message}`);
+    }
+}
+
+// 測試 LLM API 連接
+export async function testLLMConnection() {
+    try {
+        const testPrompt = '請回答：你好，這是一個API連接測試。請簡短回復確認收到。';
+        
+        const response = await callLLMAPI(testPrompt, 'test');
+        
+        return {
+            success: true,
+            message: 'LLM API 連接正常',
+            response: response.content,
+            model: response.model
+        };
+
+    } catch (error) {
+        console.error('❌ LLM API connection test failed:', error);
+        return {
+            success: false,
+            message: 'LLM API 連接失敗',
+            error: error.message
+        };
+    }
+} 

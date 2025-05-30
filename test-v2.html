@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>星途羅盤 v2.0 測試頁面</title>
+    <style>
+        body {
+            font-family: 'Inter', 'Noto Sans TC', sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: linear-gradient(135deg, #f5f3ff, #faf5ff, #f0f9ff);
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding: 20px;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 4px 20px rgba(88, 28, 135, 0.1);
+        }
+        
+        .header h1 {
+            color: #581C87;
+            margin: 0 0 10px 0;
+            font-size: 2rem;
+            font-weight: 700;
+        }
+        
+        .header p {
+            color: #6B21A8;
+            margin: 0;
+            font-size: 1.1rem;
+        }
+        
+        .test-section {
+            background: white;
+            border-radius: 16px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 20px rgba(88, 28, 135, 0.1);
+        }
+        
+        .test-section h2 {
+            color: #581C87;
+            margin: 0 0 20px 0;
+            font-size: 1.5rem;
+            font-weight: 600;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #374151;
+            font-weight: 500;
+        }
+        
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #E5E7EB;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: border-color 0.2s ease;
+        }
+        
+        .form-group input:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: #581C87;
+        }
+        
+        .form-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+        }
+        
+        .btn {
+            background: linear-gradient(135deg, #581C87, #6B21A8);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            margin-right: 10px;
+            margin-bottom: 10px;
+        }
+        
+        .btn:hover {
+            background: linear-gradient(135deg, #6B21A8, #7C3AED);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(88, 28, 135, 0.3);
+        }
+        
+        .btn-secondary {
+            background: #F3F4F6;
+            color: #374151;
+        }
+        
+        .btn-secondary:hover {
+            background: #E5E7EB;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(107, 114, 128, 0.2);
+        }
+        
+        .chart-container {
+            width: 100%;
+            height: 600px;
+            border: 2px solid rgba(230, 230, 250, 0.8);
+            border-radius: 12px;
+            margin: 20px 0;
+            overflow: hidden;
+        }
+        
+        .debug-info {
+            background: #F8FAFC;
+            border: 1px solid #E2E8F0;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 20px 0;
+            font-family: 'Monaco', 'Consolas', monospace;
+            font-size: 14px;
+            white-space: pre-wrap;
+            max-height: 200px;
+            overflow-y: auto;
+        }
+        
+        .status {
+            padding: 10px 15px;
+            border-radius: 8px;
+            margin: 10px 0;
+            font-weight: 500;
+        }
+        
+        .status.success {
+            background: #ECFDF5;
+            color: #059669;
+            border: 1px solid #A7F3D0;
+        }
+        
+        .status.error {
+            background: #FEF2F2;
+            color: #DC2626;
+            border: 1px solid #FECACA;
+        }
+        
+        .status.info {
+            background: #EFF6FF;
+            color: #2563EB;
+            border: 1px solid #BFDBFE;
+        }
+        
+        .preset-buttons {
+            margin: 20px 0;
+        }
+        
+        .preset-buttons .btn {
+            font-size: 14px;
+            padding: 8px 16px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🌟 星途羅盤 v2.0 測試頁面</h1>
+            <p>測試增強版紫微圖表 Custom Element - 解決 IZTRO 命盤顯示結構錯誤問題</p>
+        </div>
+
+        <div class="test-section">
+            <h2>📊 生辰數據輸入</h2>
+            <form id="birthForm">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="birthDate">出生日期：</label>
+                        <input type="date" id="birthDate" name="birthDate" value="1990-01-15" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="birthTime">出生時辰：</label>
+                        <select id="birthTime" name="birthTime" required>
+                            <option value="0">子時 (23:00-01:00)</option>
+                            <option value="1">丑時 (01:00-03:00)</option>
+                            <option value="2">寅時 (03:00-05:00)</option>
+                            <option value="3" selected>卯時 (05:00-07:00)</option>
+                            <option value="4">辰時 (07:00-09:00)</option>
+                            <option value="5">巳時 (09:00-11:00)</option>
+                            <option value="6">午時 (11:00-13:00)</option>
+                            <option value="7">未時 (13:00-15:00)</option>
+                            <option value="8">申時 (15:00-17:00)</option>
+                            <option value="9">酉時 (17:00-19:00)</option>
+                            <option value="10">戌時 (19:00-21:00)</option>
+                            <option value="11">亥時 (21:00-23:00)</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="gender">性別：</label>
+                        <select id="gender" name="gender" required>
+                            <option value="M" selected>男性</option>
+                            <option value="F">女性</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="solar">曆法：</label>
+                        <select id="solar" name="solar" required>
+                            <option value="true" selected>公曆</option>
+                            <option value="false">農曆</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="preset-buttons">
+                    <strong>快速測試數據：</strong><br>
+                    <button type="button" class="btn btn-secondary" onclick="loadPreset1()">測試數據 1</button>
+                    <button type="button" class="btn btn-secondary" onclick="loadPreset2()">測試數據 2</button>
+                    <button type="button" class="btn btn-secondary" onclick="loadPreset3()">測試數據 3</button>
+                </div>
+                
+                <button type="button" class="btn" onclick="generateChart()">生成命盤</button>
+                <button type="button" class="btn btn-secondary" onclick="clearChart()">清空命盤</button>
+                <button type="button" class="btn btn-secondary" onclick="showDebugInfo()">調試信息</button>
+            </form>
+        </div>
+
+        <div class="test-section">
+            <h2>🎯 命盤顯示區域</h2>
+            <div id="status" class="status info">準備就緒，請輸入生辰數據後點擊「生成命盤」</div>
+            
+            <div class="chart-container">
+                <ziwei-chart 
+                    id="ziweiChart" 
+                    theme="purple" 
+                    language="zh-TW"
+                    chart-size="auto">
+                </ziwei-chart>
+            </div>
+            
+            <div>
+                <button type="button" class="btn btn-secondary" onclick="testReportGeneration()">測試報告生成</button>
+                <button type="button" class="btn btn-secondary" onclick="showChartActions()">顯示操作按鈕</button>
+            </div>
+        </div>
+
+        <div class="test-section">
+            <h2>🔧 調試與監控</h2>
+            <div id="debugInfo" class="debug-info">等待操作...</div>
+        </div>
+    </div>
+
+    <!-- 載入新的 Bundle -->
+    <script src="https://tungcst.github.io/purplestarmapper/ziwei-chart.bundle.js"></script>
+    
+    <script>
+        // 全局變量
+        let chartElement = null;
+        let debugLog = [];
+
+        // 初始化
+        document.addEventListener('DOMContentLoaded', function() {
+            chartElement = document.getElementById('ziweiChart');
+            
+            // 監聽命盤元素的事件
+            if (chartElement) {
+                chartElement.addEventListener('reportRequest', handleReportRequest);
+                
+                // 監聽自定義消息
+                chartElement.addEventListener('chartReady', function(e) {
+                    logDebug('Chart ready event received', e.detail);
+                });
+                
+                chartElement.addEventListener('chartError', function(e) {
+                    logDebug('Chart error event received', e.detail);
+                    showStatus('命盤渲染出錯: ' + e.detail.message, 'error');
+                });
+            }
+            
+            logDebug('Page initialized, ZiweiChartDebug available:', !!window.ZiweiChartDebug);
+            
+            if (window.ZiweiChartDebug) {
+                logDebug('ZiweiChartDebug info:', window.ZiweiChartDebug);
+            }
+        });
+
+        // 預設測試數據
+        function loadPreset1() {
+            document.getElementById('birthDate').value = '1990-01-15';
+            document.getElementById('birthTime').value = '3';
+            document.getElementById('gender').value = 'M';
+            document.getElementById('solar').value = 'true';
+            logDebug('Loaded preset 1');
+        }
+
+        function loadPreset2() {
+            document.getElementById('birthDate').value = '1985-08-20';
+            document.getElementById('birthTime').value = '6';
+            document.getElementById('gender').value = 'F';
+            document.getElementById('solar').value = 'true';
+            logDebug('Loaded preset 2');
+        }
+
+        function loadPreset3() {
+            document.getElementById('birthDate').value = '1995-12-03';
+            document.getElementById('birthTime').value = '0';
+            document.getElementById('gender').value = 'M';
+            document.getElementById('solar').value = 'true';
+            logDebug('Loaded preset 3');
+        }
+
+        // 生成命盤
+        function generateChart() {
+            try {
+                const formData = new FormData(document.getElementById('birthForm'));
+                const birthData = {
+                    birthDate: formData.get('birthDate'),
+                    birthTime: formData.get('birthTime'),
+                    gender: formData.get('gender'),
+                    solar: formData.get('solar') === 'true'
+                };
+
+                logDebug('Generating chart with data:', birthData);
+                showStatus('正在生成命盤...', 'info');
+
+                if (chartElement) {
+                    chartElement.setAttribute('birth-data', JSON.stringify(birthData));
+                    showStatus('命盤數據已更新', 'success');
+                } else {
+                    throw new Error('Chart element not found');
+                }
+
+            } catch (error) {
+                logDebug('Error generating chart:', error);
+                showStatus('生成命盤失敗: ' + error.message, 'error');
+            }
+        }
+
+        // 清空命盤
+        function clearChart() {
+            if (chartElement) {
+                chartElement.removeAttribute('birth-data');
+                showStatus('命盤已清空', 'info');
+                logDebug('Chart cleared');
+            }
+        }
+
+        // 測試報告生成
+        function testReportGeneration() {
+            if (chartElement) {
+                // 模擬報告生成請求
+                window.postMessage({
+                    target: 'ziwei-chart',
+                    action: 'generateReport',
+                    payload: 'ziwei'
+                }, '*');
+                
+                showStatus('已發送報告生成請求', 'info');
+                logDebug('Report generation test triggered');
+            }
+        }
+
+        // 顯示圖表操作按鈕
+        function showChartActions() {
+            if (chartElement && chartElement.showReportActions) {
+                const actions = [
+                    { type: 'ziwei', label: '紫微報告' },
+                    { type: 'career', label: '事業報告' },
+                    { type: 'love', label: '愛情報告' }
+                ];
+                
+                chartElement.showReportActions(actions);
+                showStatus('操作按鈕已顯示', 'success');
+                logDebug('Chart actions displayed');
+            }
+        }
+
+        // 處理報告生成請求
+        function handleReportRequest(event) {
+            logDebug('Report request received:', event.detail);
+            showStatus(`收到${event.detail.reportType}報告請求`, 'success');
+            
+            // 這裡可以調用您的後端API來實際生成報告
+            // 例如：
+            // generateReportAPI(event.detail.birthData, event.detail.reportType)
+        }
+
+        // 顯示調試信息
+        function showDebugInfo() {
+            updateDebugDisplay();
+            
+            // 也顯示瀏覽器控制台信息
+            console.log('=== 星途羅盤調試信息 ===');
+            console.log('Chart Element:', chartElement);
+            console.log('ZiweiChartDebug:', window.ZiweiChartDebug);
+            console.log('Debug Log:', debugLog);
+            
+            if (window.ZiweiChartDebug && window.ZiweiChartDebug.testChart) {
+                console.log('Testing chart creation...');
+                const testData = window.ZiweiChartDebug.createTestData();
+                console.log('Test data:', testData);
+            }
+        }
+
+        // 記錄調試信息
+        function logDebug(message, data = null) {
+            const timestamp = new Date().toLocaleTimeString();
+            const logEntry = {
+                timestamp,
+                message,
+                data
+            };
+            
+            debugLog.push(logEntry);
+            
+            // 保持最近50條記錄
+            if (debugLog.length > 50) {
+                debugLog.shift();
+            }
+            
+            console.log(`[${timestamp}] ${message}`, data);
+        }
+
+        // 更新調試顯示
+        function updateDebugDisplay() {
+            const debugElement = document.getElementById('debugInfo');
+            const logText = debugLog.map(entry => {
+                let text = `[${entry.timestamp}] ${entry.message}`;
+                if (entry.data) {
+                    text += '\n' + JSON.stringify(entry.data, null, 2);
+                }
+                return text;
+            }).join('\n\n');
+            
+            debugElement.textContent = logText || '暫無調試信息';
+        }
+
+        // 顯示狀態信息
+        function showStatus(message, type = 'info') {
+            const statusElement = document.getElementById('status');
+            statusElement.textContent = message;
+            statusElement.className = `status ${type}`;
+            
+            logDebug(`Status [${type}]:`, message);
+        }
+
+        // 全局錯誤處理
+        window.addEventListener('error', function(event) {
+            logDebug('Global error:', {
+                message: event.message,
+                filename: event.filename,
+                lineno: event.lineno,
+                colno: event.colno
+            });
+        });
+
+        // 監聽來自 Custom Element 的消息
+        window.addEventListener('message', function(event) {
+            if (event.data && event.data.source === 'ziwei-chart') {
+                logDebug('Message from chart element:', event.data);
+            }
+        });
+    </script>
+</body>
+</html> 
