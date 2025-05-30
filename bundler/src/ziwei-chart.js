@@ -535,7 +535,7 @@ class ZiweiChartElement extends HTMLElement {
             actualDate = date.toISOString().split('T')[0];
         }
 
-        return {
+        return { 
             birthday: actualDate,
             birthTime: timeIndex,
             birthdayType: solar ? 'solar' : 'lunar',

@@ -474,7 +474,7 @@ class ZiweiChartElement extends HTMLElement {
         if (this._retryCount <= this._maxRetries) {
             console.log(`🔄 Retrying chart render (${this._retryCount}/${this._maxRetries})`);
             setTimeout(() => this._renderChart(), 1000 * this._retryCount);
-        } else {
+                } else {
             this._showError('命盤生成失敗', `已重試 ${this._maxRetries} 次，請檢查數據格式或稍後再試`);
         }
     }
