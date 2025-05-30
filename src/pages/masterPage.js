@@ -1,4 +1,4 @@
-// 星途羅盤智能導航系統 v2.0
+// 星途羅盤智能導航系統 v2.1 - 修復元素檢測問題
 // 🎯 基於您的網站截圖專門設計
 
 import wixUsers from 'wix-users';
@@ -7,34 +7,57 @@ import wixWindow from 'wix-window';
 
 $w.onReady(function () {
     console.log('🎯 星途羅盤智能導航系統啟動！');
-    console.log('📱 版本: v2.0 - 針對實際網站優化');
+    console.log('📱 版本: v2.1 - 修復元素檢測問題');
     
-    // 初始化智能導航
+    // 初始化智能導航 - 使用多重檢測策略
     initializeSmartNavigation();
 });
 
 function initializeSmartNavigation() {
     console.log('🔍 開始檢測按鈕...');
     
-    // 延遲檢測確保頁面完全載入
+    // 多階段檢測確保頁面完全載入
     setTimeout(() => {
+        console.log('📅 第一次檢測（2秒後）');
         detectAndConfigureButtons();
-    }, 1000);
+    }, 2000);
     
-    // 再次檢測動態內容
     setTimeout(() => {
+        console.log('📅 第二次檢測（5秒後）');
         detectAndConfigureButtons();
-    }, 3000);
+    }, 5000);
+    
+    setTimeout(() => {
+        console.log('📅 第三次檢測（8秒後）');
+        detectAndConfigureButtons();
+    }, 8000);
 }
 
 function detectAndConfigureButtons() {
     try {
+        // 使用多種方式檢測元素
+        console.log('🔍 方法1：檢測所有元素...');
         const allElements = $w('*');
+        console.log(`📊 方法1檢測到 ${allElements.length} 個元素`);
+        
+        // 方法2：直接檢測特定按鈕
+        console.log('🔍 方法2：直接檢測特定按鈕...');
+        detectSpecificButtons();
+        
+        // 方法3：掃描所有按鈕類型元素
+        console.log('🔍 方法3：掃描按鈕類型元素...');
+        const buttons = $w('Button');
+        console.log(`📊 方法3檢測到 ${buttons.length} 個Button元素`);
+        
+        // 方法4：掃描所有文字元素
+        console.log('🔍 方法4：掃描文字元素...');
+        const texts = $w('Text');
+        console.log(`📊 方法4檢測到 ${texts.length} 個Text元素`);
+        
         let configuredCount = 0;
         
-        console.log(`🔍 檢查 ${allElements.length} 個頁面元素...`);
-        
-        allElements.forEach(element => {
+        // 處理所有檢測到的元素
+        [...allElements, ...buttons, ...texts].forEach(element => {
             try {
                 if (isClickableElement(element)) {
                     const action = detectButtonAction(element);
@@ -44,15 +67,115 @@ function detectAndConfigureButtons() {
                     }
                 }
             } catch (error) {
-                // 忽略個別元素錯誤
+                console.warn('⚠️ 處理單個元素失敗:', error);
             }
         });
         
-        console.log(`✅ 成功配置 ${configuredCount} 個按鈕`);
+        console.log(`✅ 總共配置了 ${configuredCount} 個按鈕`);
+        
+        if (configuredCount === 0) {
+            console.warn('⚠️ 沒有檢測到可配置的按鈕，嘗試手動檢測...');
+            manualButtonDetection();
+        }
+        
         logButtonSummary();
         
     } catch (error) {
         console.error('❌ 檢測按鈕時出錯:', error);
+        // 嘗試備用檢測方法
+        fallbackDetection();
+    }
+}
+
+function detectSpecificButtons() {
+    // 嘗試檢測常見的按鈕ID和類名
+    const commonButtonIds = [
+        'loginButton', 'signUpButton', 'getStartedButton', 'heroButton',
+        'button1', 'button2', 'button3', 'button4', 'button5',
+        'text1', 'text2', 'text3', 'text4', 'text5'
+    ];
+    
+    commonButtonIds.forEach(id => {
+        try {
+            const element = $w(`#${id}`);
+            if (element && element.text) {
+                console.log(`🎯 發現元素 #${id}: "${element.text}"`);
+                const action = detectButtonAction(element);
+                if (action) {
+                    configureButtonAction(element, action);
+                }
+            }
+        } catch (error) {
+            // 元素不存在，忽略
+        }
+    });
+}
+
+function manualButtonDetection() {
+    console.log('🔧 啟動手動檢測模式...');
+    
+    // 手動檢測已知的按鈕文字
+    const buttonTexts = ['Sign Up', 'Log In', 'Get Started', '探索您的星途奧秘', 
+                        '紫微斗數', '事業運勢', '愛情'];
+    
+    buttonTexts.forEach(text => {
+        try {
+            // 嘗試通過頁面搜索找到包含此文字的元素
+            console.log(`🔍 搜索包含 "${text}" 的元素...`);
+            
+            // 這裡可以添加更複雜的搜索邏輯
+            const allPageElements = document.querySelectorAll('*');
+            Array.from(allPageElements).forEach(domElement => {
+                if (domElement.textContent && domElement.textContent.includes(text)) {
+                    console.log(`📍 在DOM中找到包含 "${text}" 的元素:`, domElement.tagName);
+                }
+            });
+            
+        } catch (error) {
+            console.warn(`⚠️ 搜索 "${text}" 時出錯:`, error);
+        }
+    });
+}
+
+function fallbackDetection() {
+    console.log('🆘 啟動備用檢測模式...');
+    
+    try {
+        // 使用 DOM API 直接檢測
+        const domButtons = document.querySelectorAll('button, [role="button"], .btn, [onclick]');
+        console.log(`🔍 DOM檢測到 ${domButtons.length} 個可能的按鈕`);
+        
+        domButtons.forEach((domElement, index) => {
+            try {
+                console.log(`🔍 DOM按鈕 ${index}: ${domElement.textContent || domElement.className}`);
+                
+                // 嘗試為DOM按鈕添加點擊事件
+                if (domElement.textContent) {
+                    const text = domElement.textContent.trim();
+                    
+                    if (text.includes('Sign Up') || text.includes('註冊')) {
+                        console.log('📝 在DOM中配置註冊按鈕');
+                        domElement.addEventListener('click', () => {
+                            console.log('🎯 DOM註冊按鈕點擊');
+                            wixUsers.promptLogin({ mode: "signup" });
+                        });
+                    }
+                    
+                    if (text.includes('Log In') || text.includes('登入')) {
+                        console.log('🔐 在DOM中配置登入按鈕');
+                        domElement.addEventListener('click', () => {
+                            console.log('🎯 DOM登入按鈕點擊');
+                            wixUsers.promptLogin({ mode: "login" });
+                        });
+                    }
+                }
+            } catch (error) {
+                console.warn('⚠️ 配置DOM按鈕失敗:', error);
+            }
+        });
+        
+    } catch (error) {
+        console.error('❌ 備用檢測失敗:', error);
     }
 }
 
@@ -73,67 +196,69 @@ function detectButtonAction(element) {
         const text = element.text || '';
         const id = element.id || '';
         
-        // 登入按鈕檢測
-        if (text.includes('Log In') || text.includes('登入') || id.toLowerCase().includes('login')) {
-            console.log('🔐 檢測到登入按鈕:', text || id);
-            return 'login';
-        }
+        console.log(`🔍 檢查元素: "${text}" (ID: ${id})`);
         
-        // 註冊按鈕檢測
+        // Sign Up 按鈕
         if (text.includes('Sign Up') || text.includes('註冊') || id.toLowerCase().includes('signup')) {
             console.log('📝 檢測到註冊按鈕:', text || id);
             return 'signup';
         }
         
-        // 登出按鈕檢測
+        // Log In 按鈕
+        if (text.includes('Log In') || text.includes('登入') || id.toLowerCase().includes('login')) {
+            console.log('🔐 檢測到登入按鈕:', text || id);
+            return 'login';
+        }
+        
+        // 登出按鈕
         if (text.includes('登出') || text.includes('Logout') || id.toLowerCase().includes('logout')) {
             console.log('🚪 檢測到登出按鈕:', text || id);
             return 'logout';
         }
         
-        // Get Started按鈕檢測
+        // Get Started按鈕
         if (text.includes('Get Started') || text.includes('開始') || id.toLowerCase().includes('start')) {
             console.log('🚀 檢測到開始按鈕:', text || id);
             return 'getStarted';
         }
         
-        // 探索按鈕檢測
+        // 探索按鈕
         if (text.includes('探索您的星途奧秘') || text.includes('探索')) {
             console.log('🌟 檢測到探索按鈕:', text || id);
             return 'explore';
         }
         
-        // 紫微斗數服務檢測
+        // 紫微斗數服務
         if (text.includes('紫微斗數') || text.includes('命盤詳解')) {
             console.log('🔮 檢測到紫微服務:', text || id);
             return 'ziwei';
         }
         
-        // 事業分析服務檢測
+        // 事業分析服務
         if (text.includes('事業運勢') || text.includes('事業分析')) {
             console.log('💼 檢測到事業服務:', text || id);
             return 'career';
         }
         
-        // 愛情分析服務檢測
+        // 愛情分析服務
         if (text.includes('愛情') || text.includes('人際關係')) {
             console.log('💕 檢測到愛情服務:', text || id);
             return 'love';
         }
         
-        // 解鎖報告按鈕檢測
+        // 解鎖報告按鈕
         if (text.includes('解鎖完整報告') || text.includes('升級報告')) {
             console.log('🔓 檢測到解鎖按鈕:', text || id);
             return 'unlock';
         }
         
-        // PDF下載按鈕檢測
+        // PDF下載按鈕
         if (text.includes('Download PDF') || text.includes('下載PDF')) {
             console.log('📄 檢測到PDF下載按鈕:', text || id);
             return 'downloadPdf';
         }
         
-        // 分享按鈕檢測
+        // 分享按鈕
         if (text.includes('Share Report') || text.includes('分享報告')) {
             console.log('📤 檢測到分享按鈕:', text || id);
             return 'share';
@@ -338,4 +463,6 @@ function logButtonSummary() {
     console.log('   ✅ 解鎖/下載/分享 按鈕');
     console.log('🎯 系統已就緒，所有按鈕已自動配置！');
 }
+
 // 強制同步觸發 - Fri May 30 03:12:54 EDT 2025
+// v2.1 修復：增強元素檢測，支援多重檢測策略和DOM備用方案
